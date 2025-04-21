@@ -21,7 +21,7 @@
               <input class="form-control form-control-lg" type="text" placeholder="Email" />
             </fieldset>
             <fieldset class="form-group">
-              <input class="form-control form-control-lg" type="password" placeholder="Password" />
+              <input class="form-control form-control-lg" autocomplete="current-password" type="password" placeholder="Password" />
             </fieldset>
             <button class="btn btn-lg btn-primary pull-xs-right">Sign in</button>
           </form>

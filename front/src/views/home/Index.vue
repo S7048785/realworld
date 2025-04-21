@@ -1,3 +1,40 @@
+<script setup lang="ts">
+const userList = reactive([
+  {
+    name: 'Eric Simons'
+  }
+])
+// 已选中的标签页的索引
+const selectedTabIndex = ref<number>(0);
+// 标签页列表
+const tabList = reactive([
+  "Your Feed",
+  "Global Feed",
+])
+// 切换标签页
+const toggleIndex = (index: number) => {
+  selectedTabIndex.value = index;
+}
+
+// 已选中的标签的索引
+const selectedTagIndex = reactive<number[]>([]);
+// 标签列表
+const tagList = reactive<string[]>([
+  "programming", "javascript", "emberjs", "angularjs", "react", "mean", "node", "rails"
+]);
+// 选中/取消选中标签
+const toggleTag = (index: number) => {
+  if (selectedTagIndex.includes(index)) {
+    selectedTagIndex.splice(selectedTagIndex.indexOf(index), 1);
+  } else {
+    selectedTagIndex.push(index);
+  }
+}
+const clearTag = () => {
+  selectedTagIndex.splice(0);
+}
+</script>
+
 <template>
   <div class="home-page">
     <div class="banner">
@@ -12,11 +49,8 @@
         <div class="col-md-9">
           <div class="feed-toggle">
             <ul class="nav nav-pills outline-active">
-              <li class="nav-item">
-                <a class="nav-link" href="">Your Feed</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="">Global Feed</a>
+              <li v-for="(item, index) in tabList" @click="toggleIndex(index)" class="nav-item">
+                <a :class="{'active': selectedTabIndex === index}" class="nav-link" href="javascript: void(0)" v-text="item"></a>
               </li>
             </ul>
           </div>
@@ -25,6 +59,7 @@
             <div class="article-meta">
               <a href="/profile/eric-simons"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
               <div class="info">
+                <router-link :to="`/profile/${'Eric Simons'}`"></router-link>
                 <a href="/profile/eric-simons" class="author">Eric Simons</a>
                 <span class="date">January 20th</span>
               </div>
@@ -50,7 +85,7 @@
                 <a href="/profile/albert-pai" class="author">Albert Pai</a>
                 <span class="date">January 20th</span>
               </div>
-              <button class="btn btn-outline-primary btn-sm pull-xs-right">
+              <button class="btn btn-sm pull-xs-right">
                 <i class="ion-heart"></i> 32
               </button>
             </div>
@@ -77,17 +112,16 @@
 
         <div class="col-md-3">
           <div class="sidebar">
-            <p>Popular Tags</p>
-
-            <div class="tag-list">
-              <a href="" class="tag-pill tag-default">programming</a>
-              <a href="" class="tag-pill tag-default">javascript</a>
-              <a href="" class="tag-pill tag-default">emberjs</a>
-              <a href="" class="tag-pill tag-default">angularjs</a>
-              <a href="" class="tag-pill tag-default">react</a>
-              <a href="" class="tag-pill tag-default">mean</a>
-              <a href="" class="tag-pill tag-default">node</a>
-              <a href="" class="tag-pill tag-default">rails</a>
+            <div><span>Popular Tags</span> <button @click="clearTag" style="border: 1px solid #ccc">clear</button></div>
+            <div class="tag-list" style="margin-top: 10px">
+              <a v-for="(item, index) in tagList"
+                 @click="toggleTag(index)"
+                 :key="item"
+                 :class="{'tag-primary': selectedTagIndex.includes(index)}"
+                 v-text="item"
+                 class="tag-pill tag-default"
+                 href="javascript: void(0)"
+              ></a>
             </div>
           </div>
         </div>
@@ -95,10 +129,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-
-</script>
 
 <style scoped>
 
