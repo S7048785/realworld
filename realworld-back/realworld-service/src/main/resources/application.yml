@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: real-world
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${comment.wall.datasource.url}
+    username: ${comment.wall.datasource.username}
+    password: ${comment.wall.datasource.password}
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: comment.wall.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      update-strategy: not_null
+logging:
+  level:
+    comment:
+      wall:
+        mapper: debug
+        service: info
+        controller: info
+
+springdoc:
+  # 默认是false，需要设置为true
+  default-flat-param-object: true
