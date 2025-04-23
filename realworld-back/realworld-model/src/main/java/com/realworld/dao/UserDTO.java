@@ -1,9 +1,7 @@
-package com.realworld.dto;
+package com.realworld.dao;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 public class UserDTO {

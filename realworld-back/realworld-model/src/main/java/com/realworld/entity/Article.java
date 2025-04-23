@@ -44,8 +44,14 @@ public class Article implements Serializable {
     @Schema(name = "作者id")
     private Integer authorId;
 
+    @Schema(name = "点赞数量")
+    private int likeCount;
+
     @Schema(name = "收藏数量")
-    private Integer favoritesCount;
+    private int favoritesCount;
+
+    @Schema(name = "评论数量")
+    private int commentCount;
 
     @Schema(name = "创建时间")
     @TableField(fill = FieldFill.INSERT)
@@ -56,7 +62,7 @@ public class Article implements Serializable {
     private LocalDateTime updatedAt;
 
     @Schema(name = "标记删除状态")
-    private Integer isDel;
+    private int isDel;
 
 
 }

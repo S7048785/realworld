@@ -12,5 +12,7 @@ public class CommentVO {
 	private Integer id;
 	private String body;
 	private LocalDateTime createdAt;
-	private CommentUserVO author;
+	// 用户信息
+	private String username;
+	private String avatar;
 }

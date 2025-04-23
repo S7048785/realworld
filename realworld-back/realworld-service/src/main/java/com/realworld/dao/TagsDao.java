@@ -1,4 +1,4 @@
-package com.realworld.dto;
+package com.realworld.dao;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -6,7 +6,6 @@ import com.realworld.entity.Tags;
 import com.realworld.mapper.TagsMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 @Service

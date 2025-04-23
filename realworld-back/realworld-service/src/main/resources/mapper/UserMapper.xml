@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.realworld.mapper.UserMapper">
+    <select id="selectUser" resultType="com.realworld.vo.ProfileVO">
+        select
+            user.username as username,
+            user.bio as bio,
+            user.avatar as avatar,
+            IFNULL(!user_follow.is_del, 0) as following
+        from user
+                 left join user_follow on user_follow.user_id = #{currentId} and user_follow.followed_user_id = #{userId} and user_follow.is_del = 0
+        where user.id = #{userId};
+    </select>
+</mapper>

@@ -1,4 +1,4 @@
-package com.realworld.dto;
+package com.realworld.dao;
 
 import lombok.Data;
 

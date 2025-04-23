@@ -28,12 +28,12 @@ public class ArticleVO {
 	private List<String> tagList;
 	// 文章创建时间
 	private LocalDateTime createdAt;
-	// 文章更新时间
-	private LocalDateTime updatedAt;
 	// 是否收藏
 	private boolean favorited;
 	// 收藏数量
 	private int favoritesCount;
+	// 评论数量
+	private int commentCount;
 	// 文章作者信息
 	private ProfileVO author;
 }

@@ -22,10 +22,10 @@ public class PageResult<T> implements Serializable {
 	private List<T> records;
 
 	//当前页
-	private int page;
+	private long page;
 
 	//每页记录数
-	private int pageSize;
+	private long pageSize;
 	
 	
 	public PageResult(List<T> cardMessagePage, int page, int pageSize) {

@@ -1,8 +1,7 @@
 package com.realworld.service;
 
-import com.realworld.dto.UserLoginDTO;
-import com.realworld.entity.User;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.realworld.dao.UserLoginDTO;
+import com.realworld.vo.ProfileVO;
 import com.realworld.vo.UserVO;
 
 /**
@@ -13,7 +12,9 @@ import com.realworld.vo.UserVO;
  * @author 
  * @since 2025-04-18
  */
-public interface IUserService extends IService<User> {
+public interface UserService {
 
 	UserVO login(UserLoginDTO userLoginDTO);
+
+	ProfileVO getInfo(Integer id);
 }

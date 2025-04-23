@@ -1,6 +1,5 @@
-package com.realworld.dto;
+package com.realworld.dao;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.realworld.entity.ArticleTags;

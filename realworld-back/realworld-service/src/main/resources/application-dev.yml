@@ -12,4 +12,4 @@ realworld:
           - /users/register
           - /articles/list
           - /articles/comments
-          - /profiles/{username}
+          - /profiles/{id}

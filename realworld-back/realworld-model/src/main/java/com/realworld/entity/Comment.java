@@ -39,7 +39,7 @@ public class Comment implements Serializable {
     private Integer articleId;
 
     @Schema(name = "评论时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
     @Schema(name = "标记i删除状态")

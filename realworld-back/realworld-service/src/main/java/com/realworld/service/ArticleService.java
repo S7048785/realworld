@@ -1,11 +1,11 @@
 package com.realworld.service;
 
-import com.realworld.dto.ArticleCreateDTO;
-import com.realworld.dto.ArticlePageQueryDTO;
-import com.realworld.dto.ArticleUpdateDTO;
-import com.realworld.entity.Article;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.realworld.vo.ArticleVO;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.realworld.dao.ArticleCreateDTO;
+import com.realworld.dao.ArticlePageQueryDTO;
+import com.realworld.dao.ArticleUpdateDTO;
+import com.realworld.dao.CommentDTO;
+import com.realworld.vo.ArticleCardVO;
 import com.realworld.vo.CommentVO;
 import jakarta.validation.Valid;
 
@@ -21,7 +21,7 @@ import java.util.List;
  */
 public interface ArticleService {
 
-	List<ArticleVO> listArticle(ArticlePageQueryDTO articlePageQueryDTO, Integer userId);
+	Page<ArticleCardVO> listArticle(ArticlePageQueryDTO articlePageQueryDTO, Integer userId);
 
 	void saveArticle(@Valid ArticleCreateDTO articleCreateDTO);
 
@@ -30,4 +30,10 @@ public interface ArticleService {
 	void removeArticleById(Integer id);
 
 	List<CommentVO> getComments(Integer id);
+
+	void saveComment(Integer id, @Valid CommentDTO commentDTO);
+
+	void removeCommentById(Integer articleId, Integer commentId);
+
+	void favoriteArticle(Integer id);
 }

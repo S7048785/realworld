@@ -1,11 +1,10 @@
 package com.realworld.controller;
 
-import com.realworld.dto.UserDTO;
-import com.realworld.dto.UserLoginDTO;
-import com.realworld.dto.UserRegisterDTO;
-import com.realworld.dto.UserUpdateDTO;
+import com.realworld.dao.UserLoginDTO;
+import com.realworld.dao.UserRegisterDTO;
+import com.realworld.dao.UserUpdateDTO;
 import com.realworld.result.Result;
-import com.realworld.service.IUserService;
+import com.realworld.service.UserService;
 import com.realworld.vo.UserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-	private final IUserService userService;
+	private final UserService userService;
 
 	@Operation(summary = "用户登录")
 	@PostMapping("/login")

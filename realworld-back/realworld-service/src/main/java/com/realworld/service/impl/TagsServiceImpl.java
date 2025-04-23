@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.realworld.constant.CacheConstant;
-import com.realworld.dto.TagsDao;
+import com.realworld.dao.TagsDao;
 import com.realworld.entity.Tags;
 import com.realworld.service.TagsService;
 import com.realworld.utils.CacheUtil;

@@ -2,18 +2,13 @@ package com.realworld.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.realworld.context.BaseContext;
-import com.realworld.dto.*;
-import com.realworld.entity.Article;
-import com.realworld.entity.ArticleTags;
-import com.realworld.entity.Comment;
-import com.realworld.entity.Tags;
+import com.realworld.dao.*;
+import com.realworld.entity.*;
 import com.realworld.service.ArticleService;
-import com.realworld.vo.ArticleVO;
+import com.realworld.vo.ArticleCardVO;
 import com.realworld.vo.CommentVO;
-import com.realworld.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +32,7 @@ public class ArticleServiceImpl implements ArticleService {
 	private CommentDao commentDao;
 
 	@Override
-	public List<ArticleVO> listArticle(ArticlePageQueryDTO articlePageQueryDTO,Integer userId) {
+	public Page<ArticleCardVO> listArticle(ArticlePageQueryDTO articlePageQueryDTO, Integer userId) {
 		Page<Article> articlePage = new Page<>(articlePageQueryDTO.getLimit(), articlePageQueryDTO.getOffset());
 		return articleDao.list(articlePage, articlePageQueryDTO, userId);
 	}
@@ -85,9 +80,38 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public List<CommentVO> getComments(Integer articleId) {
 
-		List<CommentVO> list = commentDao.list(articleId);
-		// 封装成VO
+		return commentDao.list(articleId);
+	}
 
-		return CollUtil.map(list, item -> BeanUtil.copyProperties(item, CommentVO.class), true);
+	@Transactional
+	@Override
+	public void saveComment(Integer id, CommentDTO commentDTO) {
+		commentDao.save(id, commentDTO);
+		// 增加评论数量
+		commentDao.updateCommentCount(id, true);
+	}
+
+	@Transactional
+	@Override
+	public void removeCommentById(Integer articleId, Integer commentId) {
+		commentDao.removeById(articleId, commentId);
+		Integer currentId = BaseContext.getCurrentId();
+		// 减少评论数量
+		commentDao.updateCommentCount(articleId, false);
+	}
+
+	@Transactional
+	@Override
+	public void favoriteArticle(Integer id) {
+		// TODO: 使用Redis加锁
+		// 查询有没有收藏
+		boolean action = articleDao.isFavorite(id, BaseContext.getCurrentId());
+		ArticleFavorites articleFavorites = new ArticleFavorites().setArticleId(id).setUserId(BaseContext.getCurrentId());
+		if (action) {
+			articleDao.addFavorite(articleFavorites);
+		} else {
+			articleDao.deleteFavorite(articleFavorites.getId());
+		}
+		articleDao.updateFavoriteCount(id, action);
 	}
 }

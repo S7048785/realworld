@@ -1,6 +1,5 @@
 package com.realworld.vo;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
