@@ -12,5 +12,5 @@ public class CommentVO {
 	private Integer id;
 	private String body;
 	private LocalDateTime createdAt;
-	private UserVO author;
+	private CommentUserVO author;
 }

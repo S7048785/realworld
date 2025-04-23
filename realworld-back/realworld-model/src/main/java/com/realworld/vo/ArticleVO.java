@@ -1,8 +1,12 @@
 package com.realworld.vo;
 
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -10,6 +14,8 @@ import java.util.List;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ArticleVO {
 	private Integer id;
 	// 文章标题
@@ -21,9 +27,9 @@ public class ArticleVO {
 	// 文章标签
 	private List<String> tagList;
 	// 文章创建时间
-	private String createdAt;
+	private LocalDateTime createdAt;
 	// 文章更新时间
-	private String updatedAt;
+	private LocalDateTime updatedAt;
 	// 是否收藏
 	private boolean favorited;
 	// 收藏数量

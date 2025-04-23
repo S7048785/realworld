@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.realworld.mapper.ArticleMapper">
+
+    <resultMap id="articleMap" type="com.realworld.vo.ArticleVO">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="body" property="body"/>
+        <result column="favorites_count" property="favoritesCount"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="favorite_status" property="favorited"/>
+        <association property="author" javaType="com.realworld.vo.ProfileVO">
+            <result column="username" property="username"/>
+            <result column="bio" property="bio"/>
+            <result column="avatar" property="avatar"/>
+        </association>
+        <collection property="tagList" ofType="java.lang.String">
+            <result column="tag_name"/>
+        </collection>
+    </resultMap>
+    <select id="selectListArticle" resultMap="articleMap"
+            parameterType="com.realworld.dto.ArticlePageQueryDTO">
+        select
+        article.id as id,
+        article.title as title,
+        article.description as description,
+        article.body as body,
+        article.favorites_count as favorites_count,
+        article.created_at as created_at,
+        article.updated_at as updated_at,
+        user.username as username,
+        user.bio as bio,
+        user.avatar as avatar,
+        tags.name as tag_name,
+        IFNULL(article_favorites.status, 0) as favorite_status
+        from article
+        left join article_tags on article.id = article_tags.article_id
+        left join tags on article_tags.tag_id = tags.id
+        left join user on article.author_id = user.id
+        left join article_favorites on article.id = article_favorites.article_id
+        <where>
+            <if test="userId != null">
+                user_follow.user_id = #{userId} and
+            </if>
+            <if test="articlePageQueryDTO.author != null and articlePageQueryDTO.author != ''">
+                user.username = #{articlePageQueryDTO.author} and
+            </if>
+            <if test="articlePageQueryDTO.tagList != null and !articlePageQueryDTO.tagList.isEmpty()">
+                tags.name in
+                (<foreach collection="tagList" item="tag" separator=",">
+                #{articlePageQueryDTO.tag}
+                </foreach>)
+                and
+            </if>
+            article.is_del = 0
+        </where>
+        order by article.created_at desc
+
+    </select>
+</mapper>

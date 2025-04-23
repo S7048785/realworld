@@ -1,5 +1,6 @@
 package com.realworld.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -26,12 +27,19 @@ public class ArticleTags implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Schema(name = "id")
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+
     @Schema(name = "文章id")
-    @TableId(value = "article_id", type = IdType.AUTO)
+    @TableField(value = "article_id")
     private Integer articleId;
 
     @Schema(name = "标签id")
+    @TableField(value = "tag_id")
     private Integer tagId;
 
-
+    @Schema(name = "标记删除状态")
+    @TableField(value = "is_del")
+    private Integer isDel;
 }

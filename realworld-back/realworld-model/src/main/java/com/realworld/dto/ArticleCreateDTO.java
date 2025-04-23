@@ -2,7 +2,10 @@ package com.realworld.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @author YYJYP
@@ -22,5 +25,5 @@ public class ArticleCreateDTO {
 	private String body;
 
 	@Schema(name = "文章标签")
-	private String[] tagList;
+	private List<String> tagList;
 }

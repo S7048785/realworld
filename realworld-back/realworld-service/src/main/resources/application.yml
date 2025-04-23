@@ -5,9 +5,9 @@ spring:
     name: real-world
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${comment.wall.datasource.url}
-    username: ${comment.wall.datasource.username}
-    password: ${comment.wall.datasource.password}
+    url: ${realworld.back.datasource.url}
+    username: ${realworld.back.datasource.username}
+    password: ${realworld.back.datasource.password}
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml

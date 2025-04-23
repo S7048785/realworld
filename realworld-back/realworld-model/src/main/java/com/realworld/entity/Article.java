@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -21,6 +23,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("article")
+@NoArgsConstructor
 @Schema(name="Article对象", description="文章表")
 public class Article implements Serializable {
 
@@ -39,7 +42,7 @@ public class Article implements Serializable {
     private String body;
 
     @Schema(name = "作者id")
-    private Integer userId;
+    private Integer authorId;
 
     @Schema(name = "收藏数量")
     private Integer favoritesCount;
@@ -49,11 +52,11 @@ public class Article implements Serializable {
     private LocalDateTime createdAt;
 
     @Schema(name = "更新时间")
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
 
     @Schema(name = "标记删除状态")
-    private Integer idDel;
+    private Integer isDel;
 
 
 }

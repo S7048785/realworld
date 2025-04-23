@@ -2,10 +2,12 @@ package com.realworld.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 public class ArticleUpdateDTO {
+
 	@Schema(name = "文章标题")
 	@NotBlank(message = "文章标题不能为空")
 	private String title;

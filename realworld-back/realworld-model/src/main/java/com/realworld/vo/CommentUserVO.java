@@ -1,12 +1,11 @@
 package com.realworld.vo;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ProfileVO {
+public class CommentUserVO {
 	private String username;
 	private String bio;
 	private String avatar;

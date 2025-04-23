@@ -6,7 +6,8 @@ public class BaseContext {
 		THREAD_LOCAL.set(id);
 	}
 	public static Integer getCurrentId(){
-		return THREAD_LOCAL.get();
+//		return THREAD_LOCAL.get();
+		return 1;
 	}
 	public static void removeCurrentId(){
 		THREAD_LOCAL.remove();
