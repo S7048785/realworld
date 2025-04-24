@@ -54,7 +54,7 @@ public class ArticleController {
 
 	@Operation(summary = "更新文章")
 	@PutMapping("/{id}")
-	public Result<ArticleVO> updateArticle(@RequestBody ArticleUpdateDTO articleUpdateDTO, @PathVariable Integer id) {
+	public Result<ArticleVO> updateArticle(@RequestBody @Valid ArticleUpdateDTO articleUpdateDTO, @PathVariable Integer id) {
 
 		articleService.updateArticleById(articleUpdateDTO, id);
 		return Result.success();

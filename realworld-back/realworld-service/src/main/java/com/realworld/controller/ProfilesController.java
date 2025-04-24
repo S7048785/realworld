@@ -1,11 +1,15 @@
 package com.realworld.controller;
 
+import com.realworld.dao.UserUpdateDTO;
 import com.realworld.result.Result;
 import com.realworld.service.UserService;
 import com.realworld.vo.ProfileVO;
+import com.realworld.vo.UserLoginVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -25,12 +29,18 @@ public class ProfilesController {
 		return Result.success(profileVO);
 	}
 
-	@Operation(summary = "关注/取消关注用户")
+	@Operation(summary = "更新当前用户信息")
+	@PutMapping
+	public Result<ProfileVO> updateUser(@RequestBody @Validated UserUpdateDTO userDTO) {
+		ProfileVO profileVO = userService.updateInfo(userDTO);
+		return Result.success(profileVO);
+	}
+
+	@Operation(summary = "关注用户")
 	@PostMapping("/follow/{id}")
-	public Result<ProfileVO> follow(@PathVariable Integer id) {
-		// TODO: 关注功能
+	public Result<Void> follow(@PathVariable Integer id) {
 		userService.follow(id);
-		return null;
+		return Result.success();
 	}
 
 }

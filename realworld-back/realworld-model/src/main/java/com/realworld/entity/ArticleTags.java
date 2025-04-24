@@ -22,24 +22,24 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("article_tags")
-@Schema(name="ArticleTags对象", description="文章标签关系表")
+@Schema(description="文章标签关系表")
 public class ArticleTags implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Schema(name = "id")
+    @Schema(description = "id")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @Schema(name = "文章id")
+    @Schema(description = "文章id")
     @TableField(value = "article_id")
     private Integer articleId;
 
-    @Schema(name = "标签id")
+    @Schema(description = "标签id")
     @TableField(value = "tag_id")
     private Integer tagId;
 
-    @Schema(name = "标记删除状态")
+    @Schema(description = "标记删除状态")
     @TableField(value = "is_del")
     private Integer isDel;
 }

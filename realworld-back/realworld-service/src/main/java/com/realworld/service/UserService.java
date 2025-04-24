@@ -1,8 +1,10 @@
 package com.realworld.service;
 
 import com.realworld.dao.UserLoginDTO;
+import com.realworld.dao.UserRegisterDTO;
+import com.realworld.dao.UserUpdateDTO;
 import com.realworld.vo.ProfileVO;
-import com.realworld.vo.UserVO;
+import com.realworld.vo.UserLoginVO;
 
 /**
  * <p>
@@ -14,7 +16,14 @@ import com.realworld.vo.UserVO;
  */
 public interface UserService {
 
-	UserVO login(UserLoginDTO userLoginDTO);
 
 	ProfileVO getInfo(Integer id);
+
+	void follow(Integer id);
+
+	UserLoginVO login(UserLoginDTO userLoginDTO);
+
+	UserLoginVO register(UserRegisterDTO userRegisterDTO);
+
+	ProfileVO updateInfo(UserUpdateDTO userDTO);
 }

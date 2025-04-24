@@ -16,5 +16,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
-	ProfileVO selectUser(Integer id, Integer currentId);
+	ProfileVO selectUser(Integer userId, Integer currentId);
 }

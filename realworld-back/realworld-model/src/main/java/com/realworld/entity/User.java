@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("user")
-@Schema(name="User对象", description="用户表")
+@Schema(description="用户表")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,19 +29,22 @@ public class User implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @Schema(name = "用户名")
+    @Schema(description = "用户名")
     private String username;
 
-    @Schema(name = "密码")
+    @Schema(description = "密码")
     private String password;
 
-    @Schema(name = "邮箱地址")
-    private String email;
-
-    @Schema(name = "个人简介")
+    @Schema(description = "个人简介")
     private String bio;
 
-    @Schema(name = "头像")
+    @Schema(description = "头像")
     private String avatar;
+
+    @Schema(description = "粉丝数量")
+    private Integer fansCount;
+
+    @Schema(description = "关注数量")
+    private Integer followCount;
 
 }

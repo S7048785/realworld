@@ -5,6 +5,7 @@ import com.realworld.dao.ArticleCreateDTO;
 import com.realworld.dao.ArticlePageQueryDTO;
 import com.realworld.dao.ArticleUpdateDTO;
 import com.realworld.dao.CommentDTO;
+import com.realworld.entity.ArticleFavorites;
 import com.realworld.vo.ArticleCardVO;
 import com.realworld.vo.CommentVO;
 import jakarta.validation.Valid;

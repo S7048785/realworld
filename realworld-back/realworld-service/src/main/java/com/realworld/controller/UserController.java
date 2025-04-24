@@ -1,13 +1,16 @@
 package com.realworld.controller;
 
+import com.realworld.context.BaseContext;
 import com.realworld.dao.UserLoginDTO;
 import com.realworld.dao.UserRegisterDTO;
 import com.realworld.dao.UserUpdateDTO;
 import com.realworld.result.Result;
 import com.realworld.service.UserService;
-import com.realworld.vo.UserVO;
+import com.realworld.vo.ProfileVO;
+import com.realworld.vo.UserLoginVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,26 +24,20 @@ public class UserController {
 
 	@Operation(summary = "用户登录")
 	@PostMapping("/login")
-	public Result<UserVO> login(@RequestBody UserLoginDTO userLoginDTO) {
-		UserVO userVO = userService.login(userLoginDTO);
-		return Result.success(userVO);
+	public Result<UserLoginVO> login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
+		UserLoginVO userLoginVO = userService.login(userLoginDTO);
+		return Result.success(userLoginVO);
 	}
 
 	@Operation(summary = "用户注册")
 	@PostMapping("/register")
-	public Result<UserVO> register(@RequestBody UserRegisterDTO userRegisterD) {
-		return null;
+	public Result<UserLoginVO> register(@RequestBody @Valid UserRegisterDTO userRegisterDTO) {
+		return Result.success(userService.register(userRegisterDTO));
 	}
 
-	@Operation(summary = "获取当前用户信息")
-	@GetMapping
-	public Result<UserVO> getCurrentUser() {
-		return null;
-	}
-
-	@Operation(summary = "更新当前用户信息")
-	@PutMapping
-	public Result<UserVO> updateUser(@RequestBody UserUpdateDTO userDTO) {
-		return null;
-	}
+//	@Operation(summary = "获取验证码")
+//	@GetMapping("/code")
+//	public Result<Void> getCode(@RequestParam String email) {
+//		return null;
+//	}
 }

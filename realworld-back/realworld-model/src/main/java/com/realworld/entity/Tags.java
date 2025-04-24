@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("tags")
-@Schema(name="文章标签对象", description="")
+@Schema(description="文章标签对象")
 public class Tags implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,10 +29,10 @@ public class Tags implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @Schema(name = "标签名称")
+    @Schema(description = "标签名称")
     private String name;
 
-    @Schema(name = "标记删除状态")
+    @Schema(description = "标记删除状态")
     private Integer isDel;
 
 

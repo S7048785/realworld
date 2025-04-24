@@ -6,6 +6,8 @@
             user.username as username,
             user.bio as bio,
             user.avatar as avatar,
+            user.fans_count as fans_count,
+            user.follow_count as follow_count,
             IFNULL(!user_follow.is_del, 0) as following
         from user
                  left join user_follow on user_follow.user_id = #{currentId} and user_follow.followed_user_id = #{userId} and user_follow.is_del = 0

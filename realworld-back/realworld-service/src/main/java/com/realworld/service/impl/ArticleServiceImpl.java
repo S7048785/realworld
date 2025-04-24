@@ -3,18 +3,23 @@ package com.realworld.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.realworld.constant.CacheConstant;
 import com.realworld.context.BaseContext;
 import com.realworld.dao.*;
 import com.realworld.entity.*;
 import com.realworld.service.ArticleService;
+import com.realworld.service.Tran.ArticleServiceTran;
 import com.realworld.vo.ArticleCardVO;
 import com.realworld.vo.CommentVO;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author YYJYP
@@ -30,6 +35,10 @@ public class ArticleServiceImpl implements ArticleService {
 	private ArticleTagsDao articleTagsDao;
 	@Autowired
 	private CommentDao commentDao;
+	@Autowired
+	private RedissonClient redissonClient;
+	@Autowired
+	private ArticleServiceTran articleServiceTran;
 
 	@Override
 	public Page<ArticleCardVO> listArticle(ArticlePageQueryDTO articlePageQueryDTO, Integer userId) {
@@ -95,23 +104,36 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public void removeCommentById(Integer articleId, Integer commentId) {
 		commentDao.removeById(articleId, commentId);
-		Integer currentId = BaseContext.getCurrentId();
 		// 减少评论数量
 		commentDao.updateCommentCount(articleId, false);
 	}
 
-	@Transactional
+
 	@Override
 	public void favoriteArticle(Integer id) {
 		// TODO: 使用Redis加锁
-		// 查询有没有收藏
-		boolean action = articleDao.isFavorite(id, BaseContext.getCurrentId());
-		ArticleFavorites articleFavorites = new ArticleFavorites().setArticleId(id).setUserId(BaseContext.getCurrentId());
-		if (action) {
-			articleDao.addFavorite(articleFavorites);
-		} else {
-			articleDao.deleteFavorite(articleFavorites.getId());
+		// 获取锁对象
+		RLock lock = redissonClient.getLock(CacheConstant.CACHE_FAVORITES + id);
+		// 尝试获取锁
+		boolean isLock = false;
+		try {
+			isLock = lock.tryLock(1, 30, TimeUnit.SECONDS);
+			if (!isLock) {
+				// 未获取到锁 直接返回
+				return;
+			}
+			// 查询有没有收藏
+			boolean isFavorited = articleDao.isFavorite(id, BaseContext.getCurrentId());
+			ArticleFavorites articleFavorites = new ArticleFavorites().setArticleId(id).setUserId(BaseContext.getCurrentId());
+			// 执行收藏操作
+			articleServiceTran.favoriteArticle1(isFavorited, articleFavorites, id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// 释放锁
+			lock.unlock();
 		}
-		articleDao.updateFavoriteCount(id, action);
 	}
+
+
 }

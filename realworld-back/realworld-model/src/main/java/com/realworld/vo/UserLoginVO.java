@@ -1,12 +1,12 @@
 package com.realworld.vo;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Data
-@NoArgsConstructor
-public class ProfileVO {
+@Builder
+public class UserLoginVO {
 
 	@Schema(description = "用户ID")
 	private Integer id;
@@ -20,12 +20,12 @@ public class ProfileVO {
 	@Schema(description = "用户头像链接")
 	private String avatar;
 
-	@Schema(description = "粉丝数量")
-	private Integer fansCount;
-
 	@Schema(description = "关注数量")
 	private Integer followCount;
 
-	@Schema(description = "是否已关注该用户")
-	private boolean following;
+	@Schema(description = "粉丝数量")
+	private Integer fansCount;
+
+	@Schema(description = "用户登录令牌")
+	private String token;
 }

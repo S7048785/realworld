@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("user_follow")
-@Schema(name="UserFollow对象", description="用户关注关系表")
+@Schema(description="用户关注关系表")
 public class UserFollow implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,18 +29,18 @@ public class UserFollow implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @Schema(name = "关注ID")
+    @Schema(description = "关注ID")
     private Integer userId;
 
-    @Schema(name = "被关注ID")
+    @Schema(description = "被关注ID")
     private Integer followedUserId;
 
-    @Schema(name = "关注时间")
+    @Schema(description = "关注时间")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime createdAt;
 
-    @Schema(name = "标记删除状态")
-    private Integer idDel;
+    @Schema(description = "标记删除状态")
+    private Boolean isDel;
 
 
 }

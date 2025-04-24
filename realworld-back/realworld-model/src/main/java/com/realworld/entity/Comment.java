@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("comment")
-@Schema(name="Comment对象", description="文章评论表")
+@Schema(description="文章评论表")
 public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,20 +29,20 @@ public class Comment implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @Schema(name = "评论内容")
+    @Schema(description = "评论内容")
     private String body;
 
-    @Schema(name = "评论者id")
+    @Schema(description = "评论者id")
     private Integer userId;
 
-    @Schema(name = "文章id")
+    @Schema(description = "文章id")
     private Integer articleId;
 
-    @Schema(name = "评论时间")
+    @Schema(description = "评论时间")
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
-    @Schema(name = "标记i删除状态")
+    @Schema(description = "标记i删除状态")
     private Integer isDel;
 
 
