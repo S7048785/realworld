@@ -48,6 +48,10 @@ public class ArticleVO {
 	// 收藏数量
 	@Schema(description = "收藏数量")
 	private int favoritesCount;
+	
+	// 点赞数量
+	@Schema(description = "点赞数量")
+	private int likeCount;
 
 	// 评论数量
 	@Schema(description = "评论数量")

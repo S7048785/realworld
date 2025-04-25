@@ -8,9 +8,12 @@ export interface UserAuth {
 }
 
 export interface Profile {
+  id: string
   username: string
   bio: string
   avatar: string
+  fansCount: number
+  followCount: number
   following: boolean
 }
 

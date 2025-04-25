@@ -62,7 +62,7 @@ public class ArticleController {
 
 	@Operation(summary = "删除文章")
 	@DeleteMapping("/{id}")
-	public Result<ArticleVO> deleteArticle(@PathVariable Integer id) {
+	public Result<Void> deleteArticle(@PathVariable Integer id) {
 		// 删除文章
 		articleService.removeArticleById(id);
 		return Result.success();
@@ -77,7 +77,7 @@ public class ArticleController {
 
 	@Operation(summary = "添加评论")
 	@PostMapping("/comments/{id}")
-	public Result<CommentVO> addComment(@PathVariable Integer id, @RequestBody @Valid CommentDTO commentDTO) {
+	public Result<Void> addComment(@PathVariable Integer id, @RequestBody @Valid CommentDTO commentDTO) {
 		// 添加评论
 		articleService.saveComment(id, commentDTO);
 		return Result.success();

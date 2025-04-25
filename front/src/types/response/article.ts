@@ -7,9 +7,10 @@ export interface Article {
   body: string
   tagList: string[]
   createdAt: string
-  updatedAt: string
   favorited: boolean
   favoritesCount: number
+  commentCount: number
+  likeCount: number
   author: Profile
 }
 
@@ -21,8 +22,5 @@ export interface ArticleCard {
   createdAt: string
   likeCount: number;
   liked: boolean;
-  author: {
-    username: string;
-    avatar: string;
-  }
+  author: Profile
 }
