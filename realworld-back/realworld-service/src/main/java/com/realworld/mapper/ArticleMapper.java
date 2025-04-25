@@ -1,7 +1,10 @@
 package com.realworld.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.realworld.dao.ArticlePageQueryDTO;
 import com.realworld.entity.Article;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.realworld.vo.ArticleCardVO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -15,4 +18,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
 
+	Page<ArticleCardVO> selectListArticleCard(Page<Article> articlePage, ArticlePageQueryDTO articlePageQueryDTO, Integer userId);
 }

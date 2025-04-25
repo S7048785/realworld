@@ -1,9 +1,15 @@
 package com.realworld.controller;
 
+import com.realworld.dao.UserUpdateDTO;
 import com.realworld.result.Result;
+import com.realworld.service.UserService;
 import com.realworld.vo.ProfileVO;
+import com.realworld.vo.UserLoginVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -14,21 +20,27 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ProfilesController {
 
+	@Autowired
+	private UserService userService;
 	@Operation(summary = "获取用户资料")
-	@GetMapping("/{username}")
-	public Result<ProfileVO> getProfile(@PathVariable String username) {
-		return null;
+	@GetMapping("/{id}")
+	public Result<ProfileVO> getProfile(@PathVariable Integer id) {
+		ProfileVO profileVO = userService.getInfo(id);
+		return Result.success(profileVO);
+	}
+
+	@Operation(summary = "更新当前用户信息")
+	@PutMapping
+	public Result<ProfileVO> updateUser(@RequestBody @Validated UserUpdateDTO userDTO) {
+		ProfileVO profileVO = userService.updateInfo(userDTO);
+		return Result.success(profileVO);
 	}
 
 	@Operation(summary = "关注用户")
-	@PostMapping("/follow/{username}")
-	public Result<ProfileVO> follow(@PathVariable String username) {
-		return null;
+	@PostMapping("/follow/{id}")
+	public Result<Void> follow(@PathVariable Integer id) {
+		userService.follow(id);
+		return Result.success();
 	}
 
-	@Operation(summary = "取消关注用户")
-	@DeleteMapping("/follow/{username}")
-	public Result<ProfileVO> unfollow(@PathVariable String username) {
-		return null;
-	}
 }

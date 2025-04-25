@@ -2,6 +2,7 @@ package com.realworld.mapper;
 
 import com.realworld.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.realworld.vo.ProfileVO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -15,4 +16,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
+	ProfileVO selectUser(Integer userId, Integer currentId);
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.realworld.mapper.CommentMapper" >
+    <select id="list" resultType="com.realworld.vo.CommentVO" parameterType="java.lang.Integer">
+        select
+            comment.id as id,
+            comment.body as body,
+            comment.created_at as created_at,
+            user.username as username,
+            user.avatar as avatar
+        from comment
+                 left join user on comment.user_id = user.id
+        where comment.article_id = #{articleId} and comment.is_del = 0
+    </select>
+</mapper>
