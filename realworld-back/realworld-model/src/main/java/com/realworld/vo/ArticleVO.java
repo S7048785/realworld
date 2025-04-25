@@ -35,7 +35,7 @@ public class ArticleVO {
 
 	// 文章标签
 	@Schema(description = "文章标签列表", type = "array")
-	private List<String> tagList;
+	private String tags;
 
 	// 文章创建时间
 	@Schema(description = "文章创建时间", type = "string")
@@ -45,17 +45,8 @@ public class ArticleVO {
 	@Schema(description = "是否已收藏", type = "boolean")
 	private boolean favorited;
 
-	// 收藏数量
-	@Schema(description = "收藏数量", type = "integer")
-	private int favoritesCount;
-	
-	// 点赞数量
-	@Schema(description = "点赞数量", type = "integer")
-	private int likeCount;
-
-	// 评论数量
-	@Schema(description = "评论数量", type = "integer")
-	private int commentCount;
+	@Schema(description = "是否已点赞", type = "boolean")
+	private boolean liked;
 
 	// 文章作者信息
 	@Schema(description = "文章作者信息")

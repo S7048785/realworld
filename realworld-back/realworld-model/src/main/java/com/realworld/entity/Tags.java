@@ -33,7 +33,7 @@ public class Tags implements Serializable {
     private String name;
 
     @Schema(description = "标记删除状态")
-    private Integer isDel;
+    private int isDel;
 
 
 }

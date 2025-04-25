@@ -3,22 +3,21 @@ package com.realworld.dao;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.realworld.context.BaseContext;
-import com.realworld.entity.Article;
+import com.realworld.dto.CommentDTO;
 import com.realworld.entity.Comment;
+import com.realworld.mapper.ArticleCommentMapper;
 import com.realworld.mapper.ArticleMapper;
-import com.realworld.mapper.CommentMapper;
 import com.realworld.vo.CommentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class CommentDao extends ServiceImpl <CommentMapper, Comment>{
+public class CommentDao extends ServiceImpl <ArticleCommentMapper, Comment>{
 
 	@Autowired
-	private CommentMapper commentMapper;
+	private ArticleCommentMapper commentMapper;
 	@Autowired
 	private ArticleMapper articleMapper;
 	/**
@@ -40,29 +39,14 @@ public class CommentDao extends ServiceImpl <CommentMapper, Comment>{
 		save(comment);
 	}
 
-	/**
-	 * 删除评论
-	 * @param articleId
-	 * @param commentId
-	 * @return
-	 */
-	@Transactional
-	public boolean removeById(Integer articleId, Integer commentId) {
-		boolean updated = update(Wrappers.lambdaUpdate(Comment.class).eq(Comment::getId, commentId).set(Comment::getIsDel, 1));
-		// 评论数量-1
-		articleMapper.update(Wrappers.lambdaUpdate(Article.class).setSql("comment_count = comment_count - 1").eq(Article::getId, articleId));
-		return updated;
-	}
 
 	/**
-	 * 更新评论数量
+	 * 删除文章下的所有评论
 	 * @param articleId
 	 */
-	public void updateCommentCount(Integer articleId, boolean action) {
-		String s = "commentCount = commentCount " + (action ? "+" : "-") + " 1";
-		articleMapper.update(Wrappers.lambdaUpdate(Article.class)
-				.setSql(s)
-				.eq(Article::getId, articleId)
-				.eq(Article::getIsDel, 0));
+	public void removeByArticleId(Integer articleId) {
+		update(Wrappers.lambdaUpdate(Comment.class)
+				.set(Comment::getIsDel, 1)
+				.eq(Comment::getArticleId, articleId));
 	}
 }

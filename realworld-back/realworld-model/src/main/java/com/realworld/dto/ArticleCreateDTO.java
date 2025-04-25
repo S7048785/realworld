@@ -1,7 +1,6 @@
-package com.realworld.dao;
+package com.realworld.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.security.DenyAll;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;

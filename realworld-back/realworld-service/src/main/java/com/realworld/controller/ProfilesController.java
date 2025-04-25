@@ -1,13 +1,11 @@
 package com.realworld.controller;
 
-import com.realworld.dao.UserUpdateDTO;
+import com.realworld.dto.UserUpdateDTO;
 import com.realworld.result.Result;
 import com.realworld.service.UserService;
 import com.realworld.vo.ProfileVO;
-import com.realworld.vo.UserLoginVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

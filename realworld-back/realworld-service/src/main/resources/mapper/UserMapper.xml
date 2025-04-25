@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.realworld.mapper.UserMapper">
-    <select id="selectUser" resultType="com.realworld.vo.ProfileVO">
-        select
-            user.username as username,
-            user.bio as bio,
-            user.avatar as avatar,
-            user.fans_count as fans_count,
-            user.follow_count as follow_count,
-            IFNULL(!user_follow.is_del, 0) as following
-        from user
-                 left join user_follow on user_follow.user_id = #{currentId} and user_follow.followed_user_id = #{userId} and user_follow.is_del = 0
-        where user.id = #{userId};
+    <select id="getProfile" resultType="com.realworld.vo.ProfileVO">
+        SELECT
+            u.id, u.username, u.bio, u.avatar,
+            (SELECT COUNT(*) FROM user_follow WHERE user_id = u.id AND is_del = 0) AS follow_count,
+            (SELECT COUNT(*) FROM user_follow WHERE followed_user_id = u.id AND is_del = 0) AS fans_count,
+            EXISTS(SELECT 1 FROM user_follow WHERE user_id = #{userId} AND followed_user_id = u.id AND is_del = 0) AS following
+        FROM user u
+        WHERE u.id = #{userId};
+    </select>
+    <select id="getProfileByArticleId" resultType="com.realworld.vo.ProfileVO">
+        SELECT
+            u.id, u.username, u.bio, u.avatar,
+            (SELECT COUNT(*) FROM user_follow WHERE user_id = u.id AND is_del = 0) AS follow_count,
+            (SELECT COUNT(*) FROM user_follow WHERE followed_user_id = u.id AND is_del = 0) AS fans_count,
+            EXISTS(SELECT 1 FROM user_follow WHERE user_id = IFNULL(#{userId}, 0) AND followed_user_id = u.id AND is_del = 0) AS following
+        FROM user u
+                 left join article as a on a.author_id = u.id
+        where a.id = #{articleId};
     </select>
 </mapper>

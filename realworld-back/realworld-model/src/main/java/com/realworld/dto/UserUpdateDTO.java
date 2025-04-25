@@ -1,4 +1,4 @@
-package com.realworld.dao;
+package com.realworld.dto;
 
 import com.realworld.constant.ValidConstant;
 import io.swagger.v3.oas.annotations.media.Schema;

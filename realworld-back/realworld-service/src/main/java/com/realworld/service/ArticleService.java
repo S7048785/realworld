@@ -1,12 +1,12 @@
 package com.realworld.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.realworld.dao.ArticleCreateDTO;
-import com.realworld.dao.ArticlePageQueryDTO;
-import com.realworld.dao.ArticleUpdateDTO;
-import com.realworld.dao.CommentDTO;
-import com.realworld.entity.ArticleFavorites;
+import com.realworld.dto.ArticleCreateDTO;
+import com.realworld.dto.ArticlePageQueryDTO;
+import com.realworld.dto.ArticleUpdateDTO;
+import com.realworld.dto.CommentDTO;
 import com.realworld.vo.ArticleCardVO;
+import com.realworld.vo.ArticleVO;
 import com.realworld.vo.CommentVO;
 import jakarta.validation.Valid;
 
@@ -24,7 +24,7 @@ public interface ArticleService {
 
 	Page<ArticleCardVO> listArticle(ArticlePageQueryDTO articlePageQueryDTO, Integer userId);
 
-	void saveArticle(@Valid ArticleCreateDTO articleCreateDTO);
+	Integer saveArticle(ArticleCreateDTO articleCreateDTO);
 
 	void updateArticleById(ArticleUpdateDTO articleUpdateDTO, Integer id);
 
@@ -34,7 +34,9 @@ public interface ArticleService {
 
 	void saveComment(Integer id, @Valid CommentDTO commentDTO);
 
-	void removeCommentById(Integer articleId, Integer commentId);
+	void removeCommentById(Integer commentId);
 
 	void favoriteArticle(Integer id);
+
+	ArticleVO getArticle(Integer id);
 }

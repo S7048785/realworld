@@ -1,11 +1,14 @@
 package com.realworld.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.realworld.constant.CacheConstant;
 import com.realworld.constant.UserConstant;
 import com.realworld.context.BaseContext;
-import com.realworld.dao.*;
+import com.realworld.dao.UserDao;
+import com.realworld.dao.UserFollowDao;
+import com.realworld.dto.*;
 import com.realworld.entity.User;
 import com.realworld.exception.BaseException;
 import com.realworld.service.Tran.UserServiceTran;
@@ -17,6 +20,7 @@ import com.realworld.vo.UserLoginVO;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -40,9 +44,18 @@ public class UserServiceImpl implements UserService {
 	private UserServiceTran userServiceTran;
 
 
+
 	@Override
 	public ProfileVO getInfo(Integer id) {
-		return userDao.getProfile(id, BaseContext.getCurrentId());
+		// TODO: 查询redis中的用户信息
+//		String str = cacheUtil.getStr(CacheConstant.USER_INFO + id);
+//		if (StrUtil.isNotBlank(str)) {
+//			return JSONUtil.toBean(str, ProfileVO.class);
+//		}
+		ProfileVO profile = userDao.getProfile(id, BaseContext.getCurrentId());
+		// 存入redis
+//		cacheUtil.setStr(CacheConstant.USER_INFO + id, JSONUtil.toJsonStr(profile));
+		return profile;
 	}
 
 	@Override
@@ -113,7 +126,7 @@ public class UserServiceImpl implements UserService {
 		UserLoginVO userLoginVO = BeanUtil.copyProperties(user, UserLoginVO.class);
 		userLoginVO.setToken(token);
 		// 存入Redis
-		cacheUtil.setStr(CacheConstant.USER_LOGIN_TOKEN + token, JSONUtil.toJsonStr(userLoginVO));
+//		cacheUtil.setStr(CacheConstant.USER_LOGIN_TOKEN + token, JSONUtil.toJsonStr(userLoginVO));
 		return userLoginVO;
 	}
 

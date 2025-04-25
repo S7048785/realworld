@@ -34,11 +34,11 @@ public class ArticleCardVO {
 	private LocalDateTime createdAt;
 
 	@Schema(description = "标签列表", type = "array")
-	private List<String> tagList;
+	private String tags;
 
 	// 作者信息
 	@Schema(description = "作者用户名", type = "string")
-	private String username;
+	private String author;
 
 	@Schema(description = "作者头像链接", type = "string")
 	private String avatar;

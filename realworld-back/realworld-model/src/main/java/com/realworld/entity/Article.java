@@ -44,15 +44,6 @@ public class Article implements Serializable {
     @Schema(description = "作者id")
     private Integer authorId;
 
-    @Schema(description = "点赞数量")
-    private int likeCount;
-
-    @Schema(description = "收藏数量")
-    private int favoritesCount;
-
-    @Schema(description = "评论数量")
-    private int commentCount;
-
     @Schema(description = "创建时间")
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;

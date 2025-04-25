@@ -41,5 +41,5 @@ public class ArticleTags implements Serializable {
 
     @Schema(description = "标记删除状态")
     @TableField(value = "is_del")
-    private Integer isDel;
+    private int isDel;
 }

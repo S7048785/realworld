@@ -1,24 +1,18 @@
 package com.realworld.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
-/**
- * 文章收藏关系表
- * @author YYJYP
- */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("article_favorites")
+@TableName("article_like")
 @NoArgsConstructor
-public class ArticleFavorites {
+public class ArticleLike {
+	@TableId(value = "id", type = IdType.AUTO)
 	private Integer id;
 	private Integer articleId;
 	private Integer userId;

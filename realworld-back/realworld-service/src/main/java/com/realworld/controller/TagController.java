@@ -22,7 +22,7 @@ public class TagController {
 
 	@Operation(summary = "获取标签列表")
 	@GetMapping
-	public Result<List<TagsVO> > getTags() {
+	public Result<String> getTags() {
 		return Result.success(tagsService.listTag());
 	}
 }

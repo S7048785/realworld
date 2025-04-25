@@ -1,8 +1,8 @@
 package com.realworld.service;
 
-import com.realworld.dao.UserLoginDTO;
-import com.realworld.dao.UserRegisterDTO;
-import com.realworld.dao.UserUpdateDTO;
+import com.realworld.dto.UserLoginDTO;
+import com.realworld.dto.UserRegisterDTO;
+import com.realworld.dto.UserUpdateDTO;
 import com.realworld.vo.ProfileVO;
 import com.realworld.vo.UserLoginVO;
 

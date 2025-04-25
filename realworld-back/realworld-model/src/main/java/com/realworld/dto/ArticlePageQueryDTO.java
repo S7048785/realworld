@@ -1,4 +1,4 @@
-package com.realworld.dao;
+package com.realworld.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -19,8 +19,8 @@ public class ArticlePageQueryDTO {
 	private Integer authorId;
 	@Schema(description = "文章标签")
 	private List<String> tagList;
-	@Schema(description = "页码", defaultValue = "0")
-	private int limit;
-	@Schema(description = "每页记录数", defaultValue = "20")
-	private int offset;
+	@Schema(description = "页码", defaultValue = "1")
+	private int limit = 1;
+	@Schema(description = "每页记录数", defaultValue = "5")
+	private int offset = 5;
 }

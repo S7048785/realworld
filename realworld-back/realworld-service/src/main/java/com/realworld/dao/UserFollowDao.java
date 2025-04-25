@@ -28,9 +28,9 @@ public class UserFollowDao extends ServiceImpl<UserFollowMapper, UserFollow> {
 	 * @param followedUserId
 	 * @param isDel
 	 */
-	public void updateFollow(Integer userId, Integer followedUserId, boolean isDel) {
+	public void updateFollow(Integer userId, Integer followedUserId, int isDel) {
 		update(Wrappers.lambdaUpdate(UserFollow.class)
-				.set(UserFollow::getIsDel, isDel)
+				.set(UserFollow::getIsDel, isDel == 1 ? 0 : 1)
 				.eq(UserFollow::getUserId, userId)
 				.eq(UserFollow::getFollowedUserId, followedUserId));
 	}
@@ -41,4 +41,5 @@ public class UserFollowDao extends ServiceImpl<UserFollowMapper, UserFollow> {
 	public void saveFollow(UserFollow userFollow) {
 		save(userFollow);
 	}
+
 }

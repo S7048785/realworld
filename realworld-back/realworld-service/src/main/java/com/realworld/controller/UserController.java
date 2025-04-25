@@ -1,12 +1,9 @@
 package com.realworld.controller;
 
-import com.realworld.context.BaseContext;
-import com.realworld.dao.UserLoginDTO;
-import com.realworld.dao.UserRegisterDTO;
-import com.realworld.dao.UserUpdateDTO;
+import com.realworld.dto.UserLoginDTO;
+import com.realworld.dto.UserRegisterDTO;
 import com.realworld.result.Result;
 import com.realworld.service.UserService;
-import com.realworld.vo.ProfileVO;
 import com.realworld.vo.UserLoginVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -3,13 +3,17 @@ package com.realworld.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.realworld.constant.ArticleConstant;
 import com.realworld.constant.CacheConstant;
 import com.realworld.context.BaseContext;
 import com.realworld.dao.*;
+import com.realworld.dto.*;
 import com.realworld.entity.*;
+import com.realworld.exception.BaseException;
 import com.realworld.service.ArticleService;
 import com.realworld.service.Tran.ArticleServiceTran;
 import com.realworld.vo.ArticleCardVO;
+import com.realworld.vo.ArticleVO;
 import com.realworld.vo.CommentVO;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -39,16 +43,24 @@ public class ArticleServiceImpl implements ArticleService {
 	private RedissonClient redissonClient;
 	@Autowired
 	private ArticleServiceTran articleServiceTran;
+	@Autowired
+	private ArticleFavoritesDao articleFavoritesDao;
+	@Autowired
+	private ArticleLikeDao articleLikeDao;
 
 	@Override
 	public Page<ArticleCardVO> listArticle(ArticlePageQueryDTO articlePageQueryDTO, Integer userId) {
+		int limit = articlePageQueryDTO.getLimit();
+		limit = (limit - 1) * articlePageQueryDTO.getOffset();
+		articlePageQueryDTO.setLimit(limit);
 		Page<Article> articlePage = new Page<>(articlePageQueryDTO.getLimit(), articlePageQueryDTO.getOffset());
+
 		return articleDao.list(articlePage, articlePageQueryDTO, userId);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public void saveArticle(ArticleCreateDTO articleCreateDTO) {
+	public Integer saveArticle(ArticleCreateDTO articleCreateDTO) {
 		// 新增文章
 		Article article = BeanUtil.copyProperties(articleCreateDTO, Article.class);
 		article.setAuthorId(BaseContext.getCurrentId());
@@ -69,6 +81,7 @@ public class ArticleServiceImpl implements ArticleService {
 			articleTags.add(new ArticleTags().setArticleId(article.getId()).setTagId(tags.getId()));
 		}
 		articleTagsDao.saveBatch(articleTags);
+		return article.getId();
 	}
 
 	@Override
@@ -78,17 +91,23 @@ public class ArticleServiceImpl implements ArticleService {
 		articleDao.updateById(article);
 	}
 
+	@Transactional
 	@Override
 	public void removeArticleById(Integer id) {
 		// 删除对应关系
 		articleTagsDao.update(id);
+		// 删除评论
+		commentDao.removeByArticleId(id);
+		// 删除收藏
+		articleFavoritesDao.removeByArticleId(id);
+		// 删除点赞
+		articleLikeDao.removeByArticleId(id);
 		// 删除文章
 		articleDao.delete(id);
 	}
 
 	@Override
 	public List<CommentVO> getComments(Integer articleId) {
-
 		return commentDao.list(articleId);
 	}
 
@@ -96,43 +115,37 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public void saveComment(Integer id, CommentDTO commentDTO) {
 		commentDao.save(id, commentDTO);
-		// 增加评论数量
-		commentDao.updateCommentCount(id, true);
 	}
 
 	@Transactional
 	@Override
-	public void removeCommentById(Integer articleId, Integer commentId) {
-		commentDao.removeById(articleId, commentId);
-		// 减少评论数量
-		commentDao.updateCommentCount(articleId, false);
+	public void removeCommentById(Integer commentId) {
+		commentDao.removeById(commentId);
 	}
 
 
 	@Override
 	public void favoriteArticle(Integer id) {
+		// 查询有没有收藏
+		ArticleFavorites favoritesd = articleFavoritesDao.isFavoritesd(id, BaseContext.getCurrentId());
 		// TODO: 使用Redis加锁
-		// 获取锁对象
-		RLock lock = redissonClient.getLock(CacheConstant.CACHE_FAVORITES + id);
-		// 尝试获取锁
-		boolean isLock = false;
-		try {
-			isLock = lock.tryLock(1, 30, TimeUnit.SECONDS);
-			if (!isLock) {
-				// 未获取到锁 直接返回
-				return;
-			}
-			// 查询有没有收藏
-			boolean isFavorited = articleDao.isFavorite(id, BaseContext.getCurrentId());
+
+		if (favoritesd == null) {
 			ArticleFavorites articleFavorites = new ArticleFavorites().setArticleId(id).setUserId(BaseContext.getCurrentId());
-			// 执行收藏操作
-			articleServiceTran.favoriteArticle1(isFavorited, articleFavorites, id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			// 释放锁
-			lock.unlock();
+			articleFavoritesDao.save(articleFavorites);
+		} else {
+			articleFavoritesDao.updateFavorites(favoritesd.getIsDel());
 		}
+
+	}
+
+	@Override
+	public ArticleVO getArticle(Integer id) {
+		ArticleVO article = articleDao.getArticle(id);
+		if (article == null) {
+			throw new BaseException(ArticleConstant.ARTICLE_NOT_EXIST);
+		}
+		return article;
 	}
 
 

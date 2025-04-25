@@ -23,7 +23,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
 		String token = request.getHeader("token");
 		if ("http://localhost:8080/doc.html".equals(request.getHeader("referer"))) {
-			token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDU1MTU2NjMsImlhdCI6MTc0NTQ4Njg2MywidXNlcm5hbWUiOiJhZG1pbiIsImlkIjoxfQ.sfM7_2nUiUvZzIr97VNVcjkVFYukdiUBVLIZ8iIo0No";
+			token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDU2MzE0MjIsImlhdCI6MTc0NTYwMjYyMiwidXNlcm5hbWUiOiJhZG1pbiIsImlkIjoxfQ.yO4QDflrLj9IzX_xyYIeAU0bVbA7NwKH-GRoy2PoFpQ";
 		}
 		try {
 			// 解析token

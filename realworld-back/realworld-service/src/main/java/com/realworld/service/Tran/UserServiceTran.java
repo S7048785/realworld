@@ -31,11 +31,6 @@ public class UserServiceTran {
 			// 更新关注状态
 			userFollowDao.updateFollow(currentId, id, followed.getIsDel());
 		}
-		// 更新 关注数 和 粉丝数
 
-		// 数量减一还是加一
-		boolean b = followed == null || !followed.getIsDel();
-		userDao.updateFollowCount(currentId, b);
-		userDao.updateFansCount(id, b);
 	}
 }

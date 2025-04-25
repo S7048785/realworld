@@ -16,6 +16,6 @@ import java.util.List;
  */
 public interface TagsService {
 
-	List<TagsVO> listTag();
+	String listTag();
 
 }

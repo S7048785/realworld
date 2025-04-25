@@ -41,10 +41,4 @@ public class User implements Serializable {
     @Schema(description = "头像")
     private String avatar;
 
-    @Schema(description = "粉丝数量")
-    private Integer fansCount;
-
-    @Schema(description = "关注数量")
-    private Integer followCount;
-
 }

@@ -2,7 +2,7 @@ package com.realworld.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.realworld.context.BaseContext;
-import com.realworld.dao.*;
+import com.realworld.dto.*;
 import com.realworld.result.PageResult;
 import com.realworld.result.Result;
 import com.realworld.service.ArticleService;
@@ -25,17 +25,17 @@ public class ArticleController {
 	@Autowired
 	private ArticleService articleService;
 
-	@Operation(summary = "获取文章列表")
+	@Operation(summary = "获取文章卡片列表")
 	@GetMapping("/list")
 	public PageResult<ArticleCardVO> getArticles(ArticlePageQueryDTO articlePageQueryDTO) {
 		// 探索全站内容、按标签/作者搜索、未登录用户浏览
 		// 返回多篇文章 ，按最近的顺序排在最前面
-		Page<ArticleCardVO> page = articleService.listArticle(articlePageQueryDTO, null);
+		Page<ArticleCardVO> page = articleService.listArticle(articlePageQueryDTO, -1);
 		List<ArticleCardVO> records = page.getRecords();
 		return new PageResult<>(records.size(), records, page.getCurrent(), page.getSize());
 	}
 
-	@Operation(summary = "获取文章列表（登录校验）")
+	@Operation(summary = "获取文章卡片列表（登录校验）")
 	@GetMapping("/feed")
 	public PageResult<ArticleCardVO> getArticlesFees(ArticlePageQueryDTO articlePageQueryDTO) {
 		// 登录用户查看个性化内容、追踪关注对象的更新（类似社交平台的“好友动态”）
@@ -44,18 +44,25 @@ public class ArticleController {
 		return new PageResult<>(page.getSize(), page.getRecords(), page.getCurrent(), page.getSize());
 	}
 
+	@Operation(summary = "获取文章详情")
+	@GetMapping("/{id}")
+	public Result<ArticleVO> getArticle(@PathVariable Integer id) {
+		// 获取文章详情
+		ArticleVO articleVO = articleService.getArticle(id);
+		return Result.success(articleVO);
+	}
+
 	@Operation(summary = "创建文章")
 	@PostMapping
-	public Result<ArticleVO> createArticle(@RequestBody @Valid ArticleCreateDTO articleCreateDTO) {
+	public Result<Integer> createArticle(@RequestBody @Valid ArticleCreateDTO articleCreateDTO) {
 		// 创建文章
-		articleService.saveArticle(articleCreateDTO);
-		return Result.success();
+		Integer id = articleService.saveArticle(articleCreateDTO);
+		return Result.success(id);
 	}
 
 	@Operation(summary = "更新文章")
 	@PutMapping("/{id}")
 	public Result<ArticleVO> updateArticle(@RequestBody @Valid ArticleUpdateDTO articleUpdateDTO, @PathVariable Integer id) {
-
 		articleService.updateArticleById(articleUpdateDTO, id);
 		return Result.success();
 	}
@@ -84,10 +91,10 @@ public class ArticleController {
 	}
 
 	@Operation(summary = "删除评论")
-	@DeleteMapping("/{articleId}/comments/{commentId}")
-	public Result<Void> deleteComment(@PathVariable Integer articleId, @PathVariable Integer commentId) {
+	@DeleteMapping("/comments/{commentId}")
+	public Result<Void> deleteComment(@PathVariable Integer commentId) {
 		// 删除评论
-		articleService.removeCommentById(articleId, commentId);
+		articleService.removeCommentById(commentId);
 		return Result.success();
 	}
 

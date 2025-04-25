@@ -9,4 +9,5 @@ public class CacheConstant {
 	public static final String CACHE_FAVORITES = "article:favorites:";
 
 
+	public static final String USER_INFO = "user:info:";
 }

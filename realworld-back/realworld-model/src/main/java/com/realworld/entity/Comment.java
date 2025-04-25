@@ -43,7 +43,7 @@ public class Comment implements Serializable {
     private LocalDateTime createdAt;
 
     @Schema(description = "标记i删除状态")
-    private Integer isDel;
+    private int isDel;
 
 
 }

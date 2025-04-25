@@ -16,7 +16,7 @@ import java.util.List;
  * @since 2025-04-18
  */
 @Mapper
-public interface CommentMapper extends BaseMapper<Comment> {
+public interface ArticleCommentMapper extends BaseMapper<Comment> {
 
 	List<CommentVO> list(Integer articleId);
 }

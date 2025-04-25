@@ -40,7 +40,7 @@ public class UserFollow implements Serializable {
     private LocalDateTime createdAt;
 
     @Schema(description = "标记删除状态")
-    private Boolean isDel;
+    private int isDel;
 
 
 }

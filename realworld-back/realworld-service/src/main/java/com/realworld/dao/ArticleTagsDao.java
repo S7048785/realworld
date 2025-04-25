@@ -16,6 +16,8 @@ public class ArticleTagsDao extends ServiceImpl<ArticleTagsMapper, ArticleTags> 
 	 * @return
 	 */
 	public boolean update(Integer articleId) {
-		return super.update(Wrappers.lambdaUpdate(ArticleTags.class).eq(ArticleTags::getArticleId, articleId).set(ArticleTags::getIsDel, 1));
+		return super.update(Wrappers.lambdaUpdate(ArticleTags.class)
+				.eq(ArticleTags::getArticleId, articleId)
+				.set(ArticleTags::getIsDel, 1));
 	}
 }
