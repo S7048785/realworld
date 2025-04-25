@@ -1,16 +1,18 @@
 <script setup lang="ts">
-const userList = reactive([
-  {
-    name: 'Eric Simons'
-  }
-])
+import {articleCardListMock} from "@/mock/article.ts";
+import type {ArticleCard} from "@/types/response/article.ts";
+
+const articleCardList = reactive(articleCardListMock);
+
 // 已选中的标签页的索引
 const selectedTabIndex = ref<number>(0);
+
 // 标签页列表
 const tabList = reactive([
   "Your Feed",
   "Global Feed",
 ])
+
 // 切换标签页
 const toggleIndex = (index: number) => {
   selectedTabIndex.value = index;
@@ -18,21 +20,36 @@ const toggleIndex = (index: number) => {
 
 // 已选中的标签的索引
 const selectedTagIndex = reactive<number[]>([]);
+
 // 标签列表
 const tagList = reactive<string[]>([
   "programming", "javascript", "emberjs", "angularjs", "react", "mean", "node", "rails"
 ]);
+
 // 选中/取消选中标签
 const toggleTag = (index: number) => {
   if (selectedTagIndex.includes(index)) {
     selectedTagIndex.splice(selectedTagIndex.indexOf(index), 1);
   } else {
     selectedTagIndex.push(index);
+    // TODO: 查询符合标签的文章
   }
 }
+
+// 清除选中的标签
 const clearTag = () => {
   selectedTagIndex.splice(0);
 }
+
+// 点赞文章
+const likeActive = (articleCard: ArticleCard) => {
+
+  articleCard.liked = !articleCard.liked;
+  articleCard.likeCount += articleCard.liked ? 1 : -1;
+  // TODO: 点赞文章
+}
+
+
 </script>
 
 <template>
@@ -44,6 +61,7 @@ const clearTag = () => {
       </div>
     </div>
 
+<!--    标签页-->
     <div class="container page">
       <div class="row">
         <div class="col-md-9">
@@ -55,51 +73,30 @@ const clearTag = () => {
             </ul>
           </div>
 
-          <div class="article-preview">
+<!--          文章预览-->
+          <div class="article-preview" v-for="(item, index) in articleCardList" :key="item.id">
             <div class="article-meta">
-              <a href="/profile/eric-simons"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
+              <a href="/profile/eric-simons"><img :src="item.author.avatar" /></a>
               <div class="info">
-                <router-link :to="`/profile/${'Eric Simons'}`"></router-link>
-                <a href="/profile/eric-simons" class="author">Eric Simons</a>
-                <span class="date">January 20th</span>
+                <router-link :to="`/profile/${item.author.username}`"></router-link>
+                <a href="/profile/eric-simons" class="author" v-text="item.author.username"></a>
+                <span class="date" v-text="item.createdAt"></span>
               </div>
-              <button class="btn btn-outline-primary btn-sm pull-xs-right">
-                <i class="ion-heart"></i> 29
+              <button @click="likeActive(item)" :class="{'btn-outline-primary': item.liked}" class="btn btn-sm pull-xs-right">
+                <i class="ion-heart"></i> {{item.likeCount}}
               </button>
             </div>
-            <a href="/article/how-to-build-webapps-that-scale" class="preview-link">
-              <h1>How to build webapps that scale</h1>
-              <p>This is the description for the post.</p>
+            <a :href="`/article/${item.id}`" class="preview-link">
+              <h1 v-text="item.title"></h1>
+              <p v-text="item.description"></p>
               <span>Read more...</span>
               <ul class="tag-list">
-                <li class="tag-default tag-pill tag-outline">realworld</li>
-                <li class="tag-default tag-pill tag-outline">implementations</li>
+                <li class="tag-default tag-pill tag-outline" v-for="item1 in item.tagList" v-text="item1"></li>
               </ul>
             </a>
           </div>
 
-          <div class="article-preview">
-            <div class="article-meta">
-              <a href="/profile/albert-pai"><img src="http://i.imgur.com/N4VcUeJ.jpg" /></a>
-              <div class="info">
-                <a href="/profile/albert-pai" class="author">Albert Pai</a>
-                <span class="date">January 20th</span>
-              </div>
-              <button class="btn btn-sm pull-xs-right">
-                <i class="ion-heart"></i> 32
-              </button>
-            </div>
-            <a href="/article/the-song-you" class="preview-link">
-              <h1>The song you won't ever stop singing. No matter how hard you try.</h1>
-              <p>This is the description for the post.</p>
-              <span>Read more...</span>
-              <ul class="tag-list">
-                <li class="tag-default tag-pill tag-outline">realworld</li>
-                <li class="tag-default tag-pill tag-outline">implementations</li>
-              </ul>
-            </a>
-          </div>
-
+<!--          分页条-->
           <ul class="pagination">
             <li class="page-item active">
               <a class="page-link" href="">1</a>
@@ -110,6 +107,7 @@ const clearTag = () => {
           </ul>
         </div>
 
+<!--        侧边标签列表-->
         <div class="col-md-3">
           <div class="sidebar">
             <div><span>Popular Tags</span> <button @click="clearTag" style="border: 1px solid #ccc">clear</button></div>
