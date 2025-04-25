@@ -11,43 +11,43 @@ import java.util.List;
 @NoArgsConstructor
 public class ArticleCardVO {
 
-	@Schema(description = "文章ID")
+	@Schema(description = "文章ID", type = "integer")
 	private Integer id;
 
-	@Schema(description = "文章标题")
+	@Schema(description = "文章标题", type = "string")
 	private String title;
 
-	@Schema(description = "文章描述")
+	@Schema(description = "文章描述", type = "string")
 	private String description;
 
-	@Schema(description = "文章正文内容")
+	@Schema(description = "文章正文内容", type = "string")
 	private String body;
 
-	@Schema(description = "点赞数量")
+	@Schema(description = "点赞数量", type = "integer")
 	private Integer likeCount;
 
 	// 收藏数量
-	@Schema(description = "收藏数量")
+	@Schema(description = "收藏数量", type = "integer")
 	private int favoritesCount;
 
-	@Schema(description = "文章创建时间")
+	@Schema(description = "文章创建时间", type = "string")
 	private LocalDateTime createdAt;
 
-	@Schema(description = "标签列表")
+	@Schema(description = "标签列表", type = "array")
 	private List<String> tagList;
 
 	// 作者信息
-	@Schema(description = "作者用户名")
+	@Schema(description = "作者用户名", type = "string")
 	private String username;
 
-	@Schema(description = "作者头像链接")
+	@Schema(description = "作者头像链接", type = "string")
 	private String avatar;
 
 	// 是否点赞
-	@Schema(description = "是否已点赞")
+	@Schema(description = "是否已点赞", type = "boolean")
 	private boolean liked;
 
 	// 是否收藏
-	@Schema(description = "是否已收藏")
+	@Schema(description = "是否已收藏", type = "boolean")
 	private boolean favorited;
 }

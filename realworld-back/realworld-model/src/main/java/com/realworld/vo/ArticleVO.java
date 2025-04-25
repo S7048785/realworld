@@ -18,43 +18,43 @@ import java.util.List;
 @NoArgsConstructor
 public class ArticleVO {
 
-	@Schema(description = "文章ID")
+	@Schema(description = "文章ID", type = "integer")
 	private Integer id;
 
 	// 文章标题
-	@Schema(description = "文章标题")
+	@Schema(description = "文章标题", type = "string")
 	private String title;
 
 	// 文章描述
-	@Schema(description = "文章描述")
+	@Schema(description = "文章描述", type = "string")
 	private String description;
 
 	// 文章内容
-	@Schema(description = "文章正文内容")
+	@Schema(description = "文章正文内容", type = "string")
 	private String body;
 
 	// 文章标签
-	@Schema(description = "文章标签列表")
+	@Schema(description = "文章标签列表", type = "array")
 	private List<String> tagList;
 
 	// 文章创建时间
-	@Schema(description = "文章创建时间")
+	@Schema(description = "文章创建时间", type = "string")
 	private LocalDateTime createdAt;
 
 	// 是否收藏
-	@Schema(description = "是否已收藏")
+	@Schema(description = "是否已收藏", type = "boolean")
 	private boolean favorited;
 
 	// 收藏数量
-	@Schema(description = "收藏数量")
+	@Schema(description = "收藏数量", type = "integer")
 	private int favoritesCount;
 	
 	// 点赞数量
-	@Schema(description = "点赞数量")
+	@Schema(description = "点赞数量", type = "integer")
 	private int likeCount;
 
 	// 评论数量
-	@Schema(description = "评论数量")
+	@Schema(description = "评论数量", type = "integer")
 	private int commentCount;
 
 	// 文章作者信息

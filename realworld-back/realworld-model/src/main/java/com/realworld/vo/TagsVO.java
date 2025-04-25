@@ -9,6 +9,6 @@ import java.io.Serializable;
 @Data
 @Builder
 public class TagsVO implements Serializable {
-	@Schema(description = "标签名称")
+	@Schema(description = "标签名称", type = "string")
 	private String name;
 }
