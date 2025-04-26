@@ -1,5 +1,6 @@
 package com.realworld.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,7 @@ public class ArticleCardVO {
 	private int favoritesCount;
 
 	@Schema(description = "文章创建时间", type = "string")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime createdAt;
 
 	@Schema(description = "标签列表", type = "array")

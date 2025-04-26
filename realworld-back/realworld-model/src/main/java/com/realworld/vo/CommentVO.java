@@ -1,5 +1,6 @@
 package com.realworld.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.realworld.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class CommentVO {
 	private String body;
 
 	@Schema(description = "评论创建时间", type = "string")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime createdAt;
 
 	@Schema(description = "评论用户名称", type = "string")

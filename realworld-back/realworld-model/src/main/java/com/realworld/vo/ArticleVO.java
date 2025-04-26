@@ -1,5 +1,6 @@
 package com.realworld.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +40,7 @@ public class ArticleVO {
 
 	// 文章创建时间
 	@Schema(description = "文章创建时间", type = "string")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime createdAt;
 
 	// 是否收藏

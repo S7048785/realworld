@@ -13,3 +13,4 @@ realworld:
           - /articles/list
           - /articles/comments
           - /profiles/{id}
+          - /articles/{id}
