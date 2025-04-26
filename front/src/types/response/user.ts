@@ -1,13 +1,5 @@
 
-export interface UserAuth {
-  email: string
-  token: string
-  username: string
-  bio: string
-  avatar: string
-}
-
-export interface Profile {
+export interface ProfileRes {
   id: string
   username: string
   bio: string
@@ -17,3 +9,12 @@ export interface Profile {
   following: boolean
 }
 
+export interface UserAuthRes {
+  id: string;
+  username: string;
+  bio: string;
+  avatar: string;
+  followCount: number;
+  fansCount: number;
+  token: string;
+}

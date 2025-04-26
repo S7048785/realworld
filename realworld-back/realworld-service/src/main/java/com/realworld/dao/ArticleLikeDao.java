@@ -16,4 +16,15 @@ public class ArticleLikeDao extends ServiceImpl<ArticleLikeMapper, ArticleLike> 
 				.set(ArticleLike::getIsDel, 1)
 				.eq(ArticleLike::getArticleId, id));
 	}
+
+	public ArticleLike isLiked(Integer id, Integer currentId) {
+		return getOne(Wrappers.lambdaQuery(ArticleLike.class)
+				.eq(ArticleLike::getArticleId, id)
+				.eq(ArticleLike::getUserId, currentId));
+	}
+
+	public void updateLike(int isDel) {
+		update(Wrappers.lambdaUpdate(ArticleLike.class)
+				.set(ArticleLike::getIsDel, isDel == 0 ? 1 : 0));
+	}
 }

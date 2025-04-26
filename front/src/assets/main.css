@@ -5063,8 +5063,8 @@ a.text-danger:focus, a.text-danger:hover {
   padding-top: 0.1rem;
   padding-bottom: 0.1rem;
   white-space: nowrap;
-  margin-right: 3px;
-  margin-bottom: 0.2rem;
+  margin-right: 5px;
+  margin-bottom: 0.5rem;
   display: inline-block; }
   .tag-default:hover {
     text-decoration: none; }
@@ -5224,7 +5224,7 @@ footer {
   margin-bottom: -1px; }
 
 .home-page .sidebar {
-  padding: 5px 10px 10px 10px;
+  padding: 10px 10px 10px 10px;
   background: #f3f3f3;
   border-radius: 4px; }
   .home-page .sidebar p {

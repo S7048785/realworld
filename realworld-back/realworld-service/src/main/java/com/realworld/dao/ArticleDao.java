@@ -15,6 +15,8 @@ import com.realworld.vo.ProfileVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author YYJYP
  */
@@ -34,9 +36,9 @@ public class ArticleDao extends ServiceImpl<ArticleMapper, Article> {
 		return articleVO;
 	}
 
-	public Page<ArticleCardVO> list(Page<Article> articlePage, ArticlePageQueryDTO articlePageQueryDTO, Integer userId) {
+	public Page<ArticleCardVO> list(Page<Article> articlePage, ArticlePageQueryDTO articlePageQueryDTO, List<String> tagList, Integer userId) {
 
-		return articleMapper.selectListArticleCard(articlePage, articlePageQueryDTO, userId);
+		return articleMapper.selectListArticleCard(articlePage, articlePageQueryDTO, tagList, userId);
 	}
 
 	public void delete(Integer id) {

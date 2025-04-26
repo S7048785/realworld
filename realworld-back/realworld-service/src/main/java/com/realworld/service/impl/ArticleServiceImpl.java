@@ -2,6 +2,7 @@ package com.realworld.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.realworld.constant.ArticleConstant;
 import com.realworld.constant.CacheConstant;
@@ -55,7 +56,13 @@ public class ArticleServiceImpl implements ArticleService {
 		articlePageQueryDTO.setLimit(limit);
 		Page<Article> articlePage = new Page<>(articlePageQueryDTO.getLimit(), articlePageQueryDTO.getOffset());
 
-		return articleDao.list(articlePage, articlePageQueryDTO, userId);
+		// 标签封装成List
+		List<String> tagList = null;
+		if (StrUtil.isNotBlank(articlePageQueryDTO.getTagList())) {
+			tagList = StrUtil.split(articlePageQueryDTO.getTagList(), ",");
+		}
+
+		return articleDao.list(articlePage, articlePageQueryDTO, tagList, userId);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -67,20 +74,23 @@ public class ArticleServiceImpl implements ArticleService {
 		articleDao.save(article);
 		// 新增标签前查看是否有已存在的标签
 		List<String> tagNameList = articleCreateDTO.getTagList();
-		// 查询已存在的标签
-		List<String> existsTags = tagsDao.listObjs(tagNameList);
-		// 过滤出未存在的标签
-		List<String> filter = CollUtil.filter(tagNameList, item -> !existsTags.contains(item));
-		// 封装成 标签对象
-		List<Tags> map = CollUtil.map(filter, item -> new Tags().setName(item), true);
-		// 保存
-		tagsDao.saveBatch(map);
-		// 新增文章标签关系
-		List<ArticleTags> articleTags = new ArrayList<>();
-		for (Tags tags : map) {
-			articleTags.add(new ArticleTags().setArticleId(article.getId()).setTagId(tags.getId()));
+		// 判断非空
+		if (CollUtil.isNotEmpty(tagNameList)) {
+			// 查询已存在的标签
+			List<String> existsTags = tagsDao.listObjs(tagNameList);
+			// 过滤出未存在的标签
+			List<String> filter = CollUtil.filter(tagNameList, item -> !existsTags.contains(item));
+			// 封装成 标签对象
+			List<Tags> map = CollUtil.map(filter, item -> new Tags().setName(item), true);
+			// 保存
+			tagsDao.saveBatch(map);
+			// 新增文章标签关系
+			List<ArticleTags> articleTags = new ArrayList<>();
+			for (Tags tags : map) {
+				articleTags.add(new ArticleTags().setArticleId(article.getId()).setTagId(tags.getId()));
+			}
+			articleTagsDao.saveBatch(articleTags);
 		}
-		articleTagsDao.saveBatch(articleTags);
 		return article.getId();
 	}
 
@@ -126,9 +136,10 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public void favoriteArticle(Integer id) {
+		// TODO: 使用Redis加锁
+
 		// 查询有没有收藏
 		ArticleFavorites favoritesd = articleFavoritesDao.isFavoritesd(id, BaseContext.getCurrentId());
-		// TODO: 使用Redis加锁
 
 		if (favoritesd == null) {
 			ArticleFavorites articleFavorites = new ArticleFavorites().setArticleId(id).setUserId(BaseContext.getCurrentId());
@@ -146,6 +157,20 @@ public class ArticleServiceImpl implements ArticleService {
 			throw new BaseException(ArticleConstant.ARTICLE_NOT_EXIST);
 		}
 		return article;
+	}
+
+	@Override
+	public void likeArticle(Integer id) {
+		// TODO: 使用Redis加锁
+		// 查询有没有点赞
+		ArticleLike articleLike = articleLikeDao.isLiked(id, BaseContext.getCurrentId());
+
+		if (articleLike == null) {
+			// 执行点赞操作
+			articleLikeDao.save(new ArticleLike().setArticleId(id).setUserId(BaseContext.getCurrentId()));
+		} else {
+			articleLikeDao.updateLike(articleLike.getIsDel());
+		}
 	}
 
 

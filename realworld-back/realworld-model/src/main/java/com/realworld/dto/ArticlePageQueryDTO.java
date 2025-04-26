@@ -18,7 +18,7 @@ public class ArticlePageQueryDTO {
 	@Schema(description = "文章作者id")
 	private Integer authorId;
 	@Schema(description = "文章标签")
-	private List<String> tagList;
+	private String tagList;
 	@Schema(description = "页码", defaultValue = "1")
 	private int limit = 1;
 	@Schema(description = "每页记录数", defaultValue = "5")

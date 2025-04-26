@@ -1,5 +1,9 @@
 <script  lang="ts" setup="">
 
+const register = async () => {
+  console.log(1)
+}
+
 </script>
 
 <template>
@@ -16,15 +20,18 @@
             <li>That email is already taken</li>
           </ul>
 
-          <form>
+          <form @submit.prevent="register">
             <fieldset class="form-group">
-              <input class="form-control form-control-lg" type="text" placeholder="Username" />
+              <input class="form-control form-control-lg" type="text" placeholder="Username" autocomplete="off"/>
+            </fieldset>
+<!--            <fieldset class="form-group">-->
+<!--              <input class="form-control form-control-lg" type="text" placeholder="Email" />-->
+<!--            </fieldset>-->
+            <fieldset class="form-group">
+              <input class="form-control form-control-lg" type="password" placeholder="Password" autocomplete="current-password"/>
             </fieldset>
             <fieldset class="form-group">
-              <input class="form-control form-control-lg" type="text" placeholder="Email" />
-            </fieldset>
-            <fieldset class="form-group">
-              <input class="form-control form-control-lg" type="password" placeholder="Password" />
+              <input class="form-control form-control-lg" type="password" placeholder="Confirm password" autocomplete="current-password"/>
             </fieldset>
             <button class="btn btn-lg btn-primary pull-xs-right">Sign up</button>
           </form>

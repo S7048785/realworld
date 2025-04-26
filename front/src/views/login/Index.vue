@@ -1,5 +1,45 @@
 <script setup lang="ts">
+import {useUserStore} from "@/stores/userStore.ts";
+import {isPassword, isUserName} from "@/utils/regex.ts";
+import {USER_CONSTANT} from "@/constant/user.ts";
+import router from "@/router";
 
+const userStore = useUserStore();
+
+const loginForm = reactive({
+  username: '',
+  password: ''
+})
+
+const errorMsg = ref<string>();
+
+const login = async () => {
+
+  // 用户名校验
+  if (!isUserName(loginForm.username)) {
+    errorMsg.value = USER_CONSTANT.USERNAME_VALID
+    return;
+  }
+  // 密码校验
+  if (!isPassword(loginForm.password)) {
+    errorMsg.value = USER_CONSTANT.PASSWORD_VALID;
+    return;
+  }
+  // 清空错误消息
+  errorMsg.value = ''
+
+  // 发送登录请求
+
+    const loginSuccess = await userStore.login(loginForm.username, loginForm.password);
+    if (loginSuccess) {
+      // 跳转到首页
+      router.push('/home');
+    } else {
+      // 清空密码
+      loginForm.password = '';
+    }
+
+}
 </script>
 
 <template>
@@ -12,16 +52,19 @@
             <a href="/register">Need an account?</a>
           </p>
 
-          <ul class="error-messages">
-            <li>That email is already taken</li>
+          <ul class="error-messages" v-show="errorMsg">
+            <li v-text="errorMsg"></li>
           </ul>
 
-          <form>
+          <form @submit.prevent="login">
             <fieldset class="form-group">
-              <input class="form-control form-control-lg" type="text" placeholder="Email" />
+              <input class="form-control form-control-lg" type="text" placeholder="Username"
+                     autocomplete="off"
+                     v-model="loginForm.username"/>
             </fieldset>
             <fieldset class="form-group">
-              <input class="form-control form-control-lg" autocomplete="current-password" type="password" placeholder="Password" />
+              <input class="form-control form-control-lg" autocomplete="current-password"
+                     type="password" placeholder="Password" v-model="loginForm.password"/>
             </fieldset>
             <button class="btn btn-lg btn-primary pull-xs-right">Sign in</button>
           </form>

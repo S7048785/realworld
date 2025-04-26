@@ -1,4 +1,18 @@
 <script lang="ts" setup="">
+import {useUserStore} from "@/stores/userStore.ts";
+import {loginValidToast} from "@/utils/toast.ts";
+
+const userStore = useUserStore();
+// 发布文章
+const publish = async () => {
+  console.log(1)
+  if (!userStore.userInfo) {
+    loginValidToast();
+    return;
+  }
+
+  // TODO: 发布文章
+}
 
 </script>
 
@@ -31,7 +45,7 @@
                   <span class="tag-default tag-pill"> <i class="ion-close-round"></i> tag </span>
                 </div>
               </fieldset>
-              <button class="btn btn-lg pull-xs-right btn-primary" type="button">
+              <button class="btn btn-lg pull-xs-right btn-primary" type="button" @click="publish">
                 Publish Article
               </button>
             </fieldset>

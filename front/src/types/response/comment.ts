@@ -1,9 +1,8 @@
-import type {Profile} from "@/types/response/user.ts";
+import type {ProfileRes} from "@/types/response/user.ts";
 
-export interface Comment {
+export interface CommentRes {
   id: string;
   createdAt: string;
-  updatedAt: string;
   body: string;
-  author: Profile;
+  author: ProfileRes;
 }

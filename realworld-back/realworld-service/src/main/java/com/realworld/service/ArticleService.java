@@ -39,4 +39,6 @@ public interface ArticleService {
 	void favoriteArticle(Integer id);
 
 	ArticleVO getArticle(Integer id);
+
+	void likeArticle(Integer id);
 }

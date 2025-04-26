@@ -8,6 +8,8 @@ import com.realworld.vo.ArticleCardVO;
 import com.realworld.vo.ArticleVO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 文章表 Mapper 接口
@@ -19,7 +21,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
 
-	Page<ArticleCardVO> selectListArticleCard(Page<Article> articlePage, ArticlePageQueryDTO articlePageQueryDTO, Integer userId);
+	Page<ArticleCardVO> selectListArticleCard(Page<Article> articlePage, ArticlePageQueryDTO articlePageQueryDTO, List<String> tagList, Integer userId);
 
 	ArticleVO selectArticle(Integer id);
 }

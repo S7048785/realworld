@@ -24,16 +24,19 @@
             left join article_like as al on a.id = al.article_id and al.is_del = 0
             left join article_favorites as af on a.id = af.article_id and af.is_del = 0
         <where>
-            <if test="userId != null or userId">
+            <if test="userId != null">
                 user.id != #{userId} and
             </if>
-            a.is_del = 0
+            <if test="articlePageQueryDTO.authorId != null">
+                a.author_id = #{articlePageQueryDTO.authorId} and
+            </if>
+        a.is_del = 0
         </where>
         GROUP BY
             a.id, a.title, a.description, a.created_at
-        <if test="articlePageQueryDTO.tagList != null">
+        <if test="tagList != null">
             having
-            <foreach collection="articlePageQueryDTO.tagList" item="tag" separator="or" close="">
+            <foreach collection="tagList" item="tag" separator="or" close="">
                 tags like concat('%', #{tag}, '%')
             </foreach>
         </if>

@@ -30,7 +30,7 @@ public class ArticleController {
 	public PageResult<ArticleCardVO> getArticles(ArticlePageQueryDTO articlePageQueryDTO) {
 		// 探索全站内容、按标签/作者搜索、未登录用户浏览
 		// 返回多篇文章 ，按最近的顺序排在最前面
-		Page<ArticleCardVO> page = articleService.listArticle(articlePageQueryDTO, -1);
+		Page<ArticleCardVO> page = articleService.listArticle(articlePageQueryDTO, null);
 		List<ArticleCardVO> records = page.getRecords();
 		return new PageResult<>(records.size(), records, page.getCurrent(), page.getSize());
 	}
@@ -62,7 +62,7 @@ public class ArticleController {
 
 	@Operation(summary = "更新文章")
 	@PutMapping("/{id}")
-	public Result<ArticleVO> updateArticle(@RequestBody @Valid ArticleUpdateDTO articleUpdateDTO, @PathVariable Integer id) {
+	public Result<Void> updateArticle(@RequestBody @Valid ArticleUpdateDTO articleUpdateDTO, @PathVariable Integer id) {
 		articleService.updateArticleById(articleUpdateDTO, id);
 		return Result.success();
 	}
@@ -103,6 +103,14 @@ public class ArticleController {
 	public Result<Void> favoriteArticle(@PathVariable Integer id) {
 		// 收藏文章
 		articleService.favoriteArticle(id);
+		return Result.success();
+	}
+
+	@Operation(summary = "点赞文章")
+	@PostMapping(("/like/{id}"))
+	public Result<Void> likeArticle(@PathVariable Integer id) {
+		// 点赞文章
+		articleService.likeArticle(id);
 		return Result.success();
 	}
 }

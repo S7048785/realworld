@@ -1,27 +1,66 @@
 import request from "@/utils/request.ts"
+import {getArticleAPI} from "@/api/article.ts";
 
 // 登录
-export function login(data: any) {
+export function loginAPI(
+  username: string, password: string
+) {
   return request({
-    url: '/login',
+    url: '/users/login',
     method: 'post',
-    data
+    data: {
+      username,
+      password
+    }
   })
 }
 
 // 注册
-export function register(data: any) {
+export function registerAPI(username: string, password: string) {
   return request({
-    url: '/register',
+    url: '/users/register',
     method: 'post',
-    data
+    data: {
+      username,
+      password
+    }
   })
 }
 
 // 获取用户信息
-export function getUserInfo() {
+export function getUserInfoAPI(userId: number) {
   return request({
-    url: '/user/info',
+    url: `/profiles/${userId}`,
     method: 'get'
+  })
+}
+
+/**
+ * 更新当前用户信息
+ */
+export function updateUserInfoAPI({username, bio, avatar}: {
+  username: string;
+  bio: string;
+  avatar: string
+}) {
+  return request({
+    url: '/profiles',
+    method: 'put',
+    data: {
+      username,
+      bio,
+      avatar
+    }
+  })
+}
+
+/**
+ * 关注用户
+ * @param userId 目标用户id
+ */
+export function followUserAPI(userId: number) {
+  return request({
+    url: `/profiles/follow/${userId}`,
+    method: 'post'
   })
 }
