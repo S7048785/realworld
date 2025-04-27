@@ -8,7 +8,7 @@ const route = useRoute()
 
 const isShow = ref(!userStore.userInfo)
 
-const pathList = [
+const pathList = reactive([
   {
     path: '/home',
     name: 'Home',
@@ -34,7 +34,7 @@ const pathList = [
     name: 'Settings',
     isShow: !isShow.value
   }
-]
+])
 
 async function toast() {
   // let res = await getUserInfoAPI(1);

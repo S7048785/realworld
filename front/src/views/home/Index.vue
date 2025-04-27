@@ -3,9 +3,9 @@ import {articleCardListMock} from "@/mock/article.ts";
 import type {ArticleCardRes} from "@/types/response/article.ts";
 import {useArticleStore} from "@/stores/articleStore.ts"
 import {useUserStore} from "@/stores/userStore.ts";
-import {notify} from "@kyvg/vue3-notification";
 import router from "@/router";
 import {loginValidToast} from "@/utils/toast.ts";
+import {notify} from "@kyvg/vue3-notification";
 
 const userStore = useUserStore();
 const articleStore = useArticleStore();
@@ -53,8 +53,10 @@ const clearTag = () => {
 }
 
 // 查询选中的标签
-const searchTag = () => {
-  articleStore.getArticleList(1);
+const searchTag = async () => {
+  // 重置当前页码
+  await articleStore.getArticleList(current.value = 1);
+
 }
 
 // 点赞文章
@@ -72,9 +74,33 @@ const likeActive = (articleCard: ArticleCardRes) => {
   articleStore.articleLike(articleCard.id);
 }
 
-onMounted(() => {
-  articleStore.getArticleList(1);
+// 当前页
+let current = ref(1)
 
+const isLoading = ref(false);
+// 下滑新增卡片
+const addArticleCard = async () => {
+  if (isLoading.value) return;
+  isLoading.value = true;
+  try {
+    // 若卡片列表个数过小, 则不执行
+    if (articleStore.articleCardList.length < 5)
+      return;
+    const hasMore = await articleStore.getArticleList(current.value);
+    if (hasMore)
+      current.value = current.value + 1;
+    else
+      notify({
+        text: '没有更多内容了~~~'
+      })
+  } finally {
+    isLoading.value = false
+  }
+}
+
+onMounted(() => {
+  articleStore.getArticleList(current.value);
+  current.value = current.value + 1;
   articleStore.getTagList();
 })
 
@@ -103,41 +129,46 @@ onMounted(() => {
           </div>
 
           <!--          文章卡片 -->
-          <div class="article-preview"
-               v-for="(item, index) in articleStore.articleCardList as ArticleCardRes[]"
-               :key="item.id">
-            <div class="article-meta">
-              <a href="/profile/eric-simons"><img :src="item.avatar"/></a>
-              <div class="info">
-                <router-link :to="`/profile/${item.author}`"></router-link>
-                <a href="/profile/eric-simons" class="author" v-text="item.author"></a>
-                <span class="date" v-text="item.createdAt"></span>
+          <div >
+            <div class="article-preview"
+                 v-for="(item, index) in articleStore.articleCardList as ArticleCardRes[]"
+                 :key="item.id"
+            >
+              <div class="article-meta">
+                <a href="/profile/eric-simons"><img :src="item.avatar"/></a>
+                <div class="info">
+                  <router-link :to="`/profile/${item.author}`"></router-link>
+                  <a href="/profile/eric-simons" class="author" v-text="item.author"></a>
+                  <span class="date" v-text="item.createdAt"></span>
+                </div>
+                <button @click="likeActive(item)" :class="{'btn-outline-primary': item.liked}"
+                        class="btn btn-sm pull-xs-right">
+                  <i class="ion-heart"></i> {{ item.likeCount }}
+                </button>
               </div>
-              <button @click="likeActive(item)" :class="{'btn-outline-primary': item.liked}"
-                      class="btn btn-sm pull-xs-right">
-                <i class="ion-heart"></i> {{ item.likeCount }}
-              </button>
+              <a :href="`/article/${item.id}`" class="preview-link">
+                <h1 v-text="item.title"></h1>
+                <p v-text="item.description"></p>
+                <span>Read more...</span>
+                <ul class="tag-list" v-show="item.tags">
+                  <li class="tag-default tag-pill tag-outline" v-for="(item1, index) in ((item.tags || '').split(','))"
+                      v-text="item1"></li>
+                </ul>
+              </a>
             </div>
-            <a :href="`/article/${item.id}`" class="preview-link">
-              <h1 v-text="item.title"></h1>
-              <p v-text="item.description"></p>
-              <span>Read more...</span>
-              <ul class="tag-list">
-                <li class="tag-default tag-pill tag-outline" v-for="(item1, index) in ((item.tags || '').split(','))"
-                    v-text="item1"></li>
-              </ul>
-            </a>
+            <hr v-card-lazy="addArticleCard" style="margin: 0">
           </div>
 
+
           <!--          分页条-->
-          <ul class="pagination">
-            <li class="page-item active">
-              <a class="page-link" href="">1</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="">2</a>
-            </li>
-          </ul>
+<!--          <ul class="pagination">-->
+<!--            <li class="page-item active">-->
+<!--              <a class="page-link" href="">1</a>-->
+<!--            </li>-->
+<!--            <li class="page-item">-->
+<!--              <a class="page-link" href="">2</a>-->
+<!--            </li>-->
+<!--          </ul>-->
         </div>
 
         <!--        侧边标签列表-->
