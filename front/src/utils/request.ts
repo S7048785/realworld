@@ -24,10 +24,7 @@ request.interceptors.request.use(
     return config;
   },
   error => {
-    // notify({
-    //   text: error.data.msg,
-    //   type: "error"
-    // })
+
     return Promise.reject(error)
   }
 )
@@ -44,6 +41,10 @@ request.interceptors.response.use(
     return response.data
   },
   error => {
+    error.status === 401 && notify({
+      text: '登录已过期，请重新登录',
+      type: 'warn'
+    })
     return Promise.reject(error)
   }
 )
