@@ -11,14 +11,17 @@ export const useUserStore = defineStore('user', () => {
     if (res.code === 0) {
       return false
     }
-    localStorage.setItem('token', res.data.token);
     userInfo.value = res.data;
     return true
   }
 
   const register = async (username: string, password: string) => {
     const res: any = await registerAPI(username, password)
+    if (res.code === 0) {
+      return false;
+    }
     userInfo.value = res.data
+    return true;
   }
 
   const updateUserInfo = async () => {

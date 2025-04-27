@@ -29,16 +29,14 @@ const login = async () => {
   errorMsg.value = ''
 
   // 发送登录请求
-
-    const loginSuccess = await userStore.login(loginForm.username, loginForm.password);
-    if (loginSuccess) {
-      // 跳转到首页
-      router.push('/home');
-    } else {
-      // 清空密码
-      loginForm.password = '';
-    }
-
+  const loginSuccess = await userStore.login(loginForm.username, loginForm.password);
+  if (!loginSuccess) {
+    // 清空密码
+    loginForm.password = '';
+    return;
+  }
+  // 跳转到首页
+  router.push('/home');
 }
 </script>
 
