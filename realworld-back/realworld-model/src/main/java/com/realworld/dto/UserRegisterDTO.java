@@ -2,17 +2,18 @@ package com.realworld.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 public class UserRegisterDTO {
-	@NotBlank(message = "用户名不能为空")
+	@Pattern(regexp = "^[\\u4E00-\\u9FA5a-zA-z0-9]{2,12}$", message = "用户名格式不正确")
 	@Schema(description = "用户名")
 	private String username;
 
-	@NotBlank(message = "密码不能为空")
+	@Pattern(regexp = "^\\w{5,17}$", message = "密码格式不正确")
 	@Schema(description = "密码")
 	private String password;
 
