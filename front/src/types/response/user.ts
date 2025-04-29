@@ -12,9 +12,9 @@ export interface ProfileRes {
 export interface UserAuthRes {
   id: string;
   username: string;
+  nickname: string;
   bio: string;
   avatar: string;
   followCount: number;
   fansCount: number;
-  token: string;
 }

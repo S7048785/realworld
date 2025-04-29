@@ -13,7 +13,7 @@ export interface ArticleCreateReq {
 }
 
 export interface ArticlePageReq {
-  authorId?: number;
+  username?: string;
   tagList?: string;
   limit: number;
   offset: number;

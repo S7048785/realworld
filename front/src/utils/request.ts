@@ -1,8 +1,7 @@
 import axios from "axios"
 import {notify} from "@kyvg/vue3-notification";
+import router from "@/router";
 import {useUserStore} from "@/stores/userStore.ts";
-import type {UserAuthRes} from "@/types/response/user.ts";
-// const userStore = useUserStore()
 const request = axios.create({
   baseURL: "http://localhost:8080",
   timeout: 3000,
@@ -14,13 +13,8 @@ const request = axios.create({
 // 请求拦截器
 request.interceptors.request.use(
   config => {
-    // 存入token
-    // if (userStore.userInfo) {
-    //   config.headers.Authorization = userStore.userInfo.token
-    // }
-    const userJson = localStorage.getItem('user') || '{}'
-    const user: UserAuthRes = JSON.parse(userJson)
-    config.headers.Authorization = user.token
+
+    config.headers.Authorization = localStorage.getItem('token');
     return config;
   },
   error => {
@@ -37,14 +31,22 @@ request.interceptors.response.use(
         text: response.data.msg,
         type: 'error'
       })
+      router.push('/404')
     }
     return response.data
   },
   error => {
-    error.status === 401 && notify({
-      text: '登录已过期，请重新登录',
-      type: 'warn'
-    })
+
+    if (error.status === 401) {
+      notify({
+        text: '登录已过期，请重新登录',
+        type: 'warn'
+      })
+      // 清空用户信息
+      useUserStore().clearUserInfo();
+      router.push('/login')
+    }
+
     return Promise.reject(error)
   }
 )

@@ -26,5 +26,6 @@ export interface ArticleCardRes {
   liked: boolean;
   favorited: boolean;
   author: string;
+  nickname: string;
   avatar: string;
 }

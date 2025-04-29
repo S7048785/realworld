@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Index from '@/views/Index.vue'
 import NotFound from "@/views/NotFound.vue";
+import {loginValidToast} from "@/utils/toast.ts";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,13 +34,17 @@ const router = createRouter({
           component: () => import("@/views/register/Index.vue")
         },
         {
-          path: '/profile/:userId',
+          path: '/profile/:username',
           name: 'profile',
           component: () => import("@/views/profile/Index.vue")
         },
         {
           path: '/settings',
-          component: () => import("@/views/settings/Index.vue")
+          name: 'settings',
+          component: () => import("@/views/settings/Index.vue"),
+          meta: {
+            requiredAuth: true,
+          }
         },
         {
           path: '/article',
@@ -54,11 +59,19 @@ const router = createRouter({
             },
             {
               path: 'create',
-              component: () => import("@/views/article/ArticleForm.vue")
+              name: 'create',
+              component: () => import("@/views/article/ArticleForm.vue"),
+              meta: {
+                requiredAuth: true,
+              }
             },
             {
               path: 'edit/:id',
-              component: () => import("@/views/article/ArticleForm.vue")
+              name: 'edit',
+              component: () => import("@/views/article/ArticleForm.vue"),
+              meta: {
+                requiredAuth: true,
+              }
             }
           ]
         },
@@ -69,12 +82,34 @@ const router = createRouter({
       path: '/404',
       name: '404',
       component: NotFound
-    }
+    },
+    // 捕获所有未定义路由，重定向到404
+    // {
+    //   path: '/:pathMatch(.*)*',  // 或 path: '/:catchAll(.*)'
+    //   redirect: '/404'
+    // }
   ],
 })
 
+const path1 = [
+  '/register', '/login'
+]
+
+const path2 = [
+  '/settings'
+]
+
 router.beforeEach((to, from, next) => {
+  // console.log(to.name === 'profil')
+  // if (to.name === 'profile') {
+  //   if (/\D+/.test(to.params.userId as string)) {
+  //     next('/404')
+  //   }
+  // }
   next();
 })
-
+router.afterEach((to, from) => {
+  // 跳转路由后，滚动条移到最上面
+  window.scroll(0, 0);
+})
 export default router

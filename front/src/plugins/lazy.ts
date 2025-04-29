@@ -1,5 +1,8 @@
 import { useIntersectionObserver } from "@vueuse/core";
 
+/**
+ * 懒加载
+ */
 export const lazyPlugin = {
   install(app: any) {
     app.directive("card-lazy", (el: any, binding: any) => {

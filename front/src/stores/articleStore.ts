@@ -1,5 +1,4 @@
 import { defineStore} from "pinia"
-import type {ArticleCardRes} from "@/types/response/article.ts";
 import {
   createArticleAPI,
   deleteArticleAPI,
@@ -9,13 +8,13 @@ import {
   likeArticleAPI,
   updateArticleAPI
 } from "@/api/article.ts"
+import {useDebounceFn} from "@vueuse/core";
 import {getTagListAPI} from '@/api/tags'
-import {notify} from "@kyvg/vue3-notification";
 export const useArticleStore = defineStore('article', () => {
 
   // 分页条件
   // const current = ref<number>(1);
-  const size = ref<number>(5);
+  const size = ref<number>(10);
 
   // 是否还有更多数据
   const hasMoreData = ref(true);
@@ -29,6 +28,9 @@ export const useArticleStore = defineStore('article', () => {
   // 文章卡片
   const articleCardList = ref<any>([]);
 
+  // 当前页码
+  const currentPage = ref(1);
+
   // 获取所有标签
   const getTagList = async () => {
     const res: any = await getTagListAPI()
@@ -38,23 +40,49 @@ export const useArticleStore = defineStore('article', () => {
   /**
    * 获取卡片列表
    * @param page
-   * @param authorId
+   * @param username
    * @return boolean 是否最后一页
    */
-  const getArticleList = async (page: number, authorId?: number) => {
+  const getArticleList = useDebounceFn(async (page?: number | any, username?: string) => {
     if (page === 1) {
+      currentPage.value = page;
       hasMoreData.value = true;
     }
     if (!hasMoreData.value) {
+      // 防止没有数据后 仍然请求。且会让toast只显示一次
       return true;
     }
     const res: any = await getArticleCardAPI({
-      authorId,
+      username,
       tagList: tagSelectedList.value.join(',') || '',
-      limit: page,
-      offset: size.value
-    })
+      limit: currentPage.value,
+      offset: size.value})
+    currentPage.value++;
+    // 第一页数据 重置数组
+    if (page === 1) {
+      articleCardList.value = res.records
+    } else
+      articleCardList.value.push(...res.records);
+    // 是否最后一页数据
+    return hasMoreData.value = !(res.total < res.pageSize || res.toal == 0);
+  }, 200);
 
+  // 获取卡片列表 需要登录校验
+  const getArticleFeedList = async (page?: number, username?: string) => {
+    if (page === 1) {
+      currentPage.value = page;
+      hasMoreData.value = true;
+    }
+    // 判断还有没有更多数据
+    if (!hasMoreData.value) {
+      return true;
+    }
+    const res: any = await getArticleCardFeedAPI({
+      username,
+      tagList: tagSelectedList.value.join(',') || '',
+      limit: currentPage.value,
+      offset: size.value})
+    currentPage.value++;
     // 第一页数据 重置数组
     if (page === 1) {
       articleCardList.value = res.records
@@ -64,17 +92,14 @@ export const useArticleStore = defineStore('article', () => {
     return hasMoreData.value = res.total !== 0;
   }
 
-  // 获取卡片列表 需要登录校验
-  const getArticleFeedList = async (page: number, authorId?: number) => {
-    // current.value = page;
-    const res: any = await getArticleCardFeedAPI({authorId, tagList: tagSelectedList.value.join(',') || '', limit: page, offset: size.value})
-
-    articleCardList.value = res.records;
-  }
-
   // 文章点赞
   const articleLike = async (id: number | string) => {
     await likeArticleAPI(id);
+  }
+
+  // 清空标签列表
+  const clearTags = () => {
+    tagSelectedList.value = [];
   }
 
 
@@ -85,6 +110,7 @@ export const useArticleStore = defineStore('article', () => {
     getArticleList,
     getArticleFeedList,
     getTagList,
-    articleLike
+    articleLike,
+    clearTags
   }
 })

@@ -15,6 +15,16 @@ export function loginAPI(
   })
 }
 
+/**
+ * 退出登录
+ */
+export function logoutAPI() {
+  return request({
+    url: '/users/logout',
+    method: 'delete'
+  })
+}
+
 // 注册
 export function registerAPI(username: string, password: string) {
   return request({
@@ -28,9 +38,9 @@ export function registerAPI(username: string, password: string) {
 }
 
 // 获取用户信息
-export function getUserInfoAPI(userId: number) {
+export function getUserInfoAPI(username: string) {
   return request({
-    url: `/profiles/${userId}`,
+    url: `/profiles/${username}`,
     method: 'get'
   })
 }
@@ -38,18 +48,20 @@ export function getUserInfoAPI(userId: number) {
 /**
  * 更新当前用户信息
  */
-export function updateUserInfoAPI({username, bio, avatar}: {
-  username: string;
+export function updateUserInfoAPI({nickname, bio, avatar, password}: {
+  nickname: string;
   bio: string;
-  avatar: string
+  avatar: string;
+  password: string
 }) {
   return request({
     url: '/profiles',
     method: 'put',
     data: {
-      username,
+      nickname,
       bio,
-      avatar
+      avatar,
+      password: password || null
     }
   })
 }

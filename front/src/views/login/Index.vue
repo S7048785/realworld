@@ -2,8 +2,9 @@
 import {useUserStore} from "@/stores/userStore.ts";
 import {isPassword, isUserName} from "@/utils/regex.ts";
 import {USER_CONSTANT} from "@/constant/user.ts";
-import router from "@/router";
+import {notify} from "@kyvg/vue3-notification";
 
+const router = useRouter()
 const userStore = useUserStore();
 
 const loginForm = reactive({
@@ -35,8 +36,11 @@ const login = async () => {
     loginForm.password = '';
     return;
   }
-  // 跳转到首页
-  router.push('/home');
+  notify({
+    text: '登录成功',
+    type: 'success'
+  })
+  await router.push('/home')
 }
 </script>
 

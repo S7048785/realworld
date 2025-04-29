@@ -1,25 +1,30 @@
 <script setup lang="ts">
-import {articleCardListMock} from "@/mock/article.ts";
 import type {ArticleCardRes} from "@/types/response/article.ts";
 import {useArticleStore} from "@/stores/articleStore.ts"
 import {useUserStore} from "@/stores/userStore.ts";
-import router from "@/router";
 import {loginValidToast} from "@/utils/toast.ts";
 import {notify} from "@kyvg/vue3-notification";
 
+const routerStore = useRouter()
 const userStore = useUserStore();
 const articleStore = useArticleStore();
 
-const articleCardList = reactive(articleCardListMock);
-
 // 已选中的标签页的索引
 const selectedTabIndex = ref<number>(1);
-
 // 标签页列表
-const tabList = reactive([
-  "Your Feed",
-  "Global Feed",
+const tabList = computed(() => [
+  {
+    name: "Your Feed",
+    isShow: userStore.isLogin,
+    getList: articleStore.getArticleFeedList
+  },
+  {
+    name: "Global Feed",
+    isShow: true,
+    getList: articleStore.getArticleList
+  }
 ])
+
 
 // 切换标签页
 const toggleIndex = (index: number) => {
@@ -29,6 +34,7 @@ const toggleIndex = (index: number) => {
     return;
   }
   selectedTabIndex.value = index;
+  tabList.value[index].getList(1);
 }
 
 // 已选中的标签的索引
@@ -55,8 +61,7 @@ const clearTag = () => {
 // 查询选中的标签
 const searchTag = async () => {
   // 重置当前页码
-  await articleStore.getArticleList(current.value = 1);
-
+  await articleStore.getArticleList(1);
 }
 
 // 点赞文章
@@ -69,13 +74,8 @@ const likeActive = (articleCard: ArticleCardRes) => {
   }
   articleCard.liked = !articleCard.liked;
   articleCard.likeCount += articleCard.liked ? 1 : -1;
-  // TODO: 点赞文章
-
   articleStore.articleLike(articleCard.id);
 }
-
-// 当前页
-let current = ref(1)
 
 const isLoading = ref(false);
 // 下滑新增卡片
@@ -86,21 +86,14 @@ const addArticleCard = async () => {
     // 若卡片列表个数过小, 则不执行
     if (articleStore.articleCardList.length < 5)
       return;
-    const hasMore = await articleStore.getArticleList(current.value);
-    if (hasMore)
-      current.value = current.value + 1;
-    else
-      notify({
-        text: '没有更多内容了~~~'
-      })
+    await tabList.value[selectedTabIndex.value].getList();
   } finally {
     isLoading.value = false
   }
 }
 
 onMounted(() => {
-  articleStore.getArticleList(current.value);
-  current.value = current.value + 1;
+  articleStore.getArticleList(1);
   articleStore.getTagList();
 })
 
@@ -121,9 +114,9 @@ onMounted(() => {
         <div class="col-md-9">
           <div class="feed-toggle">
             <ul class="nav nav-pills outline-active">
-              <li v-for="(item, index) in tabList" @click="toggleIndex(index)" class="nav-item">
+              <li v-for="(item, index) in tabList" @click="toggleIndex(index)" v-show="item.isShow" class="nav-item">
                 <a :class="{'active': selectedTabIndex === index}" class="nav-link"
-                   href="javascript: void(0)" v-text="item"></a>
+                   href="javascript: void(0)" v-text="item.name"></a>
               </li>
             </ul>
           </div>
@@ -131,14 +124,15 @@ onMounted(() => {
           <!--          文章卡片 -->
           <div >
             <div class="article-preview"
-                 v-for="(item, index) in articleStore.articleCardList as ArticleCardRes[]"
+                 v-for="item in articleStore.articleCardList as ArticleCardRes[]"
                  :key="item.id"
             >
               <div class="article-meta">
-                <a href="/profile/eric-simons"><img :src="item.avatar"/></a>
+                <router-link :to="`/profile/${item.author}`"><img :src="item.avatar" alt=""/></router-link>
+<!--                <a  :href="`/profile/${item.id}`"><img :src="item.avatar" alt=""/></a>-->
                 <div class="info">
-                  <router-link :to="`/profile/${item.author}`"></router-link>
-                  <a href="/profile/eric-simons" class="author" v-text="item.author"></a>
+                  <router-link :to="`/profile/${item.author}`" class="author" v-text="item.author"></router-link>
+<!--                  <a href="/profile/eric-simons" class="author" v-text="item.author"></a>-->
                   <span class="date" v-text="item.createdAt"></span>
                 </div>
                 <button @click="likeActive(item)" :class="{'btn-outline-primary': item.liked}"
@@ -151,24 +145,13 @@ onMounted(() => {
                 <p v-text="item.description"></p>
                 <span>Read more...</span>
                 <ul class="tag-list" v-show="item.tags">
-                  <li class="tag-default tag-pill tag-outline" v-for="(item1, index) in ((item.tags || '').split(','))"
+                  <li class="tag-default tag-pill tag-outline" v-for="item1 in ((item.tags || '').split(','))"
                       v-text="item1"></li>
                 </ul>
               </a>
             </div>
             <hr v-card-lazy="addArticleCard" style="margin: 0">
           </div>
-
-
-          <!--          分页条-->
-<!--          <ul class="pagination">-->
-<!--            <li class="page-item active">-->
-<!--              <a class="page-link" href="">1</a>-->
-<!--            </li>-->
-<!--            <li class="page-item">-->
-<!--              <a class="page-link" href="">2</a>-->
-<!--            </li>-->
-<!--          </ul>-->
         </div>
 
         <!--        侧边标签列表-->
