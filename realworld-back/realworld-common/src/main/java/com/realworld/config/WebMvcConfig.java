@@ -15,9 +15,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Autowired
 	private ExcludePathProperties excludePathProperties;
+	@Autowired
+	private LoginInterceptor loginInterceptor;
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new LoginInterceptor())
+		registry.addInterceptor(loginInterceptor)
 				.addPathPatterns(
 						"/articles/**",
 						"/profiles/**",

@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -41,6 +40,9 @@ public class ArticleCardVO {
 	// 作者信息
 	@Schema(description = "作者用户名", type = "string")
 	private String author;
+
+	@Schema(description = "作者昵称", type = "string")
+	private String nickname;
 
 	@Schema(description = "作者头像链接", type = "string")
 	private String avatar;

@@ -169,7 +169,7 @@ public class ArticleServiceImpl implements ArticleService {
 			// 执行点赞操作
 			articleLikeDao.save(new ArticleLike().setArticleId(id).setUserId(BaseContext.getCurrentId()));
 		} else {
-			articleLikeDao.updateLike(articleLike.getIsDel());
+			articleLikeDao.updateLike(id, articleLike.getIsDel());
 		}
 	}
 

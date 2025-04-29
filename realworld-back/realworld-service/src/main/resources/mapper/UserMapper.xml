@@ -3,16 +3,16 @@
 <mapper namespace="com.realworld.mapper.UserMapper">
     <select id="getProfile" resultType="com.realworld.vo.ProfileVO">
         SELECT
-            u.id, u.username, u.bio, u.avatar,
+            u.id, u.username, u.nickname, u.bio, u.avatar,
             (SELECT COUNT(*) FROM user_follow WHERE user_id = u.id AND is_del = 0) AS follow_count,
             (SELECT COUNT(*) FROM user_follow WHERE followed_user_id = u.id AND is_del = 0) AS fans_count,
-            EXISTS(SELECT 1 FROM user_follow WHERE user_id = #{userId} AND followed_user_id = u.id AND is_del = 0) AS following
+            EXISTS(SELECT 1 FROM user_follow WHERE username = #{username} AND followed_user_id = u.id AND is_del = 0) AS following
         FROM user u
-        WHERE u.id = #{userId};
+        WHERE u.username = #{username};
     </select>
     <select id="getProfileByArticleId" resultType="com.realworld.vo.ProfileVO">
         SELECT
-            u.id, u.username, u.bio, u.avatar,
+            u.id, u.username, u.nickname, u.bio, u.avatar,
             (SELECT COUNT(*) FROM user_follow WHERE user_id = u.id AND is_del = 0) AS follow_count,
             (SELECT COUNT(*) FROM user_follow WHERE followed_user_id = u.id AND is_del = 0) AS fans_count,
             EXISTS(SELECT 1 FROM user_follow WHERE user_id = IFNULL(#{userId}, 0) AND followed_user_id = u.id AND is_del = 0) AS following

@@ -7,6 +7,7 @@
             ac.body as body,
             ac.created_at as created_at,
             user.username as username,
+            user.nickname as nickname,
             user.avatar as avatar
         from article_comment as ac
                  left join user on ac.user_id = user.id

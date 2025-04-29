@@ -17,7 +17,7 @@ import com.realworld.vo.UserLoginVO;
 public interface UserService {
 
 
-	ProfileVO getInfo(Integer id);
+	ProfileVO getInfo(String username);
 
 	void follow(Integer id);
 
@@ -26,4 +26,6 @@ public interface UserService {
 	UserLoginVO register(UserRegisterDTO userRegisterDTO);
 
 	ProfileVO updateInfo(UserUpdateDTO userDTO);
+
+	void logout(String token);
 }

@@ -7,28 +7,30 @@
         select
             a.id as id,
             a.title as title,
-            a.body as `body`,
             a.description as `description`,
-            count(distinct al.id) as like_count,
-            count(distinct af.id)  as favorites_count,
+            (select (count(*)) from article_like where article_id = a.id and is_del = 0) as like_count,
+            (select (count(*)) from article_favorites as af where article_id = a.id and is_del = 0) as favorites_count,
             a.created_at as created_at,
             user.username as author,
+            user.nickname as nickname,
             user.avatar as avatar,
             GROUP_CONCAT(DISTINCT tags.name SEPARATOR ',') as tags,
-            MAX(IF(al.user_id = #{userId}, 1, 0)) as liked,
-            MAX(IF(af.user_id = #{userId}, 1, 0)) as favorited
+            IFNULL((select 1 from article_like where user_id = 1 and article_id = a.id and is_del = 0), 0) as liked,
+            IFNULL((select 1 from article_favorites where user_id = 1 and article_id = a.id and is_del = 0), 0) as favorited
         from article as a
             join user on a.author_id = user.id
+        <if test="userId != null">
+            join user_follow on a.author_id = user_follow.followed_user_id and user_follow.is_del = 0
+        </if>
             left join article_tags as at on a.id = at.article_id and at.is_del = 0
             left join tags on at.tag_id = tags.id
-            left join article_like as al on a.id = al.article_id and al.is_del = 0
-            left join article_favorites as af on a.id = af.article_id and af.is_del = 0
+
         <where>
             <if test="userId != null">
-                user.id != #{userId} and
+                user.id != #{userId} and user_follow.user_id = 1 and
             </if>
-            <if test="articlePageQueryDTO.authorId != null">
-                a.author_id = #{articlePageQueryDTO.authorId} and
+            <if test="articlePageQueryDTO.username != null">
+                user.username = #{articlePageQueryDTO.username} and
             </if>
         a.is_del = 0
         </where>

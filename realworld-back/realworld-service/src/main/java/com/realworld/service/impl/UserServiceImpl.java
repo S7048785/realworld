@@ -20,7 +20,6 @@ import com.realworld.vo.UserLoginVO;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -46,13 +45,16 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public ProfileVO getInfo(Integer id) {
+	public ProfileVO getInfo(String username) {
 		// TODO: 查询redis中的用户信息
 //		String str = cacheUtil.getStr(CacheConstant.USER_INFO + id);
 //		if (StrUtil.isNotBlank(str)) {
 //			return JSONUtil.toBean(str, ProfileVO.class);
 //		}
-		ProfileVO profile = userDao.getProfile(id, BaseContext.getCurrentId());
+		ProfileVO profile = userDao.getProfile(username, BaseContext.getCurrentId());
+		if (profile == null) {
+			throw new BaseException(UserConstant.USER_NOT_EXIST);
+		}
 		// 存入redis
 //		cacheUtil.setStr(CacheConstant.USER_INFO + id, JSONUtil.toJsonStr(profile));
 		return profile;
@@ -82,6 +84,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserLoginVO login(UserLoginDTO userLoginDTO) {
+		String str = cacheUtil.getStr("user");
+		if (StrUtil.isNotBlank(str)) {
+			return JSONUtil.toBean(str, UserLoginVO.class);
+		}
+
 		// TODO: 校验验证码
 
 		// 查询用户
@@ -91,7 +98,7 @@ public class UserServiceImpl implements UserService {
 //		password = DigestUtil.md5Hex(password.getBytes());
 		User user = userDao.getUserInfo(username, password);
 		if (user == null || !user.getPassword().equals(password)) {
-			throw new BaseException(UserConstant.USER_NOT_EXIST);
+			throw new BaseException(UserConstant.USER_NOT_EXIST_OR_PASSWORD_ERROR);
 		}
 
 		// 封装成VO
@@ -143,6 +150,12 @@ public class UserServiceImpl implements UserService {
 			return profileVO;
 		}
 		throw new BaseException("用户信息更新失败");
+	}
+
+	@Override
+	public void logout(String token) {
+		// 获取token
+		cacheUtil.setStr(CacheConstant.USER_TOKEN_BLACKLIST + token, "1", 28800);
 	}
 
 }

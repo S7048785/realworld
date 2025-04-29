@@ -21,9 +21,9 @@ public class ProfilesController {
 	@Autowired
 	private UserService userService;
 	@Operation(summary = "获取用户资料")
-	@GetMapping("/{id}")
-	public Result<ProfileVO> getProfile(@PathVariable Integer id) {
-		ProfileVO profileVO = userService.getInfo(id);
+	@GetMapping("/{username}")
+	public Result<ProfileVO> getProfile(@PathVariable String username) {
+		ProfileVO profileVO = userService.getInfo(username);
 		return Result.success(profileVO);
 	}
 

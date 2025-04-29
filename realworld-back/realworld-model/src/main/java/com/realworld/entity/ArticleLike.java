@@ -1,8 +1,6 @@
 package com.realworld.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +17,7 @@ public class ArticleLike {
 	private Integer id;
 	private Integer articleId;
 	private Integer userId;
+	@TableField(value = "created_at", fill = FieldFill.INSERT)
 	private LocalDateTime createdAt;
 	private int isDel;
 }

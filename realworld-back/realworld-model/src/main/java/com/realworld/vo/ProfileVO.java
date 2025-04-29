@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProfileVO {
 
-	@Schema(description = "用户ID", type = "integer")
-	private Integer id;
-
 	@Schema(description = "用户名", type = "string")
 	private String username;
+
+	@Schema(description = "用户昵称", type = "string")
+	private String nickname;
 
 	@Schema(description = "用户简介", type = "string")
 	private String bio;

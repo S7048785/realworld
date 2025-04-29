@@ -14,6 +14,9 @@ public class UserLoginVO {
 	@Schema(description = "用户名", type = "string")
 	private String username;
 
+	@Schema(description = "昵称", type = "string")
+	private String nickname;
+
 	@Schema(description = "用户简介", type = "string")
 	private String bio;
 

@@ -15,8 +15,10 @@ import java.util.List;
 @NoArgsConstructor
 public class ArticlePageQueryDTO {
 
-	@Schema(description = "文章作者id")
-	private Integer authorId;
+//	@Schema(description = "文章作者id")
+//	private Integer authorId;
+	@Schema(description = "文章作者用户名")
+	private String username;
 	@Schema(description = "文章标签")
 	private String tagList;
 	@Schema(description = "页码", defaultValue = "1")

@@ -47,15 +47,5 @@ public class ArticleDao extends ServiceImpl<ArticleMapper, Article> {
 				.set(Article::getIsDel, 1));
 	}
 
-	public void addFavorite(ArticleFavorites articleFavorites) {
-		articleFavoritesMapper.insert(articleFavorites);
-	}
-
-	public void deleteFavorite(Integer id) {
-		articleFavoritesMapper.update(Wrappers.lambdaUpdate(ArticleFavorites.class)
-				.set(ArticleFavorites::getIsDel, 1)
-				.eq(ArticleFavorites::getArticleId, id)
-				.eq(ArticleFavorites::getUserId, BaseContext.getCurrentId()));
-	}
 
 }

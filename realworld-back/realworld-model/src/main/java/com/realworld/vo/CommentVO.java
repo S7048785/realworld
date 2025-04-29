@@ -25,6 +25,9 @@ public class CommentVO {
 	@Schema(description = "评论用户名称", type = "string")
 	private String username;
 
+	@Schema(description = "用户昵称", type = "string")
+	private String nickname;
+
 	@Schema(description = "评论用户头像链接", type = "string")
 	private String avatar;
 }

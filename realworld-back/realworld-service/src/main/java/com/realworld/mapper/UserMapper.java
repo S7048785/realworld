@@ -16,7 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
-	ProfileVO getProfile(Integer userId, Integer currentId);
+	ProfileVO getProfile(String username, Integer currentId);
 
 	ProfileVO getProfileByArticleId(Integer articleId, Integer userId);
 }

@@ -1,6 +1,8 @@
 package com.realworld;
 
+import com.realworld.constant.CacheConstant;
 import com.realworld.service.ArticleService;
+import com.realworld.utils.CacheUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,13 @@ public class AppTest {
 //	}
 	@Autowired
 	private ArticleService articleService;
+	@Autowired
+	private CacheUtil cacheUtil;
+
+	@Test
+	public void testLogout() {
+		cacheUtil.setStr(CacheConstant.USER_TOKEN_BLACKLIST + "123", "1", 60);
+	}
 
 	@Test
 	public void testArticle() {

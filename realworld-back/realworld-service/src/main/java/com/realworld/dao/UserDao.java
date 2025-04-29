@@ -13,12 +13,12 @@ public class UserDao extends ServiceImpl <UserMapper, User>{
 	@Autowired
 	private UserMapper userMapper;
 
-	public ProfileVO getProfile(Integer id, Integer currentId) {
-		return userMapper.getProfile(id, currentId);
+	public ProfileVO getProfile(String username, Integer currentId) {
+		return userMapper.getProfile(username, currentId);
 	}
 
 	public User getUserInfo(String username, String password) {
-		return userMapper.selectOne(Wrappers.<User>lambdaQuery()
+		return userMapper.selectOne(Wrappers.lambdaQuery(User.class)
 				.eq(User::getUsername, username)
 				.eq(User::getPassword, password));
 	}

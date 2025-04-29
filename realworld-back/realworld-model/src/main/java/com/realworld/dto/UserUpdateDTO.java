@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class UserUpdateDTO {
-	@Pattern(regexp = "^[\\u4E00-\\u9FA5a-zA-z0-9]{2,12}$", message = "用户名格式不正确")
-	@Schema(description = "用户名")
-	private String username;
+
+	@Pattern(regexp = "^[\\u4E00-\\u9FA5a-zA-z0-9]{2,12}$", message = "昵称格式不正确")
+	@Schema(description = "昵称")
+	private String nickname;
 
 	@Schema(description = "密码")
 	@Pattern(regexp = "^\\w{5,17}$", message = "密码格式不正确")

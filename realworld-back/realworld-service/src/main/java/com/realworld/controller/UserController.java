@@ -32,6 +32,13 @@ public class UserController {
 		return Result.success(userService.register(userRegisterDTO));
 	}
 
+	@Operation(summary = "退出登录")
+	@DeleteMapping("/logout")
+	public Result<Void> logout(@RequestHeader("Authorization") String token) {
+		userService.logout(token);
+		return Result.success();
+	}
+
 //	@Operation(summary = "获取验证码")
 //	@GetMapping("/code")
 //	public Result<Void> getCode(@RequestParam String email) {
