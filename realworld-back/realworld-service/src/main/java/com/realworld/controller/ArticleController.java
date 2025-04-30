@@ -44,6 +44,14 @@ public class ArticleController {
 		return new PageResult<>(page.getSize(), page.getRecords(), page.getCurrent(), page.getSize());
 	}
 
+	@Operation(summary = "获取已点赞的文章卡片列表")
+	@GetMapping("/likes")
+	public PageResult<ArticleCardVO> getArticlesLikes(ArticlePageQueryDTO articlePageQueryDTO) {
+		// 获取已点赞的文章卡片列表
+		Page<ArticleCardVO> page = articleService.listLikedArticles(articlePageQueryDTO);
+		return new PageResult<>(page.getSize(), page.getRecords(), page.getCurrent(), page.getSize());
+	}
+
 	@Operation(summary = "获取文章详情")
 	@GetMapping("/{id}")
 	public Result<ArticleVO> getArticle(@PathVariable Integer id) {

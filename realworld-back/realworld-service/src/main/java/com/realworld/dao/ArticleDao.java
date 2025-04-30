@@ -48,4 +48,7 @@ public class ArticleDao extends ServiceImpl<ArticleMapper, Article> {
 	}
 
 
+	public Page<ArticleCardVO> listLikedArticles(ArticlePageQueryDTO articlePageQueryDTO) {
+		return articleMapper.selectListLikedArticles(articlePageQueryDTO);
+	}
 }

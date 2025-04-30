@@ -66,4 +66,27 @@
         where a.id = #{id} and a.is_del = 0
 
     </select>
+    <select id="selectListLikedArticles" resultType="com.realworld.vo.ArticleCardVO"
+            parameterType="com.realworld.dto.ArticlePageQueryDTO">
+        select
+            a.id as id,
+            a.title as title,
+            a.description as `description`,
+            (select (count(*)) from article_like where article_id = a.id and is_del = 0) as like_count,
+            a.created_at as created_at,
+            user.username as author,
+            user.avatar as avatar,
+            GROUP_CONCAT(DISTINCT tags.name SEPARATOR ',') as tags,
+            IFNULL((select 1 from article_like where user_id = #{articlePageQueryDTO.likerId} and article_id = a.id and is_del = 0), 0) as liked
+        from article as a
+                 join article_like as al on a.id = al.article_id and al.is_del = 0
+                 join user on a.author_id = user.id
+                 left join article_tags as at on a.id = at.article_id and at.is_del = 0
+                 left join tags on at.tag_id = tags.id
+        where  a.is_del = 0 and al.user_id = #{articlePageQueryDTO.likerId}
+        GROUP BY
+            a.id, a.title, a.description, a.created_at
+        order by a.created_at desc
+        limit #{articlePageQueryDTO.limit}, #{articlePageQueryDTO.offset};
+    </select>
 </mapper>

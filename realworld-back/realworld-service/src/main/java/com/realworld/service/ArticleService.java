@@ -41,4 +41,6 @@ public interface ArticleService {
 	ArticleVO getArticle(Integer id);
 
 	void likeArticle(Integer id);
+
+	Page<ArticleCardVO> listLikedArticles(ArticlePageQueryDTO articlePageQueryDTO);
 }

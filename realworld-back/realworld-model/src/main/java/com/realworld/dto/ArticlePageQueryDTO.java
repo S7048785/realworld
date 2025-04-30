@@ -19,6 +19,8 @@ public class ArticlePageQueryDTO {
 //	private Integer authorId;
 	@Schema(description = "文章作者用户名")
 	private String username;
+	@Schema(description = "点赞者id")
+	private Integer likerId;
 	@Schema(description = "文章标签")
 	private String tagList;
 	@Schema(description = "页码", defaultValue = "1")

@@ -24,4 +24,6 @@ public interface ArticleMapper extends BaseMapper<Article> {
 	Page<ArticleCardVO> selectListArticleCard(Page<Article> articlePage, ArticlePageQueryDTO articlePageQueryDTO, List<String> tagList, Integer userId);
 
 	ArticleVO selectArticle(Integer id);
+
+	Page<ArticleCardVO> selectListLikedArticles(ArticlePageQueryDTO articlePageQueryDTO);
 }

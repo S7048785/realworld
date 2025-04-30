@@ -173,5 +173,11 @@ public class ArticleServiceImpl implements ArticleService {
 		}
 	}
 
+	@Override
+	public Page<ArticleCardVO> listLikedArticles(ArticlePageQueryDTO articlePageQueryDTO) {
+
+		return articleDao.listLikedArticles(articlePageQueryDTO);
+	}
+
 
 }
