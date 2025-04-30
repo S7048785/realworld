@@ -4,12 +4,13 @@ import {
   deleteArticleAPI,
   getArticleAPI,
   getArticleCardAPI,
-  getArticleCardFeedAPI,
+  getArticleCardFeedAPI, getArticleCardLikedAPI,
   likeArticleAPI,
   updateArticleAPI
 } from "@/api/article.ts"
 import {useDebounceFn} from "@vueuse/core";
 import {getTagListAPI} from '@/api/tags'
+import type {ArticleCardRes} from "@/types/response/article.ts";
 export const useArticleStore = defineStore('article', () => {
 
   // 分页条件
@@ -92,6 +93,17 @@ export const useArticleStore = defineStore('article', () => {
     return hasMoreData.value = res.total !== 0;
   }
 
+  // 获取已点赞的卡片列表
+  // const getArticleLikedList = async (page?: number | any, likerId: string | number) => {
+  //   if (page === 1) {
+  //     currentPage.value = page;
+  //     hasMoreData.value = true;
+  //   }
+  //   const res: any = await getArticleCardLikedAPI({username: '', limit: page, offset: size.value, likerId})
+  //
+  //   return res.records;
+  // }
+
   // 文章点赞
   const articleLike = async (id: number | string) => {
     await likeArticleAPI(id);
@@ -111,6 +123,7 @@ export const useArticleStore = defineStore('article', () => {
     getArticleFeedList,
     getTagList,
     articleLike,
-    clearTags
+    clearTags,
+    // getArticleLikedList
   }
 })

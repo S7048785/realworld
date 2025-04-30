@@ -14,6 +14,7 @@ export interface ArticleCreateReq {
 
 export interface ArticlePageReq {
   username?: string;
+  likerId?:string | number;
   tagList?: string;
   limit: number;
   offset: number;

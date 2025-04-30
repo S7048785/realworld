@@ -11,9 +11,21 @@ const userStore = useUserStore();
 const articleStore = useArticleStore();
 const route = useRoute();
 const router = useRouter()
-console.log(route.params.userId)
 
 const userInfo = ref<ProfileRes>({} as any);
+
+// 标签集合
+const tabList = reactive([
+  {
+    name: route.params.username == userStore.userInfo?.username ? '我的' : 'TA的',
+    getList: addArticleCard
+  }
+])
+// 标记当前标签
+
+
+// 文章卡片列表
+const articleCardList = ref<ArticleCardRes[]>([] as any);
 
 // 点赞文章
 const likeActive = (articleCard: ArticleCardRes) => {
@@ -38,8 +50,25 @@ const addArticleCard = async () => {
       return;
     await articleStore.getArticleList(null, route.params.username as string);
 }
-// 新增卡片消抖
-// const debouncedAddCardFn = useDebounceFn(addArticleCard, 200);
+
+// 关注用户
+const follow = async () => {
+  if (route.params.username === userStore.userInfo?.username) {
+    notify({
+      text: '无法关注自己',
+      type: 'warn'
+    })
+  }
+}
+
+// 下滑新增获取当前用户已点赞的文章卡片
+const addArticleCardLikedList = async () => {
+  // 若卡片列表个数过小, 则不执行
+  if (articleCardList.value?.length < 5) {
+    return;
+  }
+  // articleCardList.value.push(...await articleStore.getArticleLikedList(userInfo.value.id));
+}
 
 onMounted(async () => {
   // 清空标签列表
@@ -63,11 +92,11 @@ onMounted(async () => {
             <h4 v-text="userInfo.username"></h4>
             <p v-text="userInfo.bio">
             </p>
-            <button class="btn btn-sm btn-outline-secondary action-btn">
+            <button @click="follow" class="btn btn-sm btn-outline-secondary action-btn">
               <i class="ion-plus-round"></i>
               &nbsp; Follow {{userInfo.username}}
             </button>
-            <button @click="router.push('/settings')" v-show="userInfo.id === userStore.userInfo?.id" class="btn btn-sm btn-outline-secondary action-btn">
+            <button @click="router.push('/settings')" v-show="userInfo.username === userStore.userInfo?.username" class="btn btn-sm btn-outline-secondary action-btn">
               <i class="ion-gear-a"></i>
               &nbsp; Edit Profile Settings
             </button>
@@ -84,8 +113,8 @@ onMounted(async () => {
               <li class="nav-item">
                 <a class="nav-link active" href="">我 的</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="">已 收 藏</a>
+              <li class="nav-item" @click="">
+                <a class="nav-link" href="javascript: void(0)">已 收 藏</a>
               </li>
             </ul>
           </div>

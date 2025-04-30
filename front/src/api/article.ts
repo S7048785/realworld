@@ -119,6 +119,18 @@ export function getArticleCardFeedAPI(articleCard: ArticlePageReq) {
 }
 
 /**
+ * 获取已点赞的卡片
+ * @param articleCard
+ */
+export function getArticleCardLikedAPI(articleCard: ArticlePageReq) {
+  return request({
+    url: `/articles/likes`,
+    method: 'get',
+    params: articleCard
+  })
+}
+
+/**
  * 点赞文章
  * @param articleId
  */
