@@ -5,6 +5,7 @@ import ArticlePage from "@/pages/article/page.tsx";
 import ProfilePage from "@/pages/profile/page.tsx";
 import SettingsPage from "@/pages/settings/page.tsx";
 import EditorPage from "@/pages/editor/page.tsx";
+import RankPage from "@/pages/rank/page.tsx";
 
 export default createBrowserRouter(  [
 	{
@@ -16,6 +17,13 @@ export default createBrowserRouter(  [
 				element: <HomePage/>,
 				handle: {
 					title: "首页"
+				}
+			},
+			{
+				path: "/rank",
+				element: <RankPage/>,
+				handle: {
+					title: "排行榜"
 				}
 			},
 			{

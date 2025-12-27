@@ -13,7 +13,7 @@ export default function NavBar() {
 					<Link to="/" className="text-primary font-bold">Conduit</Link>
 					<div className="ml-12 text-sm inline-flex gap-4">
 						<NavLink to="/">首页</NavLink>
-						<NavLink to="/article/1">排行榜</NavLink>
+						<NavLink to="/rank">排行榜</NavLink>
 						<NavLink to="/editor">写文章</NavLink>
 						<NavLink to="/settings">设置</NavLink>
 					</div>

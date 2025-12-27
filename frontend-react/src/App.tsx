@@ -6,7 +6,7 @@
 
 import NavBar from "@/components/navbar/NavBar.tsx";
 import {Outlet} from "react-router-dom";
-import PageTitleUpdater from "@/components/PageTitleUpdater.tsx";
+import PageTitleUpdater from "@/hooks/PageTitleUpdater.tsx";
 
 function App() {
   // const [count, setCount] = useState(0)
