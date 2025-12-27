@@ -6,12 +6,15 @@
 
 import NavBar from "@/components/navbar/NavBar.tsx";
 import {Outlet} from "react-router-dom";
+import PageTitleUpdater from "@/components/PageTitleUpdater.tsx";
 
 function App() {
   // const [count, setCount] = useState(0)
 
   return (
     <>
+      <PageTitleUpdater />
+
       <NavBar/>
       <Outlet />
       {/*<div className={"flex justify-center "}>*/}

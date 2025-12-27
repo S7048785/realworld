@@ -33,7 +33,7 @@ pnpm preview
 - `src/lib/` - 工具函数
   - `utils.ts` - `cn()` 函数用于合并 Tailwind class
   - `get-strict-context.tsx` - 严格上下文类型
-- `src/router/index.ts` - 路由配置（使用 React Router）
+- `src/router/index.tsx` - 路由配置（使用 React Router）
 - `src/App.tsx` - 根组件，包含 NavBar 和 Outlet
 
 ### 关键技术
