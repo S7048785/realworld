@@ -24,7 +24,19 @@ const articles = [
 		tags: ["前端", "three.js"],
 		likes: 10,
 		views: 165,
-	}
+	},
+	{
+		id: 3,
+		title: "Go 语言未来会取代 Java 吗？",
+		content: "Go 语言作为一种新兴的编程语言，自2009年发布以来，已经经历了多个版本的迭代。它的设计目标是简单、高效、并发安全。与 Java 相比，Go 语言在语法上更加简洁，同时提供了更好的并发支持。",
+		authorName: "天天摸鱼的Java工程师",
+		authorId: 3,
+		avatar: "/images/9419024696.jpg",
+		datetime: "Dec 7, 2023",
+		tags: ["后端", "Java"],
+		likes: 24,
+		views: 165,
+	},
 ]
 export default function GlobalFeedTabsContent() {
 	return (

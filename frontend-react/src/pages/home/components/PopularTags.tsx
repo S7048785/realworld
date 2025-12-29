@@ -13,7 +13,7 @@ export default function PopularTags({tags, addTab}: {tags: Tag[], addTab: (tab: 
 						tags.map((tag) => (
 								<button
 										key={tag.id}
-										className="bg-card-foreground text-card rounded-full text-xs px-1.5 py-1"
+										className="bg-card-foreground text-card rounded-full text-xs px-1.5 py-1 "
 										onClick={() => addTab({label: `#${tag.name}`, value: tag.name, content:
 											(
 													<p>{tag.name}</p>

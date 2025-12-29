@@ -207,6 +207,7 @@ function LoginForm({
             id="password"
             type="password"
             required
+            placeholder="******"
             autoComplete="on"
           />
         </div>

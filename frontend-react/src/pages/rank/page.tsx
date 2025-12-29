@@ -1,10 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 import "@/styles/markdown.css"
 import remarkGfm from 'remark-gfm';
-// @ts-ignore
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-// @ts-ignore
-import { okaidia } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import {Code, CodeHeader,CodeBlock} from "@/components/animate-ui/components/animate/code.tsx";
 
 // 使用 rehypeHighlight

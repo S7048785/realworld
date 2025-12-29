@@ -54,7 +54,7 @@ function CodeHeader({
   return (
     <div
       className={cn(
-        'bg-accent dark:bg-[#0a0a0a] shrink-0 gap-x-2 border-b border-border/75 dark:border-border/50 text-sm flex text-muted-foreground items-center px-4 w-full h-10',
+        'bg-[#f5f5f5] dark:bg-[#262626] shrink-0 gap-x-2 border-b border-border/75 dark:border-border/50 text-sm flex text-muted-foreground items-center px-4 w-full h-10',
         className,
       )}
       {...props}
@@ -88,7 +88,7 @@ function CodeBlock({ cursor, className, ...props }: CodeBlockProps) {
       theme={theme === 'dark' ? 'dark' : 'light'}
       scrollContainerRef={scrollRef}
       className={cn(
-        'relative text-sm p-4 overflow-auto',
+        'bg-[#fafafa] dark:bg-[#181818] relative text-sm p-4 overflow-auto',
         '[&>pre,_&_code]:!bg-transparent [&>pre,_&_code]:[background:transparent_!important] [&>pre,_&_code]:border-none [&_code]:!text-[13px] [&_code_.line]:!px-0',
         cursor &&
           "data-[done=false]:[&_.line:last-of-type::after]:content-['|'] data-[done=false]:[&_.line:last-of-type::after]:inline-block data-[done=false]:[&_.line:last-of-type::after]:w-[1ch] data-[done=false]:[&_.line:last-of-type::after]:-translate-px",

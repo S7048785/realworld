@@ -64,6 +64,7 @@ export default function HomePage() {
 	const [tabValue, setTabValue] = useState(tabs[0]);
 
 	const addTab = (tab: { label: string, value: string, content: JSX.Element}) => {
+		console.log(123)
 		// 检查是否已存在相同的标签
 		if (tabsState.find((item) => item.value === tab.value)) return;
 		if (tabsState.length > 3) return;

@@ -1,5 +1,6 @@
 import {Button} from "@/components/ui/button.tsx";
 import {Heart} from "lucide-react";
+import ButtonCreativeRight from "@/pages/home/components/ui/ButtonCreativeRight.tsx";
 
 export type Article = {
 	id: number
@@ -53,9 +54,11 @@ export default function ArticleItem({article}: { article: Article }) {
 					</div>
 				</div>
 				<div className="flex">
-					<a href={"/article/123"} className="text-sm text-gray-500">
-						Read More...
-					</a>
+					<div className="inline-flex items-center">
+						<a href={"/article/123"} className="text-sm text-gray-500">
+							<ButtonCreativeRight />
+						</a>
+					</div>
 					<div className="ml-auto">
 						<div className="inline-flex items-center gap-2">
 							{
