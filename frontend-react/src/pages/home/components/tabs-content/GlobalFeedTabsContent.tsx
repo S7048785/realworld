@@ -1,80 +1,61 @@
 import ArticleItem from "@/pages/home/components/ArticleItem.tsx";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {getArticleAllList} from "@/api/article.ts";
 import type {ArticleSimple} from "@/types/response/article.ts";
-import {useInfiniteScroll} from "ahooks";
+import ArticleItemSkeleton from "@/pages/home/components/ui/ArticleItemSkeleton.tsx";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver.tsx";
 
 export default function GlobalFeedTabsContent() {
-	const ref = useRef<HTMLDivElement>(null);
-
-	const [isLoad, setIsLoad] = useState(true)
-
-	const getLoadMoreList = async (skip: number): Promise<{
-		list: ArticleSimple[];
-		total: number;
-		hasMore: boolean;
-		skip: number;
-	}> => {
-
-		const res = await getArticleAllList(skip)
-		// setArticleList(prev => [...prev, ...res.list])
-		// setSkip(skip + 1)
-		console.log("skip",skip)
-		console.log(res.list)
-
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				resolve({
-					list: res.list,
-					total: res.total,
-					hasMore: res.list.length > 0,
-					skip: skip + 1,
-				});
-			}, 1000);
-		});
+	const [skip, setSkip] = useState(1);
+	const [articleList, setArticleList] = useState<ArticleSimple[]>([])
+	const [hasMore, setHasMore] = useState(true)
+	const [loading, setLoading] = useState(false)
+	
+	const loadMore = async () => {
+		console.log(skip)
+		if (!hasMore || loading) return
+		
+		setLoading(true)
+		try {
+			const res = await getArticleAllList(skip)
+			setArticleList(prev => [...prev, ...res.list])
+			setSkip(prevSkip => prevSkip + 1)
+			if (res.list.length == 0) {
+				setHasMore(false)
+			}
+			console.log(res.list)
+		} finally {
+			setLoading(false)
+		}
 	}
-
-
-	const { data , loading, loadingMore, loadMore, noMore } = useInfiniteScroll(
-			(d) => getLoadMoreList(d?.skip || 2),
-			{ target: ref, isNoMore: (d) => d?.hasMore === false, threshold: 100}
-	);
-
-	console.log("noMore", noMore)
+	
+	// 使用自定义 hook
+	const { targetRef } = useIntersectionObserver(loadMore, {
+		threshold: 0.1,
+		hasMore,
+		loading
+	});
 
 	useEffect(() => {
-		(async () => {
-			await getLoadMoreList(1)
-			setIsLoad(false)
-		})()
-
+		// 初始加载数据
+		loadMore();
 	}, []);
+
+
 	return (
-			<div ref={ref} className="flex flex-col min-h-500">
-
-				{loading ? (
-						<p>loading</p>
-				) : (
-						<>
-							{
-								data?.list?.map((article, index) => (
-										<ArticleItem key={index} article={article}/>
-								))
-							}
-						</>
-				)}
-
-				<div style={{marginTop: 8}}>
-					{!noMore && (
-							<button  type="button" onClick={loadMore} >
-								{loadingMore ? 'Loading more...' : 'Click to load more'}
-							</button>
-					)}
-
-					{noMore && <span>No more data</span>}
-				</div>
-
-
-			</div>
+		<div>
+			{
+				articleList.map((article, index) => (
+					<ArticleItem key={index} article={article}/>
+				))
+			}
+			{
+				hasMore && (
+					<div ref={targetRef}>
+						<ArticleItemSkeleton/>
+					</div>
+				)
+			}
+		</div>
 	)
 }

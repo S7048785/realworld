@@ -109,7 +109,7 @@ export default function HomePage() {
 
 						</Tabs>
 					</div>
-					<div className="w-1/5 bg-sidebar p-2 rounded">
+					<div className="w-1/5 bg-sidebar p-2 rounded h-50">
 						<PopularTags tags={tags} addTab={addTab}/>
 					</div>
 				</div>

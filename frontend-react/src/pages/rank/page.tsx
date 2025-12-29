@@ -3,6 +3,8 @@ import "@/styles/markdown.css"
 import remarkGfm from 'remark-gfm';
 import {Code, CodeHeader,CodeBlock} from "@/components/animate-ui/components/animate/code.tsx";
 import {useEffect, useRef, useState} from "react";
+import {Skeleton} from "@/components/ui/skeleton.tsx";
+import ArticleItemSkeleton from "@/pages/home/components/ui/ArticleItemSkeleton.tsx";
 // 使用 rehypeHighlight
 const markdown = `
 # CSS Grid布局快速入门指南
@@ -102,64 +104,42 @@ export default function RankPage() {
 
 	return (
 			<div className="max-w-4xl mx-auto px-6 py-8 markdown">
-				<ReactMarkdown
-						remarkPlugins={[remarkGfm]}
-						components={{
-							code({node, inline, className, children, ...props}) {
-								const match = /language-(\w+)/.exec(className || '');
-								return !inline && match ? (
-										<Code code={String(children).replace(/\n$/, '')}>
-											<CodeHeader copyButton> <span>{match[1]}</span> </CodeHeader>
-											<CodeBlock lang={match[1]}/>
-										</Code>
-								) : (
-										<code className={className} {...props}>
-											{children}
-										</code>
-								);
-								// return !inline && match ? (
-								// 		<SyntaxHighlighter
-								// 				style={okaidia}
-								// 				language={match[1]}
-								// 				PreTag="div"
-								// 				{...props}
-								// 		>
-								// 			{String(children).replace(/\n$/, '')}
-								// 		</SyntaxHighlighter>
-								// ) : (
-								// 		<code className={className} {...props}>
-								// 			{children}
-								// 		</code>
-								// );
-							},
-						}}
-				>
-					{markdown}
-				</ReactMarkdown>
+				{/*<ReactMarkdown*/}
+				{/*		remarkPlugins={[remarkGfm]}*/}
+				{/*		components={{*/}
+				{/*			code({node, inline, className, children, ...props}) {*/}
+				{/*				const match = /language-(\w+)/.exec(className || '');*/}
+				{/*				return !inline && match ? (*/}
+				{/*						<Code code={String(children).replace(/\n$/, '')}>*/}
+				{/*							<CodeHeader copyButton> <span>{match[1]}</span> </CodeHeader>*/}
+				{/*							<CodeBlock lang={match[1]}/>*/}
+				{/*						</Code>*/}
+				{/*				) : (*/}
+				{/*						<code className={className} {...props}>*/}
+				{/*							{children}*/}
+				{/*						</code>*/}
+				{/*				);*/}
+				{/*				// return !inline && match ? (*/}
+				{/*				// 		<SyntaxHighlighter*/}
+				{/*				// 				style={okaidia}*/}
+				{/*				// 				language={match[1]}*/}
+				{/*				// 				PreTag="div"*/}
+				{/*				// 				{...props}*/}
+				{/*				// 		>*/}
+				{/*				// 			{String(children).replace(/\n$/, '')}*/}
+				{/*				// 		</SyntaxHighlighter>*/}
+				{/*				// ) : (*/}
+				{/*				// 		<code className={className} {...props}>*/}
+				{/*				// 			{children}*/}
+				{/*				// 		</code>*/}
+				{/*				// );*/}
+				{/*			},*/}
+				{/*		}}*/}
+				{/*>*/}
+				{/*	{markdown}*/}
+				{/*</ReactMarkdown>*/}
 
-				<ul style={{padding: 0}}>
-					{items.map((item, index) => (
-							<li
-									key={index}
-									style={{
-										padding: '12px',
-										borderBottom: '1px solid #eee',
-										listStyle: 'none',
-									}}
-							>
-								{item}
-							</li>
-					))}
-				</ul>
-				{loading && <div style={{textAlign: 'center', padding: '16px'}}>Loading...</div>}
-				{/* </div> */}
-				{
-					hasMore && (
-							<div ref={target} className="text-center">
-								加载中。。。
-							</div>
-						)
-				}
+				<ArticleItemSkeleton/>
 
 			</div>
 	);
