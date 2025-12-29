@@ -1,6 +1,7 @@
 import {Button} from "@/components/ui/button.tsx";
 import {Heart} from "lucide-react";
 import ButtonCreativeRight from "@/pages/home/components/ui/ButtonCreativeRight.tsx";
+import type {ArticleSimple} from "@/types/response/article.ts";
 
 export type Article = {
 	id: number
@@ -13,8 +14,9 @@ export type Article = {
 	likes: number
 }
 
-export default function ArticleItem({article}: { article: Article }) {
+export default function ArticleItem({article}: { article: ArticleSimple }) {
 
+	const tags: string[] = JSON.parse(article.tags) || []
 
 	return (
 			<div
@@ -23,14 +25,14 @@ export default function ArticleItem({article}: { article: Article }) {
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
 						<img
-								src={article.avatar}
-								alt={article.authorName}
+								src={article.author.avatar}
+								alt={article.author.username}
 								className="w-8 h-8 rounded-full"
 						/>
 						<div>
-							<div className="">{article.authorName}</div>
+							<div className="">{article.author.username}</div>
 							<div className="text-xs text-gray-500">
-								{article.datetime}
+								{new Date(article.created_at).toLocaleString()}
 							</div>
 						</div>
 					</div>
@@ -49,8 +51,8 @@ export default function ArticleItem({article}: { article: Article }) {
 				<div className="">
 					<a href={"/article/123"} target={"_blank"} title={article.title}
 						 className="text-lg mb-1 block">{article.title}</a>
-					<div title={article.content} className="text-sm text-gray-500">
-						{article.content.substring(0, 50)}
+					<div title={article.desc} className="text-sm text-gray-500">
+						{article.desc.substring(0, 50)}
 					</div>
 				</div>
 				<div className="flex">
@@ -62,7 +64,7 @@ export default function ArticleItem({article}: { article: Article }) {
 					<div className="ml-auto">
 						<div className="inline-flex items-center gap-2">
 							{
-								article.tags.map((tag, index) => (
+								tags.map((tag, index) => (
 										<span
 												 key={index}
 												className="border rounded-full text-xs py-1 px-2"

@@ -1,7 +1,10 @@
 import axios from "axios";
 
+// 读取 BACKEND_API_URL 环境变量
+const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
+
 const request = axios.create({
-  baseURL: "http://localhost:8081",
+  baseURL: backendUrl,
   timeout: 10000,
   withCredentials: true,
   headers: {
@@ -35,7 +38,7 @@ request.interceptors.response.use(
       // 抛出异常,阻止后续操作
       // return Promise.reject("用户未登录");
     }
-    return response;
+    return response.data;
   },
   (error) => {
     return Promise.reject(error);
