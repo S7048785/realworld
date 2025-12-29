@@ -5,6 +5,7 @@ from datetime import datetime
 from sqlalchemy.orm import relationship
 from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Column, DateTime, func
+from core.utils.encryp import verify_password, get_password_hash
 
 class SoftDeleteMixin(SQLModel):
     deleted: bool = Field(default=False)
@@ -42,6 +43,22 @@ class User( SoftDeleteMixin, SQLModel, table=True):
     updated_at: datetime = Field(
         sa_column=Column(DateTime, default=func.now(), onupdate=func.now(), nullable=False)
     )
+    
+    def verify_password(self, plain_password: str) -> bool:
+        """验证密码是否匹配哈希值"""
+        # 检查数据库中的密码是否已经是哈希格式
+        if self.password.startswith('$2b$') or self.password.startswith('$2a$') or self.password.startswith('$2y$'):
+            # 如果是哈希格式，直接验证
+            return verify_password(plain_password, self.password)
+        else:
+            # 如果是明文格式，直接比较（仅用于开发环境或数据迁移）
+            # 在生产环境中，应该确保数据库中的密码始终是哈希格式
+            return plain_password == self.password
+    
+    @classmethod
+    def hash_password(cls, password: str) -> str:
+        """将密码转为哈希值"""
+        return get_password_hash(password)
 
 
 
@@ -49,13 +66,17 @@ class Article( SoftDeleteMixin, SQLModel, table=True):
     __tablename__ = "article"
 
     id: int = Field(default=None, primary_key=True)
-    title: str
-    body: Optional[str] = None
+    title: str = Field(description="文章标题")
+    desc: str = Field(description="文章描述")
+    body: str = Field(description="文章内容")
     user_id: int = Field(foreign_key="user.id")
     author: User = Relationship(back_populates="articles")
     likes: int = Field(default=0)
     comments: int = Field(default=0)
     tags: Optional[str] = None
+
+    article_likes: List["ArticleLike"] = Relationship(back_populates="article")
+    comments_list: List["Comment"] = Relationship(back_populates="article")
 
     created_at: datetime = Field(
         sa_column=Column(DateTime, default=func.now(), nullable=False)
@@ -74,7 +95,8 @@ class Comment(SoftDeleteMixin, SQLModel, table=True):
     article_id: int = Field(foreign_key="article.id")  # ← 已补充！
 
     # 对应的反向关系
-    user: User = Relationship( back_populates="comments")
+    user: User = Relationship(back_populates="comments")
+    article: Article = Relationship(back_populates="comments_list")
 
     created_at: datetime = Field(
         sa_column=Column(DateTime, default=func.now(), nullable=False)
@@ -94,9 +116,9 @@ class UserFollow(SoftDeleteMixin, SQLModel, table=True):
     followed_user_id: int = Field(foreign_key="user.id", description="被关注ID")
 
     # 关系定义
-    user: User = Relationship(back_populates="followed_users",
+    user: "User" = Relationship(back_populates="followed_users",
                              sa_relationship_kwargs={"foreign_keys": "[UserFollow.user_id]"})
-    followed_user: User = Relationship(back_populates="followers",
+    followed_user: "User" = Relationship(back_populates="followers",
                                       sa_relationship_kwargs={"foreign_keys": "[UserFollow.followed_user_id]"})
 
     created_at: datetime = Field(
@@ -112,8 +134,8 @@ class ArticleLike(SoftDeleteMixin, SQLModel, table=True):
     article_id: int = Field(foreign_key="article.id")
 
     # 关系定义
-    user: User = Relationship(back_populates="liked_articles")
-    article: Article = Relationship(back_populates="likes")
+    user: "User" = Relationship(back_populates="liked_articles")
+    article: "Article" = Relationship(back_populates="article_likes")
 
     created_at: datetime = Field(
         sa_column=Column(DateTime, default=func.now(), nullable=False)

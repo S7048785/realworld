@@ -2,8 +2,9 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 
-from api import users, articles
+from api import users, articles, tags
 from db.session import init_db
 
 
@@ -20,11 +21,23 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# 添加认证中间件
-# app.add_middleware(AuthMiddleware)
+# 定义允许的跨域源
+origins = [
+"http://localhost:5173",
+]
+
+# 添加 CORS 中间件
+app.add_middleware(
+CORSMiddleware,
+allow_origins=origins, # 允许的源
+allow_credentials=True, # 是否允许携带凭据（如 Cookies）
+allow_methods=["*"], # 允许的 HTTP 方法
+allow_headers=["*"] # 允许的请求头
+)
 
 app.include_router(users.router)
 app.include_router(articles.router)
+app.include_router(tags.router)
 
 @app.get("/")
 def root():

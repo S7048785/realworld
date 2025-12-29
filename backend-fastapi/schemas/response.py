@@ -16,6 +16,13 @@ class ResponseCode(IntEnum):
     NOT_FOUND = 404
     INTERNAL_ERROR = 500
 
+class PageResult(BaseModel, Generic[T]):
+    """分页信息"""
+    page: int = 1
+    page_size: int = 10
+    total: int = 0
+    list: List[T]
+
 class Result(BaseModel, Generic[T]):
     """通用响应类"""
     code: int = ResponseCode.SUCCESS

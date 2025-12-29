@@ -1,9 +1,11 @@
 # app/db/session.py
-from sqlmodel import create_engine, SQLModel, Session
+from sqlmodel import create_engine, SQLModel, Session, select
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 from sqlalchemy.pool import NullPool
 import os
 from dotenv import load_dotenv
+
+from models.models import Article
 
 load_dotenv()
 

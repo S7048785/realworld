@@ -9,17 +9,23 @@ class UserCreate(BaseModel):
     bio: str | None = None
 
 class UserUpdate(BaseModel):
-    username: str | None = None
-    bio: str | None = None
-    avatar: str | None = None
+    username: str
+    email: str
+    password: str
+    avatar: str
+    bio: str
     # 注意：不包含 password（除非有单独的“修改密码”接口）
 
 class UserLogin(BaseModel):
     email: str
     password: str
 
+class UserRegister(BaseModel):
+    email: str
+    password: str
 
-class UserPublic(BaseModel):
+
+class UserDetail(BaseModel):
     id: int
     username: str
     email: str
@@ -29,3 +35,8 @@ class UserPublic(BaseModel):
 
     class Config:
         from_attributes = True  # 允许从 ORM 对象自动转换（Pydantic v2）
+
+class UserSimple(BaseModel):
+    id: int
+    username: str
+    avatar: str
