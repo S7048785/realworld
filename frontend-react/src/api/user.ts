@@ -7,7 +7,7 @@ import type {UserLoginRes} from "@/types/response/user.ts";
 	* @param email 用户邮箱
 	* @param password 用户密码
  */
-export const login = async (
+const login = async (
 		{email, password}: {email: string, password: string}
 ): Result<UserLoginRes> => {
 	return request({
@@ -25,7 +25,7 @@ export const login = async (
  * @param email 用户邮箱
  * @param password 用户密码
  */
-export const register = async (
+const register = async (
 		{email, password}: {email: string, password: string}
 ): Result<UserLoginRes> => {
 	return request({
@@ -36,4 +36,9 @@ export const register = async (
 				password
 		}
 	})
+}
+
+export default {
+	login,
+	register
 }

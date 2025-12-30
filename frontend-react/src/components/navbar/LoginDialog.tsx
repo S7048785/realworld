@@ -12,9 +12,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { type RefObject, useEffect, useRef, useState } from "react";
-// import { validateUserForm } from "@/lib/validata";
-// import toast from "react-hot-toast";
-// import api from "@/lib/request";
+import toast from "react-hot-toast";
+import api from "@/api/user";
+
+import { z } from "zod";
+
+const loginSchema  = z.object({
+  email: z.email("请输入有效的邮箱地址"),
+  password: z.string().min(6, "密码长度必须至少为6个字符"),
+});
 
 export default function LoginDialog({
   isOpen,
@@ -28,77 +34,72 @@ export default function LoginDialog({
 
   const btnRef = useRef<HTMLButtonElement>(null);
   const login = async (e: React.FormEvent) => {
-    // e.preventDefault();
-    // btnRef.current!.disabled = true;
-    //
-    // // 校验表单
-    // if (
-    //   !validateUserForm(
-    //     {
-    //       username: emailInputRef.current!.value,
-    //       password: passwordInputRef.current!.value,
-    //     },
-    //     (message) => {
-    //       toast.error(message);
-    //     }
-    //   )
-    // ) {
-    //   btnRef.current!.disabled = false;
-    //   return;
-    // }
-    //
-    // // 发送登录请求
-    // const res = (
-    //   await api.loginUser(
-    //     emailInputRef.current!.value,
-    //     passwordInputRef.current!.value
-    //   )
-    // ).data;
-    // console.log(res.data);
-    // if (res.code === 200) {
-    //   toast.success("登录成功！");
-    //   window.location.reload();
-    // } else {
-    //   toast.error(res?.msg || "登录失败");
-    //   btnRef.current!.disabled = false;
-    // }
+    e.preventDefault();
+    btnRef.current!.disabled = true;
+
+    // 校验表单
+    if (
+      !loginSchema.safeParse(
+        {
+          email: emailInputRef.current!.value,
+          password: passwordInputRef.current!.value,
+        },
+      )
+    ) {
+      btnRef.current!.disabled = false;
+      return;
+    }
+
+    // 发送登录请求
+    const res =
+      await api.login(
+          {
+             email:emailInputRef.current!.value,
+             password:passwordInputRef.current!.value
+          }
+      );
+    console.log(res.data);
+    if (res.code === 200) {
+      toast.success("登录成功！");
+      window.location.reload();
+    } else {
+      toast.error(res?.msg || "登录失败");
+      btnRef.current!.disabled = false;
+    }
   };
 
   const register = async (e: React.FormEvent) => {
-    // e.preventDefault();
-    // btnRef.current!.disabled = true;
-    // if (passwordInputRef.current!.value !== passwordInputRef.current!.value) {
-    //   toast.error("两次密码不一致");
-    //   btnRef.current!.disabled = false;
-    //   return;
-    // }
-    //
-    // if (
-    //   !validateUserForm(
-    //     {
-    //       username: emailInputRef.current!.value,
-    //       password: passwordInputRef.current!.value,
-    //     },
-    //     (message) => {
-    //       toast.error(message);
-    //     }
-    //   )
-    // ) {
-    //   btnRef.current!.disabled = false;
-    //   return;
-    // }
-    // const res = (
-    //   await api.registerUser({
-    //     username: emailInputRef.current!.value,
-    //     userpassword: passwordInputRef.current!.value,
-    //   })
-    // ).data;
-    // console.log(res.data);
-    // if (res.code !== 200) {
-    //   toast.error(res?.msg || "注册失败");
-    //   return;
-    // }
-    // toast.success("注册成功！请前往登录账号");
+    e.preventDefault();
+    btnRef.current!.disabled = true;
+    if (passwordInputRef.current!.value !== passwordInputRef.current!.value) {
+      toast.error("两次密码不一致");
+      btnRef.current!.disabled = false;
+      return;
+    }
+
+    if (
+      !loginSchema.safeParse(
+        {
+          email: emailInputRef.current!.value,
+          password: passwordInputRef.current!.value,
+        },
+      )
+    ) {
+      btnRef.current!.disabled = false;
+      return;
+    }
+    const res = (
+      await api.register({
+        email: emailInputRef.current!.value,
+        password: passwordInputRef.current!.value,
+      })
+    );
+    console.log(res.data);
+    if (res.code !== 200) {
+      toast.error(res?.msg || "注册失败");
+      return;
+    }
+    toast.success("注册成功！请前往登录账号");
   };
 
   const [scope, animate] = useAnimate();
