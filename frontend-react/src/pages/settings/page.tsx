@@ -2,31 +2,41 @@ import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {useState} from "react";
+import { useState} from "react";
+import api from "@/api/user.ts"
+import {useUserStore} from "@/store/userStore.ts";
+import toast from "react-hot-toast";
 
 export default function SettingsPage() {
-	const [name, setName] = useState("")
-	const [email, setEmail] = useState("")
+	const user = useUserStore(state => state.user)
+	const [name, setName] = useState(user?.username || "")
+	const [email, setEmail] = useState(user?.email || "")
 	const [password, setPassword] = useState("")
-	const [avatar, setAvatar] = useState("")
-	const [introduction, setIntroduction] = useState("")
+	const [avatar, setAvatar] = useState(user?.avatar || "")
+	const [introduction, setIntroduction] = useState(user?.bio || "")
 
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const handleSubmit = async () => {
-		if (!name.trim() || !email.trim() || !password.trim() ) return
+		if (!name.trim() || !email.trim() ) return
 
 		setIsSubmitting(true)
 		try {
 			// 模拟提交
-			const articleData = {
-				name,
+			const userData = {
+				username: name,
 				email,
 				password,
 				avatar,
-				introduction,
+				bio: introduction,
 			}
-			console.log("Submitting:", articleData)
 
+			const res = await api.updateUserInfo(userData)
+			console.log("Submitting:", res)
+			if (res.code === 200) {
+				toast.success("修改成功")
+			} else {
+				toast.error(res.msg || "修改失败")
+			}
 			// 提交成功后跳转
 			// navigate("/")
 		} catch (error) {
@@ -35,9 +45,10 @@ export default function SettingsPage() {
 			setIsSubmitting(false)
 		}
 	}
-  return (
+
+	return (
 			<div className="max-w-3xl mx-auto px-6 py-8">
-				{/*<h1 className="text-3xl font-bold mb-8">Editor</h1>*/}
+				<h1 className="text-3xl font-bold mb-8">Settings</h1>
 
 				<div className="space-y-6">
 					{/* 用户名 */}
@@ -61,7 +72,7 @@ export default function SettingsPage() {
 						<Input
 								id="email"
 								type="email"
-							 required
+								required
 								placeholder="Your email"
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
@@ -77,7 +88,7 @@ export default function SettingsPage() {
 						<Input
 								id="password"
 								type="password"
-								 required
+								required
 								placeholder="Your password"
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
@@ -113,7 +124,8 @@ export default function SettingsPage() {
 
 					{/* 操作按钮 */}
 					<div className="flex items-center justify-end gap-4 pt-4 text-lg">
-						<Button className="px-10" onClick={handleSubmit} disabled={!name.trim() || !email.trim() || !password.trim() || isSubmitting}>
+						<Button className="px-10" onClick={handleSubmit}
+										disabled={!name.trim() || !email.trim() || isSubmitting}>
 							{isSubmitting ? "修改中..." : "确定"}
 						</Button>
 					</div>

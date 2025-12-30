@@ -48,8 +48,25 @@ const getUserInfo = async (): Result<UserDetail> => {
 	})
 }
 
+const updateUserInfo = async (
+		{username, email, password, avatar, bio}: {username: string, email: string, password: string, avatar: string, bio: string}
+): Result<UserDetail> => {
+	return request({
+		method: 'PUT',
+		url: '/users',
+		data: {
+				username,
+				email,
+				password,
+				avatar,
+				bio
+		}
+	})
+}
+
 export default {
 	login,
 	register,
-	getUserInfo
+	getUserInfo,
+	updateUserInfo
 }

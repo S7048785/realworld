@@ -5,7 +5,7 @@
 // import NavBar from "@/components/navbar/NavBar.tsx";
 
 import NavBar from "@/components/navbar/NavBar.tsx";
-import {Outlet} from "react-router-dom";
+import AnimatedOutlet from "@/components/AnimatedOutlet.tsx";
 import PageTitleUpdater from "@/hooks/PageTitleUpdater.tsx";
 import {SparklesCore} from "@/components/ui/sparkles.tsx";
 import {useTheme} from "@/components/theme-provider.tsx";
@@ -41,11 +41,9 @@ function App() {
           />
         </div>
         <div ref={scrollRef} className="relative h-screen overflow-y-scroll">
-            <NavBar/>
+          <NavBar/>
+          <AnimatedOutlet/>
 
-              <Outlet/>
-
-          {/* 使用自定义配置的组件 */}
           <BackToTop
               threshold={200}
               size={50}

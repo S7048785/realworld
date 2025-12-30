@@ -1,10 +1,59 @@
+import {Button} from "@/components/ui/button.tsx";
+
 export default function AboutPage() {
 	return (
-		<div className="max-w-3xl mx-auto px-6 py-8">
-			<p className="text-3xl font-bold mb-4">关于 Conduit</p>
-			<p className="text-lg">
-				这里是关于我们页面的详细内容。
-			</p>
-		</div>
+			<div className="max-w-5xl mx-auto px-6 py-8">
+				<div className="mb-8">
+					<p className="text-3xl font-bold mb-4">关于 Conduit</p>
+					<p className="text-lg mb-2">
+						这是GitHub上的一个用于练习技术栈的 Demo 项目 <Button variant={"link"}><a
+							href="https://github.com/gothinkster/realworld" className="text-primary text-lg">realworld</a></Button>
+					</p>
+					<p className="text-lg mb-2">该项目基于 React + Fast Api 开发</p>
+				</div>
+
+				<div className="mb-8">
+					<p className="text-3xl font-bold mb-4">技术栈</p>
+
+					<ul className="list-disc pl-6 text-lg space-y-2">
+						<li>前端: ReactTailwind CSSMotionShadcn/UIAceternity UIAnimate UIUI LayoutsZustandZodAhooks</li>
+						<li>后端: Fast ApiSQLModelJWT</li>
+						<li>数据库: MySQL</li>
+					</ul>
+				</div>
+
+				<div className="mb-8">
+					<p className="text-3xl font-bold mb-4">UI/技术 参考</p>
+					<p className="">
+						<Button variant={"link"}>
+							<a href="https://github.com/gothinkster/realworld" target={"_blank"} className="text-primary text-lg">realworld</a>
+						</Button>
+						<Button variant={"link"}><a href="https://blog.grtsinry43.com/" target={"_blank"} className="text-primary text-lg">Grtsinry43的前端札记</a></Button>
+						<Button variant={"link"}><a href="https://www.vio.vin/" target={"_blank"} className="text-primary text-lg">薇尔薇</a></Button>
+						<Button variant={"link"}><a href="https://heyxiaoli.com/" target={"_blank"} className="text-primary text-lg">小李的生活志</a></Button>
+						<Button variant={"link"}><a href="https://fuxiaochen.com/" target={"_blank"} className="text-primary text-lg">付小晨</a></Button>
+						<Button variant={"link"}><a href="https://juejin.cn/" target={"_blank"} className="text-primary text-lg">稀土掘金</a></Button>
+					</p>
+					<p>
+						<Button variant={"link"}><a href="https://www.bilibili.com/opus/915654579034521632" target={"_blank"} className="text-primary text-lg">路由过渡动画</a></Button>
+					</p>
+				</div>
+
+
+			</div>
 	);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

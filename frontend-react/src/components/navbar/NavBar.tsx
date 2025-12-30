@@ -1,4 +1,4 @@
-import {Link, NavLink, useLocation} from "react-router-dom";
+import {Link, NavLink, useLocation, useNavigate} from "react-router-dom";
 import LoginDialog from "@/components/user/LoginDialog.tsx";
 import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
@@ -37,6 +37,7 @@ const navList = [
 
 export default function NavBar() {
 	const location = useLocation()
+	const navigate = useNavigate()
 	const [isLoginShow, setIsLoginShow] = useState(false);
 	const user = useUserStore(state => state.user)
 	const clearUser = useUserStore(state => state.clearUser)
@@ -56,15 +57,15 @@ export default function NavBar() {
 							{
 								navList.map((item, index) => (
 										<NavLink key={index} to={item.path} className={
-											"px-8 py-2 navitem"
+											"px-8 py-2 navitem overflow-hidden"
 										}>
 											<div
-													className="relative bg-transparent overflow-hidden hover:text-primary! text-shadow-sm text-center transition-all">
+													className="relative bg-transparent hover:text-primary! text-shadow-sm text-center transition-all">
 												<motion.span
 														initial={{y: -40}}
 														animate={{y: 0}}
 														transition={{delay: index * 0.05, duration: 0.2}}
-														className="block pb-0"
+														className="block pb-0 "
 												>
 													{item.name}
 												</motion.span>
@@ -100,13 +101,18 @@ export default function NavBar() {
 												</Button>
 											</DropdownMenuTrigger>
 											<DropdownMenuContent className="max-w-64">
-												<DropdownMenuItem>
-													<Link to="/settings" >
+
+												<DropdownMenuItem className="p-2 hover:bg-none!">
+														<User aria-hidden="true" className="opacity-60" size={16} />
+														<span>{user.username}</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem className="p-2" onClick={() => {
+													navigate('/settings')
+												}}>
 														<Settings aria-hidden="true" className="opacity-60" size={16} />
 														<span>Settings</span>
-													</Link>
 												</DropdownMenuItem>
-												<DropdownMenuItem onClick={() => {
+												<DropdownMenuItem className="p-2" onClick={() => {
 													clearUser()
 													toast.success("退出成功")
 												}}>

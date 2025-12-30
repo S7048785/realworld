@@ -20,7 +20,7 @@ export default function ArticleItem({article}: { article: ArticleSimple }) {
 
 	return (
 			<div
-					className="flex flex-col gap-3 border-b border-gray-300 py-4"
+					className="flex flex-col gap-3 px-4 border-b border-gray-300 dark:border-gray-700 py-4 transition hover:bg-sidebar-ring/10 rounded-xl"
 			>
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">

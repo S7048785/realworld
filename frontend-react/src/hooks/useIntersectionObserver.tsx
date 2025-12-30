@@ -32,7 +32,7 @@ interface UseIntersectionObserverOptions {
 const useIntersectionObserver = (
   loadMore: () => void,
   {
-    threshold = 0.5,
+    threshold = 0.1,
     root = null,
     rootMargin = '0px',
     hasMore = true,
