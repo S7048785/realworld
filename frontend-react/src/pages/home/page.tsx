@@ -1,45 +1,38 @@
 import {
-	Tabs,
-	TabsContent,
+	Tabs, TabsContent,
 	TabsContents,
 	TabsList,
 	TabsTrigger,
 } from '@/components/animate-ui/components/animate/tabs.tsx';
 
 import PopularTags from "@/pages/home/components/PopularTags.tsx";
-import GlobalFeedTabsContent from "@/pages/home/components/tabs-content/GlobalFeedTabsContent.tsx";
 import YourFeedTabsContent from "@/pages/home/components/tabs-content/YourFeedTabsContent.tsx";
 import {type JSX, useState} from "react";
+import {getArticleAllList} from "@/api/article.ts";
+import ArticleListTabsContent from "@/pages/home/components/ArticleListTabsContent.tsx";
 
 const tags = [
 	{
-		name: "HuManlty",
+		name: "Java",
 		id: 1
 	},
 	{
-		name: "Programming",
+		name: "后端",
 		id: 2
 	},
 	{
-		name: "Design",
+		name: "前端",
 		id: 3
 	},
 	{
-		name: "Data",
+		name: "程序员",
 		id: 4
 	},
 	{
-		name: "Machine",
+		name: "GitHub",
 		id: 5
 	},
-	{
-		name: "Intelligence",
-		id: 6
-	},
-	{
-		name: "Things",
-		id: 7
-	}
+
 ]
 
 const tabs = [
@@ -47,7 +40,7 @@ const tabs = [
 			label: "Global Feed",
 			value: "Global Feed",
 			content: (
-					<GlobalFeedTabsContent />
+					<ArticleListTabsContent getData={(skip: number) => getArticleAllList({skip})} />
 			),
 		},
 		{
@@ -81,7 +74,7 @@ export default function HomePage() {
 				</div>
 
 				<div className="pt-10 px-25 min-h-100 flex gap-8">
-					<div className="flex-1">
+					<div className="w-4/5">
 						<Tabs className="" value={tabValue.value}>
 							<TabsList
 												className="h-auto w-full flex justify-start gap-2 rounded-none border-b bg-transparent px-0 py-1 text-foreground text-lg">
@@ -109,7 +102,7 @@ export default function HomePage() {
 
 						</Tabs>
 					</div>
-					<div className="w-1/5 bg-sidebar p-2 rounded h-50">
+					<div className="flex-1 bg-sidebar p-2 rounded h-50">
 						<PopularTags tags={tags} addTab={addTab}/>
 					</div>
 				</div>

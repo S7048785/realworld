@@ -1,4 +1,6 @@
 import type {JSX} from "react";
+import ArticleListTabsContent from "@/pages/home/components/ArticleListTabsContent.tsx";
+import {getArticleListByTag} from "@/api/article.ts";
 
 export type Tag = {
 	name: string
@@ -16,7 +18,7 @@ export default function PopularTags({tags, addTab}: {tags: Tag[], addTab: (tab: 
 										className="bg-card-foreground text-card rounded-full text-xs px-1.5 py-1 "
 										onClick={() => addTab({label: `#${tag.name}`, value: tag.name, content:
 											(
-													<p>{tag.name}</p>
+													<ArticleListTabsContent getData={(skip) => getArticleListByTag({tag_name: tag.name, skip})}/>
 											)
 											})}
 								>

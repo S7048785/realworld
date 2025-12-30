@@ -32,13 +32,13 @@ interface UseIntersectionObserverOptions {
 const useIntersectionObserver = (
   loadMore: () => void,
   {
-    threshold = 0.1,
+    threshold = 0.5,
     root = null,
     rootMargin = '0px',
     hasMore = true,
     loading = false
   }: UseIntersectionObserverOptions = {}
-) => {
+): { targetRef: React.RefObject<HTMLDivElement | null> } => {
   const targetRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 

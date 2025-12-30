@@ -9,7 +9,7 @@ import type {ArticleSimple} from "@/types/response/article.ts";
  * @param limit
  * @returns 文章列表
  */
-export const getArticleListByUserId = async (userId: number, skip: number = 1, limit: number = 5): PageData<ArticleSimple> => {
+export const getArticleListByUserId = async ({userId, skip = 1, limit = 5}: { userId: number, skip?: number, limit?: number}): PageData<ArticleSimple> => {
 	return request({
 		url: "/articles/user",
 		method: "GET",
@@ -28,7 +28,7 @@ export const getArticleListByUserId = async (userId: number, skip: number = 1, l
  * @param limit
  * @returns 文章列表
  */
-export const getArticleListByTag = async (tag_name: string, skip: number = 1, limit: number = 5): PageData<ArticleSimple> => {
+export const getArticleListByTag = async ({tag_name, skip = 1, limit = 5}: { tag_name: string, skip?: number, limit?: number}): PageData<ArticleSimple> => {
 	return request({
 		url: "/articles/tag",
 		method: "GET",
@@ -46,7 +46,7 @@ export const getArticleListByTag = async (tag_name: string, skip: number = 1, li
  * @param limit
  * @returns 文章列表
  */
-export const getArticleAllList = async (skip: number = 1, limit: number = 5): PageData<ArticleSimple> => {
+export const getArticleAllList = async ({skip = 1, limit = 5}: { skip?: number, limit?: number}): PageData<ArticleSimple> => {
 	return request({
 		url: "/articles",
 		method: "GET",

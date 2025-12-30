@@ -1,10 +1,7 @@
 import ReactMarkdown from 'react-markdown';
 import "@/styles/markdown.css"
 import remarkGfm from 'remark-gfm';
-import {Code, CodeHeader,CodeBlock} from "@/components/animate-ui/components/animate/code.tsx";
-import {useEffect, useRef, useState} from "react";
-import {Skeleton} from "@/components/ui/skeleton.tsx";
-import ArticleItemSkeleton from "@/pages/home/components/ui/ArticleItemSkeleton.tsx";
+import {CodeBlock, CodeHeader ,Code} from "@/components/animate-ui/components/animate/code.tsx";
 // 使用 rehypeHighlight
 const markdown = `
 # CSS Grid布局快速入门指南
@@ -61,85 +58,28 @@ export { MyComponent, type MyComponentProps };
 
 export default function RankPage() {
 
-	let observer: IntersectionObserver;
-	const loadMore = async () => {
-		console.log(124243)
-		if (loading) return;
-		setLoading(true);
-		console.log(999999)
-		try {
-			// 模拟 API 请求
-			await new Promise((resolve) => setTimeout(resolve, 800));
-			setItems((prev) => [
-				...prev,
-				...Array.from({ length: 10 }, (_, i) => `Item ${prev.length + i + 1}`),
-			]);
-		} finally {
-			setLoading(false);
-		}
-	};
-// 初始化观察器
-	const initIntersectionObserver = () => {
-		observer = new IntersectionObserver(loadMore, {threshold: 0.1}); // 当元素10%进入视口时触发
-
-		if (target.current) observer.observe(target.current);
-	}
-	// 哨兵元素
-	const target = useRef(null);
-
-	const [loading, setLoading] = useState(false)
-
-	const [hasMore, setHasMore] = useState(true)
-	const [items, setItems] = useState<string[]>(
-			Array.from({ length: 20 }, (_, i) => `Item ${i + 1}`)
-	);
-
-
-	useEffect(() => {
-		initIntersectionObserver();
-		return () => {
-			if (observer) observer.disconnect();
-		};
-	}, []);
-
 	return (
 			<div className="max-w-4xl mx-auto px-6 py-8 markdown">
-				{/*<ReactMarkdown*/}
-				{/*		remarkPlugins={[remarkGfm]}*/}
-				{/*		components={{*/}
-				{/*			code({node, inline, className, children, ...props}) {*/}
-				{/*				const match = /language-(\w+)/.exec(className || '');*/}
-				{/*				return !inline && match ? (*/}
-				{/*						<Code code={String(children).replace(/\n$/, '')}>*/}
-				{/*							<CodeHeader copyButton> <span>{match[1]}</span> </CodeHeader>*/}
-				{/*							<CodeBlock lang={match[1]}/>*/}
-				{/*						</Code>*/}
-				{/*				) : (*/}
-				{/*						<code className={className} {...props}>*/}
-				{/*							{children}*/}
-				{/*						</code>*/}
-				{/*				);*/}
-				{/*				// return !inline && match ? (*/}
-				{/*				// 		<SyntaxHighlighter*/}
-				{/*				// 				style={okaidia}*/}
-				{/*				// 				language={match[1]}*/}
-				{/*				// 				PreTag="div"*/}
-				{/*				// 				{...props}*/}
-				{/*				// 		>*/}
-				{/*				// 			{String(children).replace(/\n$/, '')}*/}
-				{/*				// 		</SyntaxHighlighter>*/}
-				{/*				// ) : (*/}
-				{/*				// 		<code className={className} {...props}>*/}
-				{/*				// 			{children}*/}
-				{/*				// 		</code>*/}
-				{/*				// );*/}
-				{/*			},*/}
-				{/*		}}*/}
-				{/*>*/}
-				{/*	{markdown}*/}
-				{/*</ReactMarkdown>*/}
-
-				<ArticleItemSkeleton/>
+				<ReactMarkdown
+						remarkPlugins={[remarkGfm]}
+						components={{
+							code({node, inline, className, children, ...props}) {
+								const match = /language-(\w+)/.exec(className || '');
+								return !inline && match ? (
+										<Code code={String(children).replace(/\n$/, '')}>
+											<CodeHeader copyButton> <span>{match[1]}</span> </CodeHeader>
+											<CodeBlock lang={match[1]}/>
+										</Code>
+								) : (
+										<code className={className} {...props}>
+											{children}
+										</code>
+								);
+							},
+						}}
+				>
+					{markdown}
+				</ReactMarkdown>
 
 			</div>
 	);

@@ -30,8 +30,8 @@ export default function NavBar() {
 	const location = useLocation()
 	const [isLoginShow, setIsLoginShow] = useState(false);
 	return (
-			<div className={clsx("backdrop-blur-[8px] sticky top-0", location.pathname === "/" ? "bg-background" : "dark:bg-neutral-800/20 ")}>
-				<div className="relative flex justify-between items-center top-0 px-20 py-3 border-b ">
+			<div className={clsx("sticky top-0 z-2", location.pathname == "/" ? "bg-background" : "dark:bg-neutral-800/20 backdrop-blur-[8px]")}>
+				<div className="relative flex justify-between items-center top-0 px-20 py-3 border-b h-18">
 					{/* Logo */}
 					<div className="flex-1">
 						<Link to="/" className="text-primary font-bold text-xl">Conduit</Link>
@@ -65,19 +65,17 @@ export default function NavBar() {
 										</NavLink>
 								))
 							}
-
-
 					</div>
 
 					<div className="flex flex-1 justify-end items-center space-x-4">
 						<div className="inline-flex">
-							{/*<ModeToggle />*/}
 							<ThemeTogglerButtonDemo/>
 						</div>
 						<div className="flex space-x-4">
 							<Button variant={"outline"} onClick={() => setIsLoginShow(true)}>
 								<User className="" size={16}/>
-								登录</Button>
+								登录
+							</Button>
 						</div>
 					</div>
 				</div>
