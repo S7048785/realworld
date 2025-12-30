@@ -12,3 +12,8 @@ export type UserDetail = {
 	avatar: string,
 	created_at: Date
 }
+
+export type UserLoginRes = {
+	access_token: string,
+	user: UserDetail,
+}

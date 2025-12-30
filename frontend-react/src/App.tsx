@@ -9,10 +9,13 @@ import {Outlet} from "react-router-dom";
 import PageTitleUpdater from "@/hooks/PageTitleUpdater.tsx";
 import {SparklesCore} from "@/components/ui/sparkles.tsx";
 import {useTheme} from "@/components/theme-provider.tsx";
+import BackToTop from "@/components/BackToTop.tsx";
+import { useRef} from "react";
 
 function App() {
   // const [count, setCount] = useState(0)
   const { theme } = useTheme();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   return (
       <>
@@ -28,32 +31,18 @@ function App() {
               particleColor={theme === "dark" ? "#ffffff" : "#000000"}
           />
         </div>
-        <div className="relative h-screen overflow-y-scroll">
+        <div ref={scrollRef} className="relative h-screen overflow-y-scroll">
             <NavBar/>
             <Outlet/>
+          {/* 使用自定义配置的组件 */}
+          <BackToTop
+              threshold={200}
+              size={50}
+              scrollRef={scrollRef}
+          />
         </div>
 
-        {/*<div className={"flex justify-center "}>*/}
-        {/*  <a href="https://vite.dev" target="_blank">*/}
-        {/*    <img src={viteLogo} className="logo" alt="Vite logo" />*/}
-        {/*  </a>*/}
-        {/*  <a href="https://react.dev" target="_blank">*/}
-        {/*    <img src={reactLogo} className="logo react" alt="React logo" />*/}
-        {/*  </a>*/}
-        {/*</div>*/}
-        {/*<h1>Vite + React</h1>*/}
-        {/*<div className="card">*/}
-        {/*  <button onClick={() => setCount((count) => count + 1)}>*/}
-        {/*    count is {count}*/}
-        {/*  </button>*/}
-        {/*  <p>*/}
-        {/*    Edit <code>src/App.tsx</code> and save to test HMR*/}
-        {/*  </p>*/}
-        {/*  <ModeToggle></ModeToggle>*/}
-        {/*</div>*/}
-        {/*<p className="read-the-docs">*/}
-        {/*  Click on the Vite and React logos to learn more*/}
-        {/*</p>*/}
+
       </>
   )
 }

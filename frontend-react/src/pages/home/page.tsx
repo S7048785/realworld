@@ -11,30 +11,6 @@ import {type JSX, useState} from "react";
 import {getArticleAllList} from "@/api/article.ts";
 import ArticleListTabsContent from "@/pages/home/components/ArticleListTabsContent.tsx";
 
-const tags = [
-	{
-		name: "Java",
-		id: 1
-	},
-	{
-		name: "后端",
-		id: 2
-	},
-	{
-		name: "前端",
-		id: 3
-	},
-	{
-		name: "程序员",
-		id: 4
-	},
-	{
-		name: "GitHub",
-		id: 5
-	},
-
-]
-
 const tabs = [
 		{
 			label: "Global Feed",
@@ -103,9 +79,10 @@ export default function HomePage() {
 						</Tabs>
 					</div>
 					<div className="flex-1 bg-sidebar p-2 rounded h-50">
-						<PopularTags tags={tags} addTab={addTab}/>
+						<PopularTags addTab={addTab}/>
 					</div>
 				</div>
+
 
 			</div>
 	)
