@@ -6,6 +6,7 @@ import ProfilePage from "@/pages/profile/page.tsx";
 import SettingsPage from "@/pages/settings/page.tsx";
 import EditorPage from "@/pages/editor/page.tsx";
 import RankPage from "@/pages/rank/page.tsx";
+import AboutPage from "@/pages/about/page.tsx";
 
 export default createBrowserRouter(  [
 	{
@@ -52,6 +53,13 @@ export default createBrowserRouter(  [
 				element: <SettingsPage/>,
 				handle: {
 					title: "设置"
+				}
+			},
+			{
+				path: "/about",
+				element: <AboutPage/>,
+				handle: {
+					title: "关于"
 				}
 			}
 		]

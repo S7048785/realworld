@@ -1,4 +1,6 @@
 import axios from "axios";
+import {clearToken, getToken} from "@/utils/token.ts";
+import toast from "react-hot-toast";
 
 // 读取 BACKEND_API_URL 环境变量
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
@@ -14,6 +16,10 @@ const request = axios.create({
 
 request.interceptors.request.use(
   (config) => {
+    const token = getToken();
+    if (token) {
+      config.headers["Authorization"] = token;
+    }
     return config;
   },
   (error) => {
@@ -23,10 +29,7 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
   (response) => {
-    if (response.data.code === 1000) {
-      // 清除登录状态
-      console.log("用户未登录");
-    }
+
     if (response.data.code === 1004) {
       alert("当前用户无操作权限");
       window.location.href = "/";
@@ -41,6 +44,12 @@ request.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    if (error.response?.status === 401) {
+      // 清除登录状态
+      clearToken();
+      toast.error(error.response.message || "用户未登录");
+    }
+    console.log(error);
     return Promise.reject(error);
   }
 );

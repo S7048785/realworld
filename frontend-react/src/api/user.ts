@@ -1,6 +1,6 @@
 import request from "@/utils/request.ts";
 import type {Result} from "@/types/result.ts";
-import type {UserLoginRes} from "@/types/response/user.ts";
+import type {UserDetail, UserLoginRes} from "@/types/response/user.ts";
 
 /**
 	* 登录用户
@@ -30,7 +30,7 @@ const register = async (
 ): Result<UserLoginRes> => {
 	return request({
 		method: 'POST',
-		url: '/users',
+		url: '/users/register',
 		data: {
 				email,
 				password
@@ -38,7 +38,18 @@ const register = async (
 	})
 }
 
+/**
+ * 获取用户信息
+ */
+const getUserInfo = async (): Result<UserDetail> => {
+	return request({
+		method: 'GET',
+		url: '/users/me'
+	})
+}
+
 export default {
 	login,
-	register
+	register,
+	getUserInfo
 }

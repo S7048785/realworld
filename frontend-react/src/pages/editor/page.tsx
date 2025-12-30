@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import {useUserStore} from "@/store/userStore.ts";
+import toast from "react-hot-toast";
 
 export default function EditorPage() {
   const navigate = useNavigate()
@@ -16,7 +18,16 @@ export default function EditorPage() {
   const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const isLogin = useUserStore(state => state.isAuthenticated)
+
+  console.log(isLogin)
   const handleSubmit = async () => {
+    // 检查登录状态
+    if (!isLogin) {
+      toast.error("请先登录")
+      return
+    }
+
     if (!title.trim() || !content.trim()) return
 
     setIsSubmitting(true)

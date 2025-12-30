@@ -10,12 +10,21 @@ import PageTitleUpdater from "@/hooks/PageTitleUpdater.tsx";
 import {SparklesCore} from "@/components/ui/sparkles.tsx";
 import {useTheme} from "@/components/theme-provider.tsx";
 import BackToTop from "@/components/BackToTop.tsx";
-import { useRef} from "react";
+import {useEffect, useRef} from "react";
+import {Toaster} from "react-hot-toast";
+import {useUserStore} from "@/store/userStore.ts";
 
 function App() {
   // const [count, setCount] = useState(0)
   const { theme } = useTheme();
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const getUserInfo = useUserStore(state => state.getUserInfo)
+
+
+  useEffect(() => {
+    getUserInfo();
+  }, [])
 
   return (
       <>
@@ -33,7 +42,9 @@ function App() {
         </div>
         <div ref={scrollRef} className="relative h-screen overflow-y-scroll">
             <NavBar/>
-            <Outlet/>
+
+              <Outlet/>
+
           {/* 使用自定义配置的组件 */}
           <BackToTop
               threshold={200}
@@ -42,7 +53,8 @@ function App() {
           />
         </div>
 
-
+        <Toaster position="bottom-right"
+                 reverseOrder={true}/>
       </>
   )
 }

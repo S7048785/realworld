@@ -1,11 +1,20 @@
 import {Link, NavLink, useLocation} from "react-router-dom";
-import LoginDialog from "@/components/navbar/LoginDialog.tsx";
+import LoginDialog from "@/components/user/LoginDialog.tsx";
 import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
-import {User} from "lucide-react";
+import {ChevronDownIcon, LogOutIcon, Settings, User} from "lucide-react";
 import ThemeTogglerButtonDemo from "@/components/theme-toggler.tsx";
 import { motion} from "motion/react";
 import {clsx} from "clsx";
+import toast from "react-hot-toast";
+import {useUserStore} from "@/store/userStore.ts";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu.tsx";
 
 const navList = [
 	{
@@ -18,17 +27,19 @@ const navList = [
 	},
 	{
 		name: "写文章",
-		path: "/editor"
+		path: "/editor",
 	},
 	{
-		name: "设置",
-		path: "/settings"
+		name: "关于",
+		path: "/about"
 	},
 ]
 
 export default function NavBar() {
 	const location = useLocation()
 	const [isLoginShow, setIsLoginShow] = useState(false);
+	const user = useUserStore(state => state.user)
+	const clearUser = useUserStore(state => state.clearUser)
 	return (
 			<div className={clsx("sticky top-0 z-2", location.pathname == "/" ? "bg-background" : "dark:bg-neutral-800/20 backdrop-blur-[8px]")}>
 				<div className="relative flex justify-between items-center top-0 px-20 py-3 border-b h-18">
@@ -48,11 +59,11 @@ export default function NavBar() {
 											"px-8 py-2 navitem"
 										}>
 											<div
-													className="relative bg-transparent hover:text-primary! text-shadow-sm text-center transition-all">
+													className="relative bg-transparent overflow-hidden hover:text-primary! text-shadow-sm text-center transition-all">
 												<motion.span
 														initial={{y: -40}}
 														animate={{y: 0}}
-														transition={{delay: index * 0.05 + 1, duration: 0.2}}
+														transition={{delay: index * 0.05, duration: 0.2}}
 														className="block pb-0"
 												>
 													{item.name}
@@ -72,10 +83,47 @@ export default function NavBar() {
 							<ThemeTogglerButtonDemo/>
 						</div>
 						<div className="flex space-x-4">
-							<Button variant={"outline"} onClick={() => setIsLoginShow(true)}>
-								<User className="" size={16}/>
-								登录
-							</Button>
+							{user ? (
+									<>
+										<DropdownMenu>
+											<DropdownMenuTrigger asChild>
+												<Button className="h-auto p-0 hover:bg-transparent" variant="ghost">
+													<Avatar>
+														<AvatarImage src={user.avatar} alt={user.username} />
+														<AvatarFallback>{user.username[0]}</AvatarFallback>
+													</Avatar>
+													<ChevronDownIcon
+															aria-hidden="true"
+															className="opacity-60"
+															size={16}
+													/>
+												</Button>
+											</DropdownMenuTrigger>
+											<DropdownMenuContent className="max-w-64">
+												<DropdownMenuItem>
+													<Link to="/settings" >
+														<Settings aria-hidden="true" className="opacity-60" size={16} />
+														<span>Settings</span>
+													</Link>
+												</DropdownMenuItem>
+												<DropdownMenuItem onClick={() => {
+													clearUser()
+													toast.success("退出成功")
+												}}>
+													<LogOutIcon aria-hidden="true" className="opacity-60" size={16} />
+													<span>Logout</span>
+												</DropdownMenuItem>
+											</DropdownMenuContent>
+										</DropdownMenu>
+									</>
+							) : (
+									<Button variant={"outline"} onClick={() => setIsLoginShow(true)}>
+										<User className="" size={16}/>
+										登录
+									</Button>
+							)}
+
+							<Button onClick={() => toast.success("功能开发中...")}>asd</Button>
 						</div>
 					</div>
 				</div>
