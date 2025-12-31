@@ -1,4 +1,4 @@
-import {Link, NavLink, useLocation, useNavigate} from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
 import LoginDialog from "@/components/user/LoginDialog.tsx";
 import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
@@ -36,13 +36,12 @@ const navList = [
 ]
 
 export default function NavBar() {
-	const location = useLocation()
 	const navigate = useNavigate()
 	const [isLoginShow, setIsLoginShow] = useState(false);
 	const user = useUserStore(state => state.user)
 	const clearUser = useUserStore(state => state.clearUser)
 	return (
-			<div className={clsx("sticky top-0 z-2", location.pathname == "/" ? "bg-background" : "dark:bg-neutral-800/20 backdrop-blur-[8px]")}>
+			<div className={clsx("sticky top-0 z-2 bg-white/80 dark:bg-neutral-800/20 backdrop-blur-[28px]")}>
 				<div className="relative flex justify-between items-center top-0 px-20 py-3 border-b h-18">
 					{/* Logo */}
 					<div className="flex-1">
@@ -51,9 +50,8 @@ export default function NavBar() {
 
 					{/* 导航菜单 */}
 					<div
-							className="hidden md:flex justify-center items-center text-sm "
+							className="hidden md:flex justify-center items-center  "
 					>
-
 							{
 								navList.map((item, index) => (
 										<NavLink key={index} to={item.path} className={

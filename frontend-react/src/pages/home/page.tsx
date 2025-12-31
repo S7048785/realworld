@@ -8,7 +8,7 @@ import {
 import PopularTags from "@/pages/home/components/PopularTags.tsx";
 import YourFeedTabsContent from "@/pages/home/components/tabs-content/YourFeedTabsContent.tsx";
 import {type JSX, useState} from "react";
-import {getArticleAllList} from "@/api/article.ts";
+import api from "@/api/article.ts";
 import ArticleListTabsContent from "@/pages/home/components/ArticleListTabsContent.tsx";
 
 const tabs = [
@@ -16,7 +16,7 @@ const tabs = [
 			label: "Global Feed",
 			value: "Global Feed",
 			content: (
-					<ArticleListTabsContent getData={(skip: number) => getArticleAllList({skip})} />
+					<ArticleListTabsContent getData={(skip: number) => api.getArticleAllList({skip})} />
 			),
 		},
 		{

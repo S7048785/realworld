@@ -17,3 +17,12 @@ export type UserLoginRes = {
 	access_token: string,
 	user: UserDetail,
 }
+
+export type UserAuthor = {
+	id: number,
+	username: string,
+	avatar: string,
+	articles: number,
+	followers: number,
+	following: boolean,
+}

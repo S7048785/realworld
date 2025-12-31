@@ -2,18 +2,10 @@ import { Clock, Heart, UserPlus, UserCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
-
-interface Author {
-  name: string
-  avatar: string
-  bio?: string
-  articleCount?: number
-  followers?: number
-  following?: boolean
-}
+import type {UserAuthor} from "@/types/response/user.ts";
 
 interface ArticleAuthorProps {
-  author: Author
+  author: UserAuthor
   publishedAt: string
   likes: number
   isLiked: boolean
@@ -38,22 +30,23 @@ export default function ArticleAuthor({
   onLike,
   onFollow,
 }: ArticleAuthorProps) {
+
   return (
-    <div className="mb-8 border-b pb-6">
+    <div className="mb-6 border-b pb-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Avatar className="h-14 w-14">
-            <AvatarImage src={author.avatar} alt={author.name} />
-            <AvatarFallback>{author.name[0]}</AvatarFallback>
+            <AvatarImage src={author.avatar} alt={author.avatar} />
+            <AvatarFallback>{author.username}</AvatarFallback>
           </Avatar>
           <div>
-            <p className="font-semibold text-lg">{author.name}</p>
+            <p className="font-semibold text-lg">{author.username}</p>
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
               <Clock className="h-3 w-3" />
               <span>{formatDate(publishedAt)}</span>
             </div>
             <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
-              <span>{author.articleCount || 0} articles</span>
+              <span>{author.articles || 0} articles</span>
               <span>{author.followers || 0} followers</span>
             </div>
           </div>

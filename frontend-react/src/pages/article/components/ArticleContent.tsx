@@ -1,3 +1,8 @@
+import ReactMarkdown from 'react-markdown';
+import "@/styles/markdown.css"
+import remarkGfm from 'remark-gfm';
+import {CodeBlock, CodeHeader ,Code} from "@/components/animate-ui/components/animate/code.tsx";
+
 interface ArticleContentProps {
   title: string
   content: string
@@ -5,16 +10,31 @@ interface ArticleContentProps {
 
 export default function ArticleContent({ title, content }: ArticleContentProps) {
   return (
-    <>
-      <h1 className="text-3xl font-bold mb-6">{title}</h1>
+      <>
+        <article className="markdown">
+          <h1 className="">{title}</h1>
+          <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                code({node, className, children, ...props}) {
+                  const match = /language-(\w+)/.exec(className || '');
+                  return match ? (
+                      <Code code={String(children).replace(/\n$/, '')}>
+                        <CodeHeader copyButton> <span>{match[1]}</span> </CodeHeader>
+                        <CodeBlock lang={match[1]}/>
+                      </Code>
+                  ) : (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                  );
+                },
+              }}
+          >
+            {content}
+          </ReactMarkdown>
 
-      <article className="prose prose-neutral dark:prose-invert max-w-none mb-12">
-        {content.split("\n\n").map((paragraph, index) => (
-          <p key={index} className="mb-4 leading-relaxed text-lg">
-            {paragraph}
-          </p>
-        ))}
-      </article>
-    </>
+        </article>
+      </>
   )
 }

@@ -1,6 +1,6 @@
 import request from "@/utils/request.ts";
-import type {PageData} from "@/types/result.ts";
-import type {ArticleSimple} from "@/types/response/article.ts";
+import type {PageData, Result} from "@/types/result.ts";
+import type {ArticleDetail, ArticleSimple} from "@/types/response/article.ts";
 
 /**
  * 获取用户文章列表
@@ -9,7 +9,11 @@ import type {ArticleSimple} from "@/types/response/article.ts";
  * @param limit
  * @returns 文章列表
  */
-export const getArticleListByUserId = async ({userId, skip = 1, limit = 5}: { userId: number, skip?: number, limit?: number}): PageData<ArticleSimple> => {
+export const getArticleListByUserId = async ({userId, skip = 1, limit = 5}: {
+	userId: number,
+	skip?: number,
+	limit?: number
+}): PageData<ArticleSimple> => {
 	return request({
 		url: "/articles/user",
 		method: "GET",
@@ -28,7 +32,11 @@ export const getArticleListByUserId = async ({userId, skip = 1, limit = 5}: { us
  * @param limit
  * @returns 文章列表
  */
-export const getArticleListByTag = async ({tag_name, skip = 1, limit = 5}: { tag_name: string, skip?: number, limit?: number}): PageData<ArticleSimple> => {
+const getArticleListByTag = async ({tag_name, skip = 1, limit = 5}: {
+	tag_name: string,
+	skip?: number,
+	limit?: number
+}): PageData<ArticleSimple> => {
 	return request({
 		url: "/articles/tag",
 		method: "GET",
@@ -46,7 +54,7 @@ export const getArticleListByTag = async ({tag_name, skip = 1, limit = 5}: { tag
  * @param limit
  * @returns 文章列表
  */
-export const getArticleAllList = async ({skip = 1, limit = 5}: { skip?: number, limit?: number}): PageData<ArticleSimple> => {
+const getArticleAllList = async ({skip = 1, limit = 5}: { skip?: number, limit?: number }): PageData<ArticleSimple> => {
 	return request({
 		url: "/articles",
 		method: "GET",
@@ -55,4 +63,23 @@ export const getArticleAllList = async ({skip = 1, limit = 5}: { skip?: number, 
 			limit: limit
 		}
 	})
+}
+
+/**
+ * 获取文章详情
+ * @param article_id 文章ID
+ * @returns 文章详情
+ */
+const getArticleDetail = async ({article_id}: { article_id: number }): Result<ArticleDetail> => {
+	return request({
+		url: `/articles/${article_id}`,
+		method: "GET",
+	})
+}
+
+export default {
+	getArticleListByUserId,
+	getArticleListByTag,
+	getArticleAllList,
+	getArticleDetail,
 }

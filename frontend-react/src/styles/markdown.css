@@ -28,6 +28,15 @@
 
 .markdown p {
 	margin: 1rem 0;
+	font-size: 1.2em;
+}
+
+.markdown a {
+	color: var(--primary);
+	text-underline-offset: 4px;
+	&:hover {
+		text-decoration: underline;
+	}
 }
 
 .markdown ul,

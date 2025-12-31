@@ -26,17 +26,35 @@ export default function AboutPage() {
 					<p className="text-3xl font-bold mb-4">UI/技术 参考</p>
 					<p className="">
 						<Button variant={"link"}>
-							<a href="https://github.com/gothinkster/realworld" target={"_blank"} className="text-primary text-lg">realworld</a>
+							<a href="https://github.com/gothinkster/realworld" target={"_blank"}
+								 className="text-primary text-lg">realworld</a>
 						</Button>
-						<Button variant={"link"}><a href="https://blog.grtsinry43.com/" target={"_blank"} className="text-primary text-lg">Grtsinry43的前端札记</a></Button>
-						<Button variant={"link"}><a href="https://www.vio.vin/" target={"_blank"} className="text-primary text-lg">薇尔薇</a></Button>
-						<Button variant={"link"}><a href="https://heyxiaoli.com/" target={"_blank"} className="text-primary text-lg">小李的生活志</a></Button>
-						<Button variant={"link"}><a href="https://fuxiaochen.com/" target={"_blank"} className="text-primary text-lg">付小晨</a></Button>
-						<Button variant={"link"}><a href="https://juejin.cn/" target={"_blank"} className="text-primary text-lg">稀土掘金</a></Button>
+						<Button variant={"link"}><a href="https://blog.grtsinry43.com/" target={"_blank"}
+																				className="text-primary text-lg">Grtsinry43的前端札记</a></Button>
+						<Button variant={"link"}><a href="https://www.vio.vin/" target={"_blank"}
+																				className="text-primary text-lg">薇尔薇</a></Button>
+						<Button variant={"link"}><a href="https://heyxiaoli.com/" target={"_blank"}
+																				className="text-primary text-lg">小李的生活志</a></Button>
+						<Button variant={"link"}><a href="https://fuxiaochen.com/" target={"_blank"}
+																				className="text-primary text-lg">付小晨</a></Button>
+						<Button variant={"link"}><a href="https://juejin.cn/" target={"_blank"}
+																				className="text-primary text-lg">稀土掘金</a></Button>
+					</p>
+
+				</div>
+
+				<div className="mb-8">
+					<p className="text-3xl font-bold mb-4">参考文章</p>
+
+					<p>
+						<Button variant={"link"}><a href="https://juejin.cn/post/7017460681309945886" target={"_blank"}
+																				className="text-primary text-lg">https://juejin.cn/post/7017460681309945886</a></Button>
 					</p>
 					<p>
-						<Button variant={"link"}><a href="https://www.bilibili.com/opus/915654579034521632" target={"_blank"} className="text-primary text-lg">路由过渡动画</a></Button>
+						<Button variant={"link"}><a href="https://www.bilibili.com/opus/915654579034521632" target={"_blank"}
+																				className="text-primary text-lg">https://www.bilibili.com/opus/915654579034521632</a></Button>
 					</p>
+
 				</div>
 
 

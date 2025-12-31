@@ -49,7 +49,7 @@ export default function ArticleItem({article}: { article: ArticleSimple }) {
 					</div>
 				</div>
 				<div className="">
-					<a href={"/article/123"} target={"_blank"} title={article.title}
+					<a href={"/article/" + article.id} target={"_blank"} title={article.title}
 						 className="text-lg mb-1 block">{article.title}</a>
 					<div title={article.desc} className="text-sm text-gray-500">
 						{article.desc.substring(0, 50)}
@@ -57,7 +57,7 @@ export default function ArticleItem({article}: { article: ArticleSimple }) {
 				</div>
 				<div className="flex">
 					<div className="inline-flex items-center">
-						<a href={"/article/123"} className="text-sm text-gray-500">
+						<a href={"/article/" + article.id} className="text-sm text-gray-500">
 							<ButtonCreativeRight />
 						</a>
 					</div>
