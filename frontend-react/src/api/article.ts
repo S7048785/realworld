@@ -77,9 +77,20 @@ const getArticleDetail = async ({article_id}: { article_id: number }): Result<Ar
 	})
 }
 
+/**
+ * 点赞文章
+ */
+const likeArticle = async (article_id: number ): Result<void> => {
+	return request({
+		url: `/articles/like/${article_id}`,
+		method: "POST",
+	})
+}
+
 export default {
 	getArticleListByUserId,
 	getArticleListByTag,
 	getArticleAllList,
 	getArticleDetail,
+	likeArticle
 }

@@ -126,8 +126,6 @@ export default function NavBar() {
 										登录
 									</Button>
 							)}
-
-							<Button onClick={() => toast.success("功能开发中...")}>asd</Button>
 						</div>
 					</div>
 				</div>

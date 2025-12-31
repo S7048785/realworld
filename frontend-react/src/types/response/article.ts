@@ -5,7 +5,9 @@ export type ArticleSimple = {
 	title: string,
 	desc: string,
 	author: UserSimple,
+	views: number,
 	likes: number,
+	isLike: boolean,
 	tags: string,
 	created_at: string,
 }

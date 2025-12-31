@@ -1,7 +1,7 @@
 import {type JSX, useEffect, useState} from "react";
 import ArticleListTabsContent from "@/pages/home/components/ArticleListTabsContent.tsx";
 import api from "@/api/article.ts";
-import {getTagsAll} from "@/api/tags.ts";
+import apiTags from "@/api/tags.ts";
 
 export default function PopularTags({ addTab}: {addTab: (tab: {label: string, value: string, content: JSX.Element}) => void}) {
 
@@ -9,7 +9,7 @@ export default function PopularTags({ addTab}: {addTab: (tab: {label: string, va
 	useEffect(() => {
 
 		(async () => {
-			const res = await getTagsAll()
+			const res = await apiTags.getTagsAll()
 			setTags( res.data);
 		})()
 	}, []);

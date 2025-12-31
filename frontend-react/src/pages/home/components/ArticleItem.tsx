@@ -1,26 +1,20 @@
-import {Button} from "@/components/ui/button.tsx";
-import {Heart} from "lucide-react";
+import {Eye, Heart} from "lucide-react";
 import ButtonCreativeRight from "@/pages/home/components/ui/ButtonCreativeRight.tsx";
 import type {ArticleSimple} from "@/types/response/article.ts";
-
-export type Article = {
-	id: number
-	title: string
-	content: string
-	authorName: string
-	avatar: string
-	datetime: string
-	tags: string[]
-	likes: number
-}
-
-export default function ArticleItem({article}: { article: ArticleSimple }) {
+import toast from "react-hot-toast";
+import {useState} from "react";
+export default function ArticleItem({article, handleLike}: {
+	article: ArticleSimple,
+	handleLike: (id: number) => Promise<void>
+}) {
 
 	const tags: string[] = JSON.parse(article.tags) || []
 
+	const [isLike, setIsLike] = useState(article.isLike)
+
 	return (
 			<div
-					className="flex flex-col gap-3 px-4 border-b border-gray-300 dark:border-gray-700 py-4 transition hover:bg-sidebar-ring/10 rounded-xl"
+					className="flex flex-col gap-3 px-4 border-b border-gray-300 dark:border-gray-700 py-4 relative rounded after:content-[''] after:absolute after:inset-0 after:top-0 after:bottom-0 after:m-auto after:w-[95%] after:h-[80%] after:z-[-1] after:opacity-0 after:rounded after:bg-sidebar-ring/50 after:transition-all after:duration-300 hover:after:size-full hover:after:opacity-50"
 			>
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
@@ -36,15 +30,25 @@ export default function ArticleItem({article}: { article: ArticleSimple }) {
 							</div>
 						</div>
 					</div>
-					<div>
-						<Button className="py-0 pe-0" variant="outline" onClick={ () => {
-							// TODO: 点赞请求
-						}}>
-							<Heart aria-hidden="true" className="opacity-60" size={16}/>
-							Like
+					<div className="inline-flex items-center gap-4 text-sm">
+						<div className="inline-flex items-center gap-1">
+							<Eye aria-hidden="true" className="opacity-60" />
+							<span>{article.views}</span>
+						</div>
+						<div className="inline-flex items-center gap-1 cursor-pointer" onClick={ () => {
+
+							if (isLike) {
+								toast('你已经点赞过了!', {
+									icon: '😘',
+								});
+							} else {
+								setIsLike(true);
+								handleLike(article.id)
+						}}}>
+							<Heart fill={isLike ? "red" : "none"} ria-hidden="true" className="opacity-60 text-red-500"/>
 							<span
-									className="relative ms-1 inline-flex h-full items-center justify-center rounded-full px-3 font-medium text-xs before:absolute before:inset-0 before:left-0 before:w-px before:bg-input">{article.likes}</span>
-						</Button>
+									>{article.likes + (isLike ? 1 : 0)}</span>
+						</div>
 
 					</div>
 				</div>

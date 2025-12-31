@@ -5,6 +5,8 @@ import ArticleItem from "@/pages/home/components/ArticleItem.tsx";
 import ArticleItemSkeleton from "@/pages/home/components/ui/ArticleItemSkeleton.tsx";
 import type {PageData} from "@/types/result.ts";
 import {useRequest} from "ahooks";
+import api from "@/api/article";
+import toast from "react-hot-toast";
 
 /**
  * 文章列表标签页内容组件
@@ -26,7 +28,6 @@ export default function ArticleListTabsContent({getData}: { getData: (...params:
 
 		// 加载更多文章的异步函数
 		const loadMore = async () => {
-			console.log(skip)
 			if (!hasMore || loading) return
 
 			setLoading(true)
@@ -40,7 +41,6 @@ export default function ArticleListTabsContent({getData}: { getData: (...params:
 				if (res.list.length < res.page_size) {
 					setHasMore(false)
 				}
-				console.log(res.list)
 			} finally {
 				setLoading(false)
 			}
@@ -59,12 +59,23 @@ export default function ArticleListTabsContent({getData}: { getData: (...params:
 			loading
 		});
 
+		const handleLike = async (id: number) => {
+			const res = await api.likeArticle(id)
+				if (res.code === 200) {
+
+				} else {
+					toast('你已经点赞过了', {
+						icon: '😘',
+					});
+				}
+		}
+
 		return (
 				<div>
 					{
 						// 渲染文章列表
 						articleList.map((article, index) => (
-								<ArticleItem key={index} article={article}/>
+								<ArticleItem key={index} article={article} handleLike={handleLike}/>
 						))
 					}
 					{
