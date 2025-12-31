@@ -7,7 +7,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from db.session import get_session
 from dependencies.auth import get_current_user
 from models.models import Tag
-from schemas.response import Result
+from schemas.response_dto import Result
 
 router = APIRouter(prefix="/tags", tags=["tags"])
 

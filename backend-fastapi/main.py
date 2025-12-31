@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from api import users, articles, tags
+from api import users, articles, tags, comments
 from db.session import init_db
 
 
@@ -38,6 +38,7 @@ allow_headers=["*"] # 允许的请求头
 app.include_router(users.router)
 app.include_router(articles.router)
 app.include_router(tags.router)
+app.include_router(comments.router)
 
 @app.get("/")
 def root():

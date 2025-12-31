@@ -31,7 +31,7 @@ def create_access_token(user_id: int, expires_delta: Optional[timedelta] = None)
     return encoded_jwt
 
 
-def verify_token(token: str, credentials_exception) -> dict:
+def verify_token(token: str, credentials_exception = Exception) -> int:
     """
     验证Token有效性
 
@@ -40,7 +40,7 @@ def verify_token(token: str, credentials_exception) -> dict:
         credentials_exception: 凭证异常对象，当验证失败时抛出
 
     返回值:
-        dict: 包含用户名的字典，格式为{"user_id": user_id}
+        int: 用户ID
     """
     try:
         print(token)
@@ -51,4 +51,4 @@ def verify_token(token: str, credentials_exception) -> dict:
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-    return {"user_id": user_id}
+    return user_id

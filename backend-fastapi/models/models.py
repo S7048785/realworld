@@ -5,7 +5,6 @@ from datetime import datetime
 from sqlalchemy.orm import relationship
 from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Column, DateTime, func
-from core.utils.encryp import verify_password, get_password_hash
 
 class SoftDeleteMixin(SQLModel):
     deleted: bool = Field(default=False)
@@ -45,21 +44,7 @@ class User( SoftDeleteMixin, SQLModel, table=True):
     )
     
     def verify_password(self, plain_password: str) -> bool:
-        """验证密码是否匹配哈希值"""
-        # 检查数据库中的密码是否已经是哈希格式
-        if self.password.startswith('$2b$') or self.password.startswith('$2a$') or self.password.startswith('$2y$'):
-            # 如果是哈希格式，直接验证
-            return verify_password(plain_password, self.password)
-        else:
-            # 如果是明文格式，直接比较（仅用于开发环境或数据迁移）
-            # 在生产环境中，应该确保数据库中的密码始终是哈希格式
-            return plain_password == self.password
-    
-    @classmethod
-    def hash_password(cls, password: str) -> str:
-        """将密码转为哈希值"""
-        return get_password_hash(password)
-
+        return plain_password == self.password
 
 
 class Article( SoftDeleteMixin, SQLModel, table=True):

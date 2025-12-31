@@ -1,5 +1,5 @@
 # app/api/v1/users.py
-from datetime import timedelta, datetime
+from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -12,7 +12,7 @@ from dependencies.auth import get_current_user
 from models.models import User
 from typing import List
 
-from schemas.response import Result
+from schemas.response_dto import Result, ResponseCode
 from schemas.user import UserDetail, UserLogin, UserRegister, UserUpdate, UserSimple
 
 router = APIRouter(prefix="/users", tags=["users"])
@@ -23,7 +23,7 @@ router = APIRouter(prefix="/users", tags=["users"])
     response_model=Result,
     status_code=status.HTTP_200_OK,
     summary="用户登录",
-    description="通过邮箱和密码进行身份验证，成功后在session中保存用户信息"
+    description="通过邮箱和密码进行身份验证"
 )
 async def login(user_login: UserLogin, session: AsyncSession = Depends(get_session)):
     result = await session.execute(
@@ -31,7 +31,7 @@ async def login(user_login: UserLogin, session: AsyncSession = Depends(get_sessi
     )
     user = result.scalars().first()
     if not user or not user.verify_password(user_login.password):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
+        return Result.success(code=ResponseCode.BAD_REQUEST, msg="Invalid email or password | 邮箱或密码错误")
 
     # 登录成功 生成Token
     access_token = create_access_token(user.id)
@@ -50,15 +50,14 @@ async def register(user: UserRegister, session: AsyncSession = Depends(get_sessi
         select(User).where(User.email == user.email)
     )
     if result.scalars().first():
-        raise HTTPException(status_code=400, detail="Email already registered")
+        raise HTTPException(status_code=400, detail="Email already registered | 邮箱已注册")
 
     # 创建新用户
     user = User (
         username=user.email.split('@')[0],
         email=user.email,
         avatar=r"\images\9419024696.jpg",
-        password=user.password,
-        bio=user.bio,
+        password=user.password,  # 哈希密码
         created_at=datetime.now(),
         updated_at=datetime.now(),
     )
@@ -72,8 +71,27 @@ async def register(user: UserRegister, session: AsyncSession = Depends(get_sessi
     access_token = create_access_token(user.id)
     return Result.success(data={"access_token": access_token, "user": UserDetail.model_validate(user)})
 
+@router.get(
+    "/me",
+    response_model=Result[UserDetail],
+    summary="获取当前用户",
+    description="返回当前登录用户的信息"
+)
+async def read_current_user(request: Request, session: AsyncSession = Depends(get_session)):
+
+    auth_header = request.headers.get("Authorization")
+    try:
+        current_user_id = verify_token(auth_header)
+    except Exception as e:
+        return Result.success()
+
+    current_user = await session.get(User, current_user_id)
+    if not current_user or current_user.deleted:
+        raise HTTPException(status_code=404, detail="User not found")
+    return Result.success(data=current_user)
+
 @router.post(
-    "/",
+    "",
     response_model=Result[UserDetail],
     status_code=status.HTTP_201_CREATED,
     summary="创建用户",
@@ -89,7 +107,7 @@ async def create_user(user: User, session: AsyncSession = Depends(get_session)):
     return Result.success(data=user)
 
 @router.put(
-    "/",
+    "",
     response_model=Result[UserDetail],
     summary="更新用户",
     description="更新当前登录用户的信息，返回更新后的用户信息"
@@ -102,6 +120,9 @@ async def update_user(user_update: UserUpdate, session: AsyncSession = Depends(g
 
     for key, value in user_update.model_dump(exclude_unset=True).items():
         setattr(user, key, value)
+
+    if not user_update.password:
+        user_update.password = user.password
     # 更新更新时间
     user.updated_at = datetime.now()
 
@@ -111,7 +132,7 @@ async def update_user(user_update: UserUpdate, session: AsyncSession = Depends(g
     return Result.success(data=user)
 
 @router.get(
-    "/",
+    "",
     response_model=Result[List[UserSimple]],
     status_code=status.HTTP_200_OK,
     summary="获取用户列表",
@@ -153,14 +174,3 @@ async def delete_user(user_id: int, session: AsyncSession = Depends(get_session)
     user.deleted = True  # 软删除
     await session.commit()
 
-@router.get(
-    "/me",
-    response_model=Result[UserDetail],
-    summary="获取当前用户",
-    description="返回当前登录用户的信息"
-)
-async def read_current_user(session: AsyncSession = Depends(get_session),current_user_id: int = Depends(get_current_user)):
-    current_user = await session.get(User, current_user_id)
-    if not current_user or current_user.deleted:
-        raise HTTPException(status_code=404, detail="User not found")
-    return Result.success(data=current_user)
