@@ -8,7 +8,7 @@ import NavBar from "@/components/navbar/NavBar.tsx";
 import AnimatedOutlet from "@/components/AnimatedOutlet.tsx";
 import PageTitleUpdater from "@/hooks/PageTitleUpdater.tsx";
 import {SparklesCore} from "@/components/ui/sparkles.tsx";
-import {useTheme} from "@/components/theme-provider.tsx";
+import {useTheme} from "@/components/theme/theme-provider.tsx";
 import BackToTop from "@/components/BackToTop.tsx";
 import {useEffect, useRef} from "react";
 import {Toaster} from "react-hot-toast";

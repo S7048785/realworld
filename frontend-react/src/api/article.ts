@@ -56,7 +56,7 @@ const getArticleListByTag = async ({tag_name, skip = 1, limit = 5}: {
  */
 const getArticleAllList = async ({skip = 1, limit = 5}: { skip?: number, limit?: number }): PageData<ArticleSimple> => {
 	return request({
-		url: "/articles",
+		url: "/articles/list",
 		method: "GET",
 		params: {
 			skip: skip,
@@ -87,10 +87,52 @@ const likeArticle = async (article_id: number ): Result<void> => {
 	})
 }
 
+/**
+ * 获取用户点赞文章列表
+ * @param user_id 用户ID
+ * @param skip 跳过数量
+ * @param limit 每页数量
+ * @returns 文章列表
+ */
+const getArticleListByLike = async ({user_id, skip = 1, limit = 5}: {
+	user_id: number,
+	skip?: number,
+	limit?: number
+}): PageData<ArticleSimple> => {
+	return request({
+		url: `/articles/user/${user_id}/liked`,
+		method: "GET",
+		params: {
+			user_id: user_id,
+			skip: skip,
+			limit: limit
+		}
+	})
+}
+
+/**
+ * 获取用户关注文章列表
+ * @param skip 跳过数量
+ * @param limit 每页数量
+ * @returns 文章列表
+ */
+const getArticleListByFollow = async ({skip = 1, limit = 5}: { skip?: number, limit?: number }): PageData<ArticleSimple> => {
+	return request({
+		url: "/articles/following",
+		method: "GET",
+		params: {
+			skip: skip,
+			limit: limit
+		}
+	})
+}
+
 export default {
 	getArticleListByUserId,
 	getArticleListByTag,
 	getArticleAllList,
 	getArticleDetail,
-	likeArticle
+	likeArticle,
+	getArticleListByLike,
+	getArticleListByFollow
 }

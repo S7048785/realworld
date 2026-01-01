@@ -3,7 +3,7 @@ import LoginDialog from "@/components/user/LoginDialog.tsx";
 import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
 import {ChevronDownIcon, LogOutIcon, Settings, User} from "lucide-react";
-import ThemeTogglerButtonDemo from "@/components/theme-toggler.tsx";
+import ThemeTogglerButtonDemo from "@/components/theme/theme-toggler.tsx";
 import { motion} from "motion/react";
 import {clsx} from "clsx";
 import toast from "react-hot-toast";
@@ -15,6 +15,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
+import "./navbar.css"
 
 const navList = [
 	{
@@ -58,7 +59,7 @@ export default function NavBar() {
 											"px-8 py-2 navitem overflow-hidden"
 										}>
 											<div
-													className="relative bg-transparent hover:text-primary! text-shadow-sm text-center transition-all">
+													className="relative bg-transparent text-shadow-sm text-center transition-all">
 												<motion.span
 														initial={{y: -40}}
 														animate={{y: 0}}

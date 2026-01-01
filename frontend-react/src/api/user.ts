@@ -48,6 +48,14 @@ const getUserInfo = async (): Result<UserDetail> => {
 	})
 }
 
+/**
+ * 更新用户信息
+ * @param username
+ * @param email
+ * @param password
+ * @param avatar
+ * @param bio
+ */
 const updateUserInfo = async (
 		{username, email, password, avatar, bio}: {username: string, email: string, password: string, avatar: string, bio: string}
 ): Result<UserDetail> => {
@@ -64,9 +72,21 @@ const updateUserInfo = async (
 	})
 }
 
+/**
+ * 关注用户
+ * @param user_id 用户ID
+ */
+const followUser = async (user_id: number): Result<void> => {
+	return request({
+		method: 'POST',
+		url: `/users/follow/${user_id}`
+	})
+}
+
 export default {
 	login,
 	register,
 	getUserInfo,
-	updateUserInfo
+	updateUserInfo,
+	followUser
 }

@@ -3,6 +3,7 @@ import ButtonCreativeRight from "@/pages/home/components/ui/ButtonCreativeRight.
 import type {ArticleSimple} from "@/types/response/article.ts";
 import toast from "react-hot-toast";
 import {useState} from "react";
+import {Link} from "react-router-dom";
 export default function ArticleItem({article, handleLike}: {
 	article: ArticleSimple,
 	handleLike: (id: number) => Promise<void>
@@ -14,7 +15,7 @@ export default function ArticleItem({article, handleLike}: {
 
 	return (
 			<div
-					className="flex flex-col gap-3 px-4 border-b border-gray-300 dark:border-gray-700 py-4 relative rounded after:content-[''] after:absolute after:inset-0 after:top-0 after:bottom-0 after:m-auto after:w-[95%] after:h-[80%] after:z-[-1] after:opacity-0 after:rounded after:bg-sidebar-ring/50 after:transition-all after:duration-300 hover:after:size-full hover:after:opacity-50"
+					className="flex flex-col gap-3 px-4 border-b border-gray-300 dark:border-gray-700 py-4 relative rounded after:content-[''] after:absolute after:inset-0 after:top-0 after:bottom-0 after:m-auto after:w-[80%] after:h-[80%] after:z-[-1] after:opacity-0 after:rounded after:bg-sidebar-ring/50 after:transition-all after:duration-300 hover:after:w-[99%] hover:after:h-[90%] hover:after:opacity-20"
 			>
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
@@ -36,7 +37,6 @@ export default function ArticleItem({article, handleLike}: {
 							<span>{article.views}</span>
 						</div>
 						<div className="inline-flex items-center gap-1 cursor-pointer" onClick={ () => {
-
 							if (isLike) {
 								toast('你已经点赞过了!', {
 									icon: '😘',
@@ -53,17 +53,17 @@ export default function ArticleItem({article, handleLike}: {
 					</div>
 				</div>
 				<div className="">
-					<a href={"/article/" + article.id} target={"_blank"} title={article.title}
-						 className="text-lg mb-1 block">{article.title}</a>
+					<Link to={"/article/" + article.id} title={article.title}
+						 className="text-lg mb-1 block">{article.title}</Link>
 					<div title={article.desc} className="text-sm text-gray-500">
 						{article.desc.substring(0, 50)}
 					</div>
 				</div>
 				<div className="flex">
 					<div className="inline-flex items-center">
-						<a href={"/article/" + article.id} className="text-sm text-gray-500">
+						<Link to={"/article/" + article.id} className="text-sm text-gray-500">
 							<ButtonCreativeRight />
-						</a>
+						</Link>
 					</div>
 					<div className="ml-auto">
 						<div className="inline-flex items-center gap-2">

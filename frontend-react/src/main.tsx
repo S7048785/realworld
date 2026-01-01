@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import {ThemeProvider} from "@/components/theme-provider.tsx";
+import {ThemeProvider} from "@/components/theme/theme-provider.tsx";
 import router from "@/router/index.tsx"
 import {RouterProvider} from "react-router-dom";
 

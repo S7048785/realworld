@@ -10,8 +10,11 @@ import YourFeedTabsContent from "@/pages/home/components/tabs-content/YourFeedTa
 import {type JSX, useState} from "react";
 import api from "@/api/article.ts";
 import ArticleListTabsContent from "@/pages/home/components/ArticleListTabsContent.tsx";
+import {useUserStore} from "@/store/userStore.ts";
 
-const tabs = [
+export default function HomePage() {
+	const user = useUserStore((state) => state.user);
+	const [tabsState, setTabsState] = useState([
 		{
 			label: "Global Feed",
 			value: "Global Feed",
@@ -23,14 +26,13 @@ const tabs = [
 			label: "Your Feed",
 			value: "Your Feed",
 			content: (
-						<YourFeedTabsContent />
+					<ArticleListTabsContent getData={(skip: number) => api.getArticleListByLike({user_id: user?.id || 0, skip})} />
 			),
 		},
-]
+	]);
 
-export default function HomePage() {
-	const [tabsState, setTabsState] = useState(tabs);
-	const [tabValue, setTabValue] = useState(tabs[0]);
+	// 初始化时默认选中第一个标签
+	const [tabValue, setTabValue] = useState(tabsState[0]);
 
 	const addTab = (tab: { label: string, value: string, content: JSX.Element}) => {
 		console.log(123)
@@ -58,7 +60,7 @@ export default function HomePage() {
 									tabsState.map((tab) => (
 											<TabsTrigger
 													onClick={() => setTabValue(tab)}
-													className="after:-mb-1 relative after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 hover:text-foreground data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none data-[state=active]:after:bg-primary"
+													className="py-2 after:-mb-1 relative after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 hover:text-foreground data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none data-[state=active]:after:bg-primary"
 													key={tab.value}
 													value={tab.value}
 											>{tab.label}</TabsTrigger>

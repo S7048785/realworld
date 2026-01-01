@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useTheme } from "@/components/theme-provider"
+import { useTheme } from "@/components/theme/theme-provider.tsx"
 import { Monitor, Moon, Sun } from 'lucide-react';
 import type {VariantProps} from 'class-variance-authority';
 

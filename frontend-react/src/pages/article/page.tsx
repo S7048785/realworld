@@ -6,6 +6,7 @@ import ArticleComments from "./components/ArticleComments"
 import BackToTop from "./components/BackToTop"
 import {useParams} from "react-router-dom";
 import api from "@/api/article"
+import apiUser from "@/api/user"
 import type {ArticleDetail} from "@/types/response/article.ts";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
 
@@ -67,12 +68,11 @@ export default function ArticlePage() {
 
 
 	const handleLike = () => {
-		// setIsLiked(!isLiked)
-		// setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
+		api.likeArticle(article1?.id || 0)
 	}
 
 	const handleFollow = () => {
-		// setIsFollowing(!isFollowing)
+		apiUser.followUser(article1?.author.id || 0)
 	}
 
 	const handleAddComment = (content: string) => {
@@ -93,7 +93,7 @@ export default function ArticlePage() {
 	}
 
 	return (
-			<div className="max-w-5xl mx-auto px-6 py-8">
+			<div className="max-w-3xl mx-auto px-6 py-8">
 				{!article1 ? (
 						<div>
 							<div className="flex items-center space-x-4 mb-12">
@@ -116,7 +116,7 @@ export default function ArticlePage() {
 						<>
 							<ArticleAuthor
 									author={article1.author}
-									publishedAt={new Date(article1.created_at).toLocaleDateString()}
+									publishedAt={new Date(article1.created_at).toLocaleString()}
 									likes={article1.likes}
 									isLiked={article1.isLike}
 									onLike={handleLike}

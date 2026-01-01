@@ -25,6 +25,7 @@ export default function ArticleListTabsContent({getData}: { getData: (...params:
 		const [hasMore, setHasMore] = useState(true)
 		// 加载状态
 		const [loading, setLoading] = useState(false)
+		const [isEmpty, setIsEmpty] = useState(false)
 
 		// 加载更多文章的异步函数
 		const loadMore = async () => {
@@ -33,6 +34,12 @@ export default function ArticleListTabsContent({getData}: { getData: (...params:
 			setLoading(true)
 			try {
 				const res = await getData(skip)
+				// 检查是否返回空数据
+				if (res.total === 0) {
+					setIsEmpty(true);
+					setHasMore(false)
+					return;
+				}
 				// 将新获取的文章添加到现有列表
 				setArticleList(prev => [...prev, ...res.list])
 				// 更新页码
@@ -72,17 +79,23 @@ export default function ArticleListTabsContent({getData}: { getData: (...params:
 
 		return (
 				<div>
-					{
-						// 渲染文章列表
+
+					{ // 渲染文章列表
 						articleList.map((article, index) => (
 								<ArticleItem key={index} article={article} handleLike={handleLike}/>
 						))
 					}
-					{
-							// 当还有更多数据时，显示加载骨架屏
-							hasMore && (
-									<div ref={targetRef} className="mt-4">
-										<ArticleItemSkeleton/>
+					{ // 当还有更多数据时，显示加载骨架屏
+						hasMore && (
+								<div ref={targetRef} className="mt-4">
+									<ArticleItemSkeleton/>
+								</div>
+						)
+					}
+					{ // 当列表为空时，显示提示信息
+							isEmpty && (
+									<div className="mt-4 text-center text-gray-500">
+										You haven't followed any bloggers yet. <br/> Start by following your first blogger!
 									</div>
 							)
 					}
