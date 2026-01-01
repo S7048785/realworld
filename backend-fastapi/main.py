@@ -7,7 +7,6 @@ from starlette.middleware.cors import CORSMiddleware
 from api import users, articles, tags, comments
 from db.session import init_db
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # 启动时初始化数据库（仅开发用！）

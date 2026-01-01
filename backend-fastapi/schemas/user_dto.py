@@ -1,4 +1,4 @@
-# schemas/user.py
+# schemas/user_dto.py
 from pydantic import BaseModel, Field, computed_field, model_validator
 from datetime import datetime
 

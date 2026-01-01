@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 
-from schemas.user import UserDetail, UserSimple, UserAuthor
+from schemas.user_dto import UserDetail, UserSimple, UserAuthor
 
 
 class ArticleEdit(BaseModel):
@@ -25,6 +25,8 @@ class ArticleSimple(BaseModel):
     title: str
     desc: str
     author: UserSimple
+    views: int
     likes: int
+    isLike: bool
     tags: str | None = None
     created_at: datetime

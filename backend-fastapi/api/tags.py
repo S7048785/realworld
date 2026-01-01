@@ -1,15 +1,19 @@
+# api/tags.py
 from typing import List
 
 from fastapi import APIRouter, Depends
-from sqlalchemy import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from db.session import get_session
-from dependencies.auth import get_current_user
-from models.models import Tag
 from schemas.response_dto import Result
+from services.tag import TagService
 
 router = APIRouter(prefix="/tags", tags=["tags"])
+
+
+def get_tag_service(session: AsyncSession = Depends(get_session)) -> TagService:
+    return TagService(session)
+
 
 @router.get(
     "",
@@ -18,9 +22,7 @@ router = APIRouter(prefix="/tags", tags=["tags"])
     description="返回所有未删除文章的标签列表，每个标签只返回一次"
 )
 async def read_tags(
-        session: AsyncSession = Depends(get_session),
+    service: TagService = Depends(get_tag_service)
 ):
-    tags = await session.execute(
-        select(Tag.name).where(Tag.deleted == False).distinct()
-    )
-    return Result.success(tags.scalars().all())
+    tags = await service.get_all_tags()
+    return Result.success(tags)

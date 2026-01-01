@@ -1,21 +1,18 @@
-# app/api/v1/users.py
-from datetime import datetime
-
+# api/users.py
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from core.utils.jwt import create_access_token, verify_token
 from db.session import get_session
-from sqlalchemy import select
-
 from dependencies.auth import get_current_user
-from models.models import User
-from typing import List
-
-from schemas.response_dto import Result, ResponseCode
-from schemas.user import UserDetail, UserLogin, UserRegister, UserUpdate, UserSimple
+from schemas.response_dto import Result
+from schemas.user_dto import UserDetail, UserLogin, UserRegister, UserUpdate
+from services.user import UserService
 
 router = APIRouter(prefix="/users", tags=["users"])
+
+
+def get_user_service(session: AsyncSession = Depends(get_session)) -> UserService:
+    return UserService(session)
 
 
 @router.post(
@@ -25,17 +22,15 @@ router = APIRouter(prefix="/users", tags=["users"])
     summary="用户登录",
     description="通过邮箱和密码进行身份验证"
 )
-async def login(user_login: UserLogin, session: AsyncSession = Depends(get_session)):
-    result = await session.execute(
-        select(User).where(User.email == user_login.email)
-    )
-    user = result.scalars().first()
-    if not user or not user.verify_password(user_login.password):
-        return Result.success(code=ResponseCode.BAD_REQUEST, msg="Invalid email or password | 邮箱或密码错误")
+async def login(
+    user_login: UserLogin,
+    service: UserService = Depends(get_user_service)
+):
+    success, token, user, msg = await service.login(user_login)
+    if not success:
+        return Result.success(data=None, msg=msg)
+    return Result.success(data={"access_token": token, "user": user})
 
-    # 登录成功 生成Token
-    access_token = create_access_token(user.id)
-    return Result.success(data={"access_token": access_token, "user": UserDetail.model_validate(user)})
 
 @router.post(
     "/register",
@@ -44,32 +39,15 @@ async def login(user_login: UserLogin, session: AsyncSession = Depends(get_sessi
     summary="用户注册",
     description="通过用户名、邮箱和密码注册一个新用户"
 )
-async def register(user: UserRegister, session: AsyncSession = Depends(get_session)):
-    # 检查邮箱是否已存在
-    result = await session.execute(
-        select(User).where(User.email == user.email)
-    )
-    if result.scalars().first():
-        raise HTTPException(status_code=400, detail="Email already registered | 邮箱已注册")
+async def register(
+    user: UserRegister,
+    service: UserService = Depends(get_user_service)
+):
+    success, token, user_detail, msg = await service.register(user)
+    if not success:
+        return Result.success(data=None, msg=msg)
+    return Result.success(data={"access_token": token, "user": user_detail})
 
-    # 创建新用户
-    user = User (
-        username=user.email.split('@')[0],
-        email=user.email,
-        avatar=r"\images\9419024696.jpg",
-        password=user.password,  # 哈希密码
-        created_at=datetime.now(),
-        updated_at=datetime.now(),
-    )
-    session.add(user)
-    # 异步提交事务，将数据持久化到数据库
-    await session.commit()
-    # 刷新用户对象，获取数据库生成的ID等最新数据
-    await session.refresh(user)
-
-    # 生成token
-    access_token = create_access_token(user.id)
-    return Result.success(data={"access_token": access_token, "user": UserDetail.model_validate(user)})
 
 @router.get(
     "/me",
@@ -77,18 +55,22 @@ async def register(user: UserRegister, session: AsyncSession = Depends(get_sessi
     summary="获取当前用户",
     description="返回当前登录用户的信息"
 )
-async def read_current_user(request: Request, session: AsyncSession = Depends(get_session)):
-
+async def read_current_user(
+    request: Request,
+    service: UserService = Depends(get_user_service)
+):
+    from core.jwt import verify_token
     auth_header = request.headers.get("Authorization")
     try:
         current_user_id = verify_token(auth_header)
-    except Exception as e:
+    except Exception:
         return Result.success()
 
-    current_user = await session.get(User, current_user_id)
-    if not current_user or current_user.deleted:
+    user = await service.get_user_detail(current_user_id)
+    if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    return Result.success(data=current_user)
+    return Result.success(data=user)
+
 
 @router.post(
     "",
@@ -97,14 +79,15 @@ async def read_current_user(request: Request, session: AsyncSession = Depends(ge
     summary="创建用户",
     description="创建一个新用户，返回用户信息"
 )
-async def create_user(user: User, session: AsyncSession = Depends(get_session)):
-    # 将新用户对象添加到数据库会话中
-    session.add(user)
-    # 异步提交事务，将数据持久化到数据库
-    await session.commit()
-    # 刷新用户对象，获取数据库生成的ID等最新数据
-    await session.refresh(user)
-    return Result.success(data=user)
+async def create_user(
+    user: UserDetail,
+    service: UserService = Depends(get_user_service)
+):
+    from models.models import User
+    user_obj = User.model_validate(user)
+    user_obj = await service.repository.add(user_obj)
+    return Result.success(data=UserDetail.model_validate(user_obj))
+
 
 @router.put(
     "",
@@ -112,38 +95,31 @@ async def create_user(user: User, session: AsyncSession = Depends(get_session)):
     summary="更新用户",
     description="更新当前登录用户的信息，返回更新后的用户信息"
 )
-async def update_user(user_update: UserUpdate, session: AsyncSession = Depends(get_session),
-                      current_user_id: int = Depends(get_current_user)):
-    user = await session.get(User, current_user_id)
-    if not user or user.deleted:
+async def update_user(
+    user_update: UserUpdate,
+    service: UserService = Depends(get_user_service),
+    current_user_id: int = Depends(get_current_user)
+):
+    user = await service.update_user(current_user_id, user_update)
+    if not user:
         raise HTTPException(status_code=404, detail="User not found")
+    return Result.success(data=UserDetail.model_validate(user))
 
-    for key, value in user_update.model_dump(exclude_unset=True).items():
-        setattr(user, key, value)
-
-    if not user_update.password:
-        user_update.password = user.password
-    # 更新更新时间
-    user.updated_at = datetime.now()
-
-    session.add(user)
-    await session.commit()
-    await session.refresh(user)
-    return Result.success(data=user)
 
 @router.get(
     "",
-    response_model=Result[List[UserSimple]],
+    response_model=Result,
     status_code=status.HTTP_200_OK,
     summary="获取用户列表",
     description="返回所有未删除的用户列表"
 )
-async def read_users(skip: int = 0, limit: int = 20, session: AsyncSession = Depends(get_session)):
-    result = await session.execute(
-        select(User).where(User.deleted == False).offset(skip).limit(limit)
-    )
-
-    return Result.success(data=result.scalars().all())
+async def read_users(
+    skip: int = 0,
+    limit: int = 20,
+    service: UserService = Depends(get_user_service)
+):
+    users = await service.get_user_list(skip, limit)
+    return Result.success(data=users)
 
 
 @router.get(
@@ -152,12 +128,15 @@ async def read_users(skip: int = 0, limit: int = 20, session: AsyncSession = Dep
     summary="获取用户详情",
     description="返回指定ID的用户详情，仅返回未删除的用户"
 )
-async def read_user(user_id: int, session: AsyncSession = Depends(get_session)):
-    user = await session.get(User, user_id)
-    print(user)
-    if not user or user.deleted:
+async def read_user(
+    user_id: int,
+    service: UserService = Depends(get_user_service)
+):
+    user = await service.get_user_detail(user_id)
+    if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return Result.success(data=user)
+
 
 @router.delete(
     "/{user_id}",
@@ -165,12 +144,28 @@ async def read_user(user_id: int, session: AsyncSession = Depends(get_session)):
     summary="删除用户",
     description="软删除指定ID的用户，仅删除未删除的用户"
 )
-async def delete_user(user_id: int, session: AsyncSession = Depends(get_session)):
-    # 查询用户是否存在
-    user = await session.get(User, user_id)
-    if not user:
+async def delete_user(
+    user_id: int,
+    service: UserService = Depends(get_user_service)
+):
+    success = await service.delete_user(user_id)
+    if not success:
         raise HTTPException(status_code=404, detail="User not found")
+    return Result.success()
 
-    user.deleted = True  # 软删除
-    await session.commit()
 
+@router.post(
+    "/follow/{target_user_id}",
+    response_model=Result,
+    summary="关注/取消关注用户",
+    description="关注或取消关注指定用户，需要用户认证"
+)
+async def toggle_follow_user(
+    target_user_id: int,
+    service: UserService = Depends(get_user_service),
+    current_user_id: int = Depends(get_current_user)
+):
+    success, msg = await service.toggle_follow(current_user_id, target_user_id)
+    if not success:
+        return Result.error(msg)
+    return Result.success(msg=msg)

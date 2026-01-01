@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 
-from schemas.user import UserSimple
+from schemas.user_dto import UserSimple
 
 
 class CommentSimple(BaseModel):

@@ -56,6 +56,7 @@ class Article( SoftDeleteMixin, SQLModel, table=True):
     body: str = Field(description="文章内容")
     user_id: int = Field(foreign_key="user.id")
     author: User = Relationship(back_populates="articles")
+    views: int = Field(default=0)
     likes: int = Field(default=0)
     comments: int = Field(default=0)
     tags: Optional[str] = None

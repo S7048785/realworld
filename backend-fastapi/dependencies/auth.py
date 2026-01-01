@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status, Request
 from fastapi.security import HTTPBearer
 
-from core.utils.jwt import verify_token
+from core.jwt import verify_token
 
 security = HTTPBearer()
 
