@@ -122,18 +122,16 @@ export default function NavBar() {
 										</DropdownMenu>
 									</>
 							) : (
-									<Button variant={"outline"} onClick={() => setIsLoginShow(true)}>
-										<User className="" size={16}/>
-										登录
-									</Button>
+									<LoginDialog
+											isOpen={isLoginShow}
+											onClose={() => setIsLoginShow(false)}
+									/>
+
 							)}
 						</div>
 					</div>
 				</div>
-				<LoginDialog
-						isOpen={isLoginShow}
-						onClose={() => setIsLoginShow(false)}
-				/>
+
 			</div>
 
 	)

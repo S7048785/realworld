@@ -7,7 +7,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
+  DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { LoginForm } from "./LoginForm.tsx";
@@ -18,6 +18,7 @@ import api from "@/api/user.ts";
 import { z, ZodError } from "zod";
 import { setToken } from "@/utils/token.ts";
 import { useUserStore } from "@/store/userStore.ts";
+import {User} from "lucide-react";
 
 // 登录表单 Schema
 const loginSchema = z.object({
@@ -180,9 +181,15 @@ export default function LoginDialog({
       toast.error("注册失败，请稍后重试");
     }
   };
-
+  console.log(213)
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog >
+      <DialogTrigger asChild>
+        <Button variant={"outline"}>
+          <User className="" size={16}/>
+          登录
+        </Button>
+      </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl">
@@ -236,7 +243,8 @@ export default function LoginDialog({
             </div>
           </div>
         </form>
-        <DialogFooter></DialogFooter>
+        <DialogFooter>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
