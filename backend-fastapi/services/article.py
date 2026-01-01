@@ -107,7 +107,13 @@ class ArticleService:
         self, article_id: int, current_user_id: Optional[int]
     ) -> Optional[ArticleDetail]:
         """获取文章详情"""
-        article = await self.repository.get_by_id(article_id, include_author=True)
+        from sqlalchemy.orm import selectinload
+        result = await self.session.execute(
+            select(Article)
+            .where(Article.id == article_id, Article.deleted == False)
+            .options(selectinload(Article.author))
+        )
+        article = result.scalar_one_or_none()
         if not article or article.deleted:
             return None
 

@@ -102,4 +102,4 @@ class UserService:
             return False, "User not found"
 
         follow_repo = UserFollowRepository(self.session)
-        return follow_repo.toggle_follow(user_id, target_user_id)
+        return await follow_repo.toggle_follow(user_id, target_user_id)

@@ -1,6 +1,6 @@
 # repositories/user.py
 from typing import Optional
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from models.models import User, UserFollow
@@ -30,30 +30,30 @@ class UserRepository(BaseRepository[User]):
     async def get_followers_count(self, user_id: int) -> int:
         """获取用户粉丝数"""
         result = await self.session.execute(
-            select(UserFollow.id)
+            select(func.count(UserFollow.id))
             .where(UserFollow.followed_user_id == user_id)
             .where(UserFollow.deleted == False)
         )
-        return len(result.all())
+        return result.scalar_one()
 
     async def get_following_count(self, user_id: int) -> int:
         """获取用户关注数"""
         result = await self.session.execute(
-            select(UserFollow.id)
+            select(func.count(UserFollow.id))
             .where(UserFollow.user_id == user_id)
             .where(UserFollow.deleted == False)
         )
-        return len(result.all())
+        return result.scalar_one()
 
     async def get_articles_count(self, user_id: int) -> int:
         """获取用户文章数"""
         from models.models import Article
         result = await self.session.execute(
-            select(Article.id)
+            select(func.count(Article.id))
             .where(Article.user_id == user_id)
             .where(Article.deleted == False)
         )
-        return len(result.all())
+        return result.scalar_one()
 
 
 class UserFollowRepository(BaseRepository[UserFollow]):
