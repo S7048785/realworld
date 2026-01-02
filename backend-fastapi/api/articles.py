@@ -119,29 +119,6 @@ async def like_article(
     return Result.success(msg=msg)
 
 
-@router.get(
-    "/{article_id}",
-    response_model=Result[ArticleDetail],
-    summary="获取文章详情",
-    description="返回指定ID的文章详情"
-)
-async def read_article(
-    article_id: int,
-    request: Request,
-    service: ArticleService = Depends(get_article_service)
-):
-    token = request.headers.get("Authorization")
-    user_id = None
-    if token:
-        try:
-            user_id = verify_token(token, Exception)
-        except Exception:
-            pass
-
-    article_detail = await service.get_article_detail(article_id, user_id)
-    if not article_detail:
-        return Result.error("Article not found")
-    return Result.success(data=article_detail)
 
 
 @router.get(
@@ -184,6 +161,30 @@ async def read_following_articles(
 ):
     articles, total = await service.get_following_articles(current_user_id, skip, limit)
     return PageResult(page=skip, page_size=limit, total=total, list=articles)
+
+@router.get(
+    "/{article_id}",
+    response_model=Result[ArticleDetail],
+    summary="获取文章详情",
+    description="返回指定ID的文章详情"
+)
+async def read_article(
+    article_id: int,
+    request: Request,
+    service: ArticleService = Depends(get_article_service)
+):
+    token = request.headers.get("Authorization")
+    user_id = None
+    if token:
+        try:
+            user_id = verify_token(token, Exception)
+        except Exception:
+            pass
+
+    article_detail = await service.get_article_detail(article_id, user_id)
+    if not article_detail:
+        return Result.error("Article not found")
+    return Result.success(data=article_detail)
 
 
 @router.delete(

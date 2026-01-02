@@ -68,7 +68,6 @@ class UserFollowRepository(BaseRepository[UserFollow]):
             select(UserFollow)
             .where(UserFollow.user_id == user_id)
             .where(UserFollow.followed_user_id == target_user_id)
-            .where(UserFollow.deleted == False)
         )
         return result.scalar_one_or_none() is not None
 
@@ -86,22 +85,21 @@ class UserFollowRepository(BaseRepository[UserFollow]):
         切换关注状态
         返回: (是否关注成功, 消息)
         """
-        existing = await self.is_following(user_id, target_user_id)
-
-        if existing:
+        result = await self.session.execute(
+            select(UserFollow)
+            .where(UserFollow.user_id == user_id)
+            .where(UserFollow.followed_user_id == target_user_id)
+        )
+        follow = result.scalar_one_or_none()
+        if follow:
             # 已关注，取消关注
-            result = await self.session.execute(
-                select(UserFollow)
-                .where(UserFollow.user_id == user_id)
-                .where(UserFollow.followed_user_id == target_user_id)
-                .where(UserFollow.deleted == False)
-            )
-            follow = result.scalar_one_or_none()
-            if follow:
-                follow.deleted = True
-                self.session.add(follow)
+            if follow.deleted:
+                follow.deleted = False
                 await self.session.commit()
-                return False, "取消关注成功"
+                return False, "关注成功"
+            follow.deleted = True
+            await self.session.commit()
+            return False, "取消关注成功"
         else:
             # 未关注，添加关注
             new_follow = UserFollow(user_id=user_id, followed_user_id=target_user_id)
