@@ -57,7 +57,7 @@ button:hover {
   --card-foreground: oklch(0.0000 0.0000 0.0000);
   --popover: oklch(1.0000 0.0000 0.0000);
   --popover-foreground: oklch(0.0000 0.0000 0.0000);
-  --primary: oklch(0.4984 0.1230 244.0493);
+  --primary: rgb(0, 104, 163);
   --primary-foreground: oklch(1.0000 0.0000 0.0000);
   --secondary: oklch(0.5134 0.1907 16.3201);
   --secondary-foreground: oklch(0.0000 0.0000 0.0000);

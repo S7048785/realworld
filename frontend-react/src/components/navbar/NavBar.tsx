@@ -59,7 +59,6 @@ export default function NavBar() {
 							{navList.map((item, index) => (
 										<NavLink key={index} to={item.path} className={"px-8 py-2 navitem overflow-hidden group"}>
 											<div className="relative bg-transparent text-shadow-sm text-center transition-all">
-												{/*<span>{item.name}</span>*/}
 												<motion.span
 														initial={{y: -40}}
 														animate={{y: 0}}
@@ -68,7 +67,7 @@ export default function NavBar() {
 												>
 													{item.name}
 												</motion.span>
-												<div className={"bottom-line absolute left-0 right-0 mx-auto bottom-0 bg-primary h-0.5"}/>
+												<div className={"bottom-line absolute left-0 right-0 mx-auto bottom-0 h-0.5"}/>
 											</div>
 										</NavLink>
 								))}
