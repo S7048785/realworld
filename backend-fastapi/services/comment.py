@@ -5,6 +5,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from models.models import Comment
 from schemas.commet_dto import CommentSimple, CommentCreate
 from repositories.comment import CommentRepository
+from schemas.user_dto import UserSimple
 
 
 class CommentService:
@@ -26,10 +27,11 @@ class CommentService:
                 id=comment.id,
                 body=comment.body,
                 created_at=comment.created_at,
-                user_id=comment.user_id,
-                article_id=comment.article_id,
-                username=comment.user.username if comment.user else None,
-                avatar=comment.user.avatar if comment.user else None
+                user=UserSimple(
+                    id=comment.user.id,
+                    username=comment.user.username,
+                    avatar=comment.user.avatar,
+                ),
             ))
 
         return comment_list, total

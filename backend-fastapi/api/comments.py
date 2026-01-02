@@ -6,7 +6,7 @@ from db.session import get_session
 from dependencies.auth import get_current_user
 from schemas.response_dto import Result, PageResult
 from services.comment import CommentService
-from schemas.commet_dto import CommentCreate
+from schemas.commet_dto import CommentCreate, CommentSimple
 
 router = APIRouter(prefix="/comments", tags=["comments"])
 
@@ -16,8 +16,8 @@ def get_comment_service(session: AsyncSession = Depends(get_session)) -> Comment
 
 
 @router.get(
-    "/article/{article_id}",
-    response_model=PageResult,
+    "",
+    response_model=PageResult[CommentSimple],
     summary="获取文章的评论列表"
 )
 async def get_comment_by_article_id(
