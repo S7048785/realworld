@@ -20,7 +20,6 @@ export default function EditorPage() {
 
   const isLogin = useUserStore(state => state.isAuthenticated)
 
-  console.log(isLogin)
   const handleSubmit = async () => {
     // 检查登录状态
     if (!isLogin) {
