@@ -46,8 +46,8 @@ export default function HomePage() {
 					<span className="tracking-widest">一个分享知识的地方。</span>
 				</div>
 
-				<div className="pt-10 px-25 min-h-100 flex gap-8">
-					<div className="w-4/5">
+				<div className="pt-10 px-5 md:px-25 min-h-100 flex gap-8">
+					<div className="md:w-4/5 w-full">
 						<Tabs className="" value={tabValue.value}>
 							<TabsList
 												className="h-auto w-full flex justify-start gap-2 rounded-none border-b bg-transparent px-0 py-1 text-foreground text-lg">
@@ -74,7 +74,7 @@ export default function HomePage() {
 
 						</Tabs>
 					</div>
-					<div className="flex-1 bg-sidebar p-2 rounded h-50">
+					<div className="flex-1 bg-sidebar p-2 rounded h-50 hidden md:block">
 						<PopularTags addTab={addTab}/>
 					</div>
 				</div>

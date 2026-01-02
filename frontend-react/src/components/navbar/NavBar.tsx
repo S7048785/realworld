@@ -43,10 +43,10 @@ export default function NavBar() {
 	const clearUser = useUserStore(state => state.clearUser)
 	return (
 			<div className={clsx("sticky top-0 z-2 bg-white/80 dark:bg-neutral-800/20 backdrop-blur-[28px]")}>
-				<div className="relative flex justify-between items-center top-0 px-20 py-3 border-b h-18">
+				<div className="relative flex justify-between items-center top-0 px-10 md:px-20 py-3 border-b h-18">
 					{/* Logo */}
 					<div className="flex-1">
-						<Link to="/" className="text-primary font-bold text-xl">Conduit</Link>
+						<Link to="/" className="text-primary font-bold text-2xl md:text-xl">Conduit</Link>
 					</div>
 
 					{/* 导航菜单 */}

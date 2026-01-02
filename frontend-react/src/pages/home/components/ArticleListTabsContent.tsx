@@ -27,6 +27,7 @@ export default function ArticleListTabsContent({getData}: { getData: (...params:
 		const [loading, setLoading] = useState(false)
 		const [isEmpty, setIsEmpty] = useState(false)
 
+
 		// 加载更多文章的异步函数
 		const loadMore = async () => {
 			if (!hasMore || loading) return
@@ -48,11 +49,25 @@ export default function ArticleListTabsContent({getData}: { getData: (...params:
 				if (res.list.length < res.page_size) {
 					setHasMore(false)
 				}
-			} finally {
+			} catch(err) {
+				setIsEmpty(true);
+				setHasMore(false)
+			}
+			finally {
 				setLoading(false)
 			}
 		}
 
+		const handleLike = async (id: number) => {
+			const res = await api.likeArticle(id)
+				if (res.code === 200) {
+
+				} else {
+					toast('你已经点赞过了', {
+						icon: '😘',
+					});
+				}
+		}
 		// 使用 useRequest 钩子，对 loadMore 函数进行防抖处理
 		const { run } = useRequest(loadMore, {
 			debounceWait: 300,
@@ -65,21 +80,8 @@ export default function ArticleListTabsContent({getData}: { getData: (...params:
 			hasMore,
 			loading
 		});
-
-		const handleLike = async (id: number) => {
-			const res = await api.likeArticle(id)
-				if (res.code === 200) {
-
-				} else {
-					toast('你已经点赞过了', {
-						icon: '😘',
-					});
-				}
-		}
-
 		return (
 				<div>
-
 					{/*渲染文章列表*/}
 					{articleList.map((article) => (<ArticleItem key={article.id} article={article} onLike={handleLike}/>))}
 					{/*当还有更多数据时，显示加载骨架屏*/}
