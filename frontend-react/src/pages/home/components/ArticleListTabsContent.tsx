@@ -80,25 +80,20 @@ export default function ArticleListTabsContent({getData}: { getData: (...params:
 		return (
 				<div>
 
-					{ // 渲染文章列表
-						articleList.map((article, index) => (
-								<ArticleItem key={index} article={article} handleLike={handleLike}/>
-						))
-					}
-					{ // 当还有更多数据时，显示加载骨架屏
-						hasMore && (
-								<div ref={targetRef} className="mt-4">
-									<ArticleItemSkeleton/>
-								</div>
-						)
-					}
-					{ // 当列表为空时，显示提示信息
-							isEmpty && (
-									<div className="mt-4 text-center text-gray-500">
-										You haven't followed any bloggers yet. <br/> Start by following your first blogger!
-									</div>
-							)
-					}
+					{/*渲染文章列表*/}
+					{articleList.map((article) => (<ArticleItem key={article.id} article={article} onLike={handleLike}/>))}
+					{/*当还有更多数据时，显示加载骨架屏*/}
+					{hasMore && (
+							<div ref={targetRef} className="mt-4">
+								<ArticleItemSkeleton/>
+							</div>
+					)}
+					{/*当列表为空时，显示提示信息*/}
+					{isEmpty && (
+							<div className="mt-4 text-center text-gray-500">
+								You haven't followed any bloggers yet. <br/> Start by following your first blogger!
+							</div>
+					)}
 				</div>
 		)
 }}

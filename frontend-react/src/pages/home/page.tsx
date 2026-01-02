@@ -6,14 +6,11 @@ import {
 } from '@/components/animate-ui/components/animate/tabs.tsx';
 
 import PopularTags from "@/pages/home/components/PopularTags.tsx";
-import YourFeedTabsContent from "@/pages/home/components/tabs-content/YourFeedTabsContent.tsx";
 import {type JSX, useState} from "react";
 import api from "@/api/article.ts";
 import ArticleListTabsContent from "@/pages/home/components/ArticleListTabsContent.tsx";
-import {useUserStore} from "@/store/userStore.ts";
 
 export default function HomePage() {
-	const user = useUserStore((state) => state.user);
 	const [tabsState, setTabsState] = useState([
 		{
 			label: "Global Feed",
@@ -26,7 +23,7 @@ export default function HomePage() {
 			label: "Your Feed",
 			value: "Your Feed",
 			content: (
-					<ArticleListTabsContent getData={(skip: number) => api.getArticleListByLike({user_id: user?.id || 0, skip})} />
+					<ArticleListTabsContent getData={(skip: number) => api.getArticleListByFollow({skip})} />
 			),
 		},
 	]);
@@ -35,13 +32,11 @@ export default function HomePage() {
 	const [tabValue, setTabValue] = useState(tabsState[0]);
 
 	const addTab = (tab: { label: string, value: string, content: JSX.Element}) => {
-		console.log(123)
 		// 检查是否已存在相同的标签
 		if (tabsState.find((item) => item.value === tab.value)) return;
 		if (tabsState.length > 3) return;
 		setTabsState([...(tabsState.slice(0,2)), tab]);
 		setTabValue(tab);
-		console.log(tab)
 	}
 	return (
 			<div className="h-full">
@@ -75,7 +70,6 @@ export default function HomePage() {
 											</TabsContent>
 									))
 								}
-								<YourFeedTabsContent />
 							</TabsContents>
 
 						</Tabs>

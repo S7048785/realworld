@@ -61,7 +61,6 @@ export default function ArticlePage() {
 			if (res) {
 				setArticle(res.data);
 			}
-			console.log(res)
 		}
 		getData()
 	}, [params.id])
@@ -120,25 +119,21 @@ export default function ArticlePage() {
 									likes={article1.likes}
 									isLiked={article1.isLike}
 									onLike={handleLike}
-                  onFollow={handleFollow}
-              />
+									onFollow={handleFollow}
+							/>
 
-              {/* 文章标题和正文 */}
-              <ArticleContent title={article1.title} content={article1.body}/>
+							{/* 文章标题和正文 */}
+							<ArticleContent title={article1.title} content={article1.body}/>
 
-              {/* 标签 */
-              }
-              <ArticleTags tags={JSON.parse(article1.tags || "[]")} onTagClick={handleTagClick}/>
+							{/* 标签 */}
+							<ArticleTags tags={JSON.parse(article1.tags || "[]")} onTagClick={handleTagClick}/>
 
-              {/* 评论区 */
-              }
-              <ArticleComments comments={comments} onAddComment={handleAddComment}/>
+							{/* 评论区 */}
+							<ArticleComments comments={comments} onAddComment={handleAddComment}/>
 
-              {/* 返回顶部按钮 */
-              }
-              <BackToTop/></>
-            )}
-
-</div>
-)
+							{/* 返回顶部按钮 */}
+							<BackToTop/></>
+				)}
+			</div>
+	)
 }

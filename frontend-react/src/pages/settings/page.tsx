@@ -31,7 +31,6 @@ export default function SettingsPage() {
 			}
 
 			const res = await api.updateUserInfo(userData)
-			console.log("Submitting:", res)
 			if (res.code === 200) {
 				toast.success("修改成功")
 			} else {

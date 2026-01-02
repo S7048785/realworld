@@ -181,7 +181,6 @@ export default function LoginDialog({
       toast.error("注册失败，请稍后重试");
     }
   };
-  console.log(213)
   return (
     <Dialog >
       <DialogTrigger asChild>

@@ -1,25 +1,22 @@
 
 .navitem {
 	.bottom-line {
-		transition: width 0.2s ease-in-out; /* 添加基础过渡 */
+		scale: 0;
+		transition: scale 0.2s ease-in-out; /* 添加基础过渡 */
 	}
 	span {
-		transition: padding-bottom 0.2s ease-in-out;
+		display: block;
+		transition: all 0.2s ease-in-out;
 		transition-delay: 0.1s;
 	}
 
 	&:hover {
 		div {
 			text-shadow: 0 0 10px var(--sidebar-primary);
+		}
 
-		}
-		span {
-			padding-bottom: 6px;
-			transition-delay: 0s;
-			color: var(--primary);
-		}
 		.bottom-line {
-			width: 100%;
+			scale: 100%;
 		}
 	}
 }

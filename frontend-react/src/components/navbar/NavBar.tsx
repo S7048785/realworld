@@ -50,32 +50,23 @@ export default function NavBar() {
 					</div>
 
 					{/* 导航菜单 */}
-					<div
-							className="hidden md:flex justify-center items-center  "
-					>
-							{
-								navList.map((item, index) => (
-										<NavLink key={index} to={item.path} className={
-											"px-8 py-2 navitem overflow-hidden"
-										}>
-											<div
-													className="relative bg-transparent text-shadow-sm text-center transition-all">
+					<div className="hidden md:flex justify-center items-center">
+							{navList.map((item, index) => (
+										<NavLink key={index} to={item.path} className={"px-8 py-2 navitem overflow-hidden group"}>
+											<div className="relative bg-transparent text-shadow-sm text-center transition-all">
+												{/*<span>{item.name}</span>*/}
 												<motion.span
 														initial={{y: -40}}
 														animate={{y: 0}}
 														transition={{delay: index * 0.05, duration: 0.2}}
-														className="block pb-0 "
+														className="group-hover:translate-y-[-6px] group-hover:text-primary"
 												>
 													{item.name}
 												</motion.span>
-												<div
-														className={"bottom-line absolute left-0 right-0 mx-auto bottom-0 bg-primary h-0.5 w-0 "}
-												/>
+												<div className={"bottom-line absolute left-0 right-0 mx-auto bottom-0 bg-primary h-0.5"}/>
 											</div>
-
 										</NavLink>
-								))
-							}
+								))}
 					</div>
 
 					<div className="flex flex-1 justify-end items-center space-x-4">
@@ -121,13 +112,10 @@ export default function NavBar() {
 											</DropdownMenuContent>
 										</DropdownMenu>
 									</>
-							) : (
-									<LoginDialog
+							) : (<LoginDialog
 											isOpen={isLoginShow}
 											onClose={() => setIsLoginShow(false)}
-									/>
-
-							)}
+									/>)}
 						</div>
 					</div>
 				</div>

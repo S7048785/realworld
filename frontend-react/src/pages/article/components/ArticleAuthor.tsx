@@ -77,10 +77,7 @@ export default function ArticleAuthor({
 						</div>
 					</div>
 					<div className="flex items-center gap-2">
-						<Button variant={"ghost"} className="gap-2" onClick={() => {
-							handleLike()
-
-						}}>
+						<Button variant={"ghost"} className="gap-2" onClick={handleLike}>
 							<Heart fill={isLikeTemp ? "red" : "none"} ria-hidden="true" className="h-4 w-4 text-red-500"/>
 							<span
 							>{likes + (isLikeTemp ? 1 : 0)}</span>
