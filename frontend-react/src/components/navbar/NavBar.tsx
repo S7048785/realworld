@@ -4,7 +4,7 @@ import {useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
 import {ChevronDownIcon, LogOutIcon, Settings, User} from "lucide-react";
 import ThemeTogglerButtonDemo from "@/components/theme/theme-toggler.tsx";
-import { motion} from "motion/react";
+import {motion} from "motion/react";
 import {clsx} from "clsx";
 import toast from "react-hot-toast";
 import {useUserStore} from "@/store/userStore.ts";
@@ -56,26 +56,26 @@ export default function NavBar() {
 
 					{/* 导航菜单 */}
 					<div className="hidden md:flex justify-center items-center">
-							{navList.map((item, index) => (
-										<NavLink key={index} to={item.path} className={"px-8 py-2 navitem overflow-hidden group"}>
-											<div className="relative bg-transparent text-shadow-sm text-center transition-all">
-												<motion.span
-														initial={{y: -40}}
-														animate={{y: 0}}
-														transition={{delay: index * 0.05, duration: 0.2}}
-														className="group-hover:translate-y-[-6px] group-hover:text-primary"
-												>
-													{item.name}
-												</motion.span>
-												<div className={"bottom-line absolute left-0 right-0 mx-auto bottom-0 h-0.5"}/>
-											</div>
-										</NavLink>
-								))}
+						{navList.map((item, index) => (
+								<NavLink key={index} to={item.path} className={"px-8 py-2 navitem overflow-hidden group"}>
+									<div className="relative bg-transparent text-shadow-sm text-center transition-all">
+										<motion.span
+												initial={{y: -40}}
+												animate={{y: 0}}
+												transition={{delay: index * 0.05, duration: 0.2}}
+												className="group-hover:translate-y-[-6px] group-hover:text-primary"
+										>
+											{item.name}
+										</motion.span>
+										<div className={"bottom-line absolute left-0 right-0 mx-auto bottom-0 h-0.5"}/>
+									</div>
+								</NavLink>
+						))}
 					</div>
 
 					<div className="flex flex-1 justify-end items-center space-x-4">
 						<div className="inline-flex">
-							<ThemeTogglerButtonDemo/>
+							<ThemeTogglerButtonDemo />
 						</div>
 						<div className="flex space-x-4">
 							{user ? (
@@ -84,7 +84,7 @@ export default function NavBar() {
 											<DropdownMenuTrigger asChild>
 												<Button className="h-auto p-0 hover:bg-transparent" variant="ghost">
 													<Avatar>
-														<AvatarImage src={user.avatar} alt={user.username} />
+														<AvatarImage src={user.avatar} alt={user.username}/>
 														<AvatarFallback>{user.username[0]}</AvatarFallback>
 													</Avatar>
 													<ChevronDownIcon
@@ -97,29 +97,29 @@ export default function NavBar() {
 											<DropdownMenuContent className="max-w-64">
 
 												<DropdownMenuItem className="p-2 hover:bg-none!">
-														<User aria-hidden="true" className="opacity-60" size={16} />
-														<span>{user.username}</span>
+													<User aria-hidden="true" className="opacity-60" size={16}/>
+													<span>{user.username}</span>
 												</DropdownMenuItem>
 												<DropdownMenuItem className="p-2" onClick={() => {
 													navigate('/settings')
 												}}>
-														<Settings aria-hidden="true" className="opacity-60" size={16} />
-														<span>Settings</span>
+													<Settings aria-hidden="true" className="opacity-60" size={16}/>
+													<span>Settings</span>
 												</DropdownMenuItem>
 												<DropdownMenuItem className="p-2" onClick={() => {
 													clearUser()
 													toast.success("退出成功")
 												}}>
-													<LogOutIcon aria-hidden="true" className="opacity-60" size={16} />
+													<LogOutIcon aria-hidden="true" className="opacity-60" size={16}/>
 													<span>Logout</span>
 												</DropdownMenuItem>
 											</DropdownMenuContent>
 										</DropdownMenu>
 									</>
 							) : (<LoginDialog
-											isOpen={isLoginShow}
-											onClose={() => setIsLoginShow(false)}
-									/>)}
+									isOpen={isLoginShow}
+									onClose={() => setIsLoginShow(false)}
+							/>)}
 						</div>
 					</div>
 				</div>

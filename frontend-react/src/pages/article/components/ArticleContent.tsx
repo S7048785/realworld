@@ -2,13 +2,14 @@ import ReactMarkdown from 'react-markdown';
 import "@/styles/markdown.css"
 import remarkGfm from 'remark-gfm';
 import {CodeBlock, CodeHeader ,Code} from "@/components/animate-ui/components/animate/code.tsx";
+// import React from "react";
 
 interface ArticleContentProps {
   title: string
   content: string
 }
 
-export default function ArticleContent({ title, content }: ArticleContentProps) {
+export default (function ArticleContent({ title, content }: ArticleContentProps) {
   return (
       <>
         <article className="markdown">
@@ -38,3 +39,4 @@ export default function ArticleContent({ title, content }: ArticleContentProps) 
       </>
   )
 }
+)

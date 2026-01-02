@@ -1,95 +1,96 @@
-import {useEffect, useState} from "react"
+import {useCallback, useEffect, useState} from "react"
 import ArticleContent from "./components/ArticleContent"
 import ArticleAuthor from "./components/ArticleAuthor"
 import ArticleTags from "./components/ArticleTags"
 import ArticleComments from "./components/ArticleComments"
 import BackToTop from "./components/BackToTop"
 import {useParams} from "react-router-dom";
-import api from "@/api/article"
-import apiUser from "@/api/user"
+import {articleApi, userApi, commentApi} from "@/api"
 import type {ArticleDetail} from "@/types/response/article.ts";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
-
-// 模拟文章数据
-const article = {
-	comments: [
-		{
-			id: "1",
-			author: {
-				name: "Jane Smith",
-				avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane"
-			},
-			content: "Great article! The explanations are very clear and helpful.",
-			publishedAt: "2024-12-27T11:30:00Z"
-		},
-		{
-			id: "2",
-			author: {
-				name: "Bob Wilson",
-				avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob"
-			},
-			content: "I've been waiting for these features. Thanks for sharing!",
-			publishedAt: "2024-12-27T12:15:00Z"
-		}
-	]
-}
-
-interface Comment {
-	id: string
-	author: {
-		name: string
-		avatar: string
-	}
-	content: string
-	publishedAt: string
-}
+import type {CommentSimple} from "@/types/response/comment.ts";
+import {useUserStore} from "@/store/userStore.ts";
+import toast from "react-hot-toast";
 
 export default function ArticlePage() {
 	const params = useParams();
 
-	const [comments, setComments] = useState<Comment[]>(article.comments)
+	const isAuthenticated = useUserStore((state) => state.isAuthenticated)
+	const [article1, setArticle] = useState<ArticleDetail>();
+	const [comments, setComments] = useState<CommentSimple[]>([]);
+	const [page, setPage] = useState({
+		currentPage: 1,
+		totalPages: 1,
+		pageSize: 5,
+	})
 
-	const [article1, setArticle] = useState<ArticleDetail>()
+	const getComment = useCallback(async (skip?: number) => {
+		const article_id = params.id
+		if (!article_id) {
+			return
+		}
+		const res = await commentApi.getCommentByArticleId({article_id: Number(article_id), skip, limit: page.pageSize})
+		if (res) {
+			setComments(res.list);
+			setPage({
+				currentPage: res.page,
+				totalPages: res.total,
+				pageSize: res.page_size,
+			})
+		}
+	}, [])
 
 	useEffect(() => {
-		const getData = async () => {
+		const getArticle = async () => {
 			const article_id = params.id
 			if (!article_id) {
 				return
 			}
-			const res = await api.getArticleDetail({article_id: Number(article_id)})
+			const res = await articleApi.getArticleDetail({article_id: Number(article_id)})
 			if (res) {
 				setArticle(res.data);
 			}
 		}
-		getData()
+
+		getArticle()
+		getComment()
 	}, [params.id])
 
 
-	const handleLike = () => {
-		api.likeArticle(article1?.id || 0)
-	}
+	const handleLike = useCallback(() => {
+				articleApi.likeArticle(article1?.id || 0)
+			}, [isAuthenticated])
 
-	const handleFollow = () => {
-		apiUser.followUser(article1?.author.id || 0)
-	}
+	const handleFollow = useCallback(() => {
+		userApi.followUser(article1?.author.id || 0)
+	}, [isAuthenticated])
+	const handleAddComment = useCallback((content: string) => {
 
-	const handleAddComment = (content: string) => {
-		const comment: Comment = {
-			id: String(comments.length + 1),
-			author: {
-				name: "Current User",
-				avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=User"
-			},
-			content,
-			publishedAt: new Date().toISOString()
+		if (!isAuthenticated) {
+				toast.error("请先登录")
+				return
 		}
-		setComments([...comments, comment])
-	}
+		commentApi.addComment({article_id: Number(params.id), content}).then(res => {
+			if (res) {
+				toast.success("评论成功")
+				getComment()
+			}
+		})
+		// const comment: CommentSimple = {
+		// 	id: String(comments.length + 1),
+		// 	author: {
+		// 		name: "Current User",
+		// 		avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=User"
+		// 	},
+		// 	content,
+		// 	publishedAt: new Date().toISOString()
+		// }
+		// setComments([...comments, comment])
+	}, [isAuthenticated])
 
-	const handleTagClick = (tag: string) => {
+	const handleTagClick = useCallback((tag: string) => {
 		console.log(`Tag clicked: ${tag}`)
-	}
+	}, [])
 
 	return (
 			<div className="max-w-3xl mx-auto px-6 py-8">
@@ -129,7 +130,7 @@ export default function ArticlePage() {
 							<ArticleTags tags={JSON.parse(article1.tags || "[]")} onTagClick={handleTagClick}/>
 
 							{/* 评论区 */}
-							<ArticleComments comments={comments} onAddComment={handleAddComment}/>
+							<ArticleComments comments={comments} onAddComment={handleAddComment} currentPage={page.currentPage} totalPages={Math.ceil(page.totalPages / page.pageSize)} onPageChange={getComment} />
 
 							{/* 返回顶部按钮 */}
 							<BackToTop/></>

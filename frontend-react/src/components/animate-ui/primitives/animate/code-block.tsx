@@ -89,6 +89,7 @@ function CodeBlock({
     let index = 0;
     const totalDuration = duration;
     const interval = totalDuration / characters.length;
+    // @ts-ignore
     let intervalId: NodeJS.Timeout;
 
     const timeout = setTimeout(() => {
