@@ -186,7 +186,7 @@ export default function LoginDialog({
       <DialogTrigger asChild>
         <Button variant={"outline"}>
           <User className="" size={16}/>
-          登录
+          Login
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

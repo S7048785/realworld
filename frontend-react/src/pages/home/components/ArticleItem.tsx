@@ -5,7 +5,6 @@ import {useState} from "react";
 import {Link} from "react-router-dom";
 import {useUserStore} from "@/store/userStore.ts";
 import "./ArticleItem.css"
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
 export default function ArticleItem({article, onLike}: {
 	article: ArticleSimple,
 	onLike: (id: number) => Promise<void>
@@ -40,12 +39,6 @@ export default function ArticleItem({article, onLike}: {
 			>
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
-						{/*<img*/}
-						{/*		loading="lazy"*/}
-						{/*		src={article.author.avatar}*/}
-						{/*		alt={article.author.username}*/}
-						{/*		className="w-8 h-8 rounded-full"*/}
-						{/*/>*/}
 						<img
 								src={article.author.avatar}
 								alt={article.author.username}
@@ -65,7 +58,7 @@ export default function ArticleItem({article, onLike}: {
 				</div>
 				<div className="">
 						<Link to={"/article/" + article.id} title={article.title}
-									className="text-lg title">{article.title}阿斯顿水水v会突然是v巴菲特撒Greg上的干得好不如她和别人挺好的是法国东部犯规被罚你阿三发射点如果多个</Link>
+									className="text-lg title">{article.title}</Link>
 					<div title={article.desc} className="text-md text-gray-400 truncate mt-2">
 						{article.desc}
 					</div>

@@ -16,22 +16,23 @@ import {
 	DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import "./navbar.css"
+import {MobileNav} from "@/components/navbar/MobileNav.tsx";
 
 const navList = [
 	{
-		name: "首页",
+		name: "Home",
 		path: "/"
 	},
 	{
-		name: "排行榜",
+		name: "Rank",
 		path: "/rank"
 	},
 	{
-		name: "写文章",
+		name: "Write",
 		path: "/editor",
 	},
 	{
-		name: "关于",
+		name: "About",
 		path: "/about"
 	},
 ]
@@ -43,10 +44,14 @@ export default function NavBar() {
 	const clearUser = useUserStore(state => state.clearUser)
 	return (
 			<div className={clsx("sticky top-0 z-2 bg-white/80 dark:bg-neutral-800/20 backdrop-blur-[28px]")}>
-				<div className="relative flex justify-between items-center top-0 px-10 md:px-20 py-3 border-b h-18">
+				<div className="relative flex justify-between items-center top-0 px-5 md:px-20 py-3 border-b h-18">
 					{/* Logo */}
-					<div className="flex-1">
+					<div className="hidden md:block flex-1">
 						<Link to="/" className="text-primary font-bold text-2xl md:text-xl">Conduit</Link>
+					</div>
+
+					<div className={clsx("md:hidden")}>
+						<MobileNav items={navList}/>
 					</div>
 
 					{/* 导航菜单 */}
