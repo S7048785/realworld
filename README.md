@@ -2,7 +2,7 @@
 
 一个基于 React 19 + FastAPI 构建的全栈博客应用，遵循 RealWorld 应用规范。
 
-![Home Preview](./frontend-react/public/preview.png)
+![Home Preview](./frontend-react/public/preview.jpg)
 
 ## ✨ 特性
 
