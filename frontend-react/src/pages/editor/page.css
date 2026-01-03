@@ -1,0 +1,4 @@
+.md-editor {
+	--md-bk-color: transparent !important;
+	--md-color: --foreground !important;
+}

@@ -22,3 +22,9 @@ export type ArticleDetail = {
 	created_at: Date,
 	updated_at: Date,
 }
+
+export type ArticleCreate = {
+	title: string,
+	body: string,
+	tags: string[],
+}

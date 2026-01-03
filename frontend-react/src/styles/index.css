@@ -59,7 +59,7 @@ button:hover {
   --popover-foreground: oklch(0.0000 0.0000 0.0000);
   --primary: rgb(0, 104, 163);
   --primary-foreground: oklch(1.0000 0.0000 0.0000);
-  --secondary: oklch(0.5134 0.1907 16.3201);
+	--secondary: oklch(0.814 0.122 325.685);
   --secondary-foreground: oklch(0.0000 0.0000 0.0000);
   --muted: oklch(0.9431 0.0000 0.0000);
   --muted-foreground: oklch(0.5231 0.0077 5.8280);
