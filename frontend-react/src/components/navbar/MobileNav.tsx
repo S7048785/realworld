@@ -2,15 +2,18 @@
 
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover"
+import {cn} from "@/lib/utils"
+import {Button} from "@/components/ui/button"
+import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover"
 import {NavLink, useLocation} from "react-router-dom";
 import {motion} from "motion/react";
+
+/**
+ * 移动端导航栏
+ * 采用Shadcn/ui官网的移动端导航栏组件
+ * @param items
+ * @constructor
+ */
 
 export function MobileNav({items}: {items: {name: string, path: string}[]}) {
 	const [open, setOpen] = React.useState(false)

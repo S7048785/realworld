@@ -1,8 +1,7 @@
 import ReactMarkdown from 'react-markdown';
 import "@/styles/markdown.css"
 import remarkGfm from 'remark-gfm';
-import {CodeBlock, CodeHeader ,Code} from "@/components/animate-ui/components/animate/code.tsx";
-// import React from "react";
+import {Code, CodeBlock, CodeHeader} from "@/components/animate-ui/components/animate/code.tsx";
 
 interface ArticleContentProps {
   title: string
