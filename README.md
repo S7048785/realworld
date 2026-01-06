@@ -284,10 +284,6 @@ Conduit 是一个基于 RealWorld 规范的全栈博客 Demo 项目，用于练�
 - [realworld - 每个 web 开发都要了解的 demo 之王](https://juejin.cn/post/7017460681309945886)
 - [react-router6 + framer-motion 实现路由过渡动画](https://www.bilibili.com/opus/915654579034521632)
 
-## 📄 许可证
-
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
-
 ---
 
 ⭐ 如果这个项目对你有帮助，请给它一个 Star！
