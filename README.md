@@ -38,8 +38,8 @@
 | Tailwind CSS 4 | 样式方案 |
 | Radix UI | 无样式组件库 |
 | React Router v7 | 路由管理 |
-| Zustand 5 | 状态管理 |
-| Axios 1 | HTTP 客户端 |
+| Zustand | 状态管理 |
+| Axios | HTTP 客户端 |
 | Motion | 动画库 |
 
 ### 后端
@@ -50,7 +50,7 @@
 | SQLModel | ORM |
 | MySQL + asyncmy | 异步数据库 |
 | JWT (python-jose) | 身份认证 |
-| Pydantic 2 | 数据验证 |
+| Pydantic | 数据验证 |
 | Uvicorn | ASGI 服务器 |
 
 ## 📦 安装
