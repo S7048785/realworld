@@ -1,5 +1,6 @@
 package com.yyjy.interceptor
 
+import com.yyjy.common.BaseContext
 import com.yyjy.utils.JwtUtil
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest
