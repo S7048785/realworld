@@ -1,0 +1,21 @@
+export com.yyjy.models.entity.ArticleLike
+    -> package com.yyjy.models.entity.dto
+
+ArticleLikeSimple {
+    flat(article) {
+        id
+        title
+        desc
+        author {
+            id
+            username
+            avatar
+        }
+        likes
+        views
+        tags
+        createdAt as created_at
+    }
+    isLike: Boolean? = true
+}
+

@@ -20,3 +20,10 @@ data class ApiRes<T>(
         fun <T> fail(code: Int, msg: String): ApiRes<T> = ApiRes(code = code, msg = msg, data = null)
     }
 }
+
+data class PageRes<T>(
+    var total: Long = 0,
+    var page: Int = 1,
+    var page_size: Int = 10,
+    var list: List<T>
+)

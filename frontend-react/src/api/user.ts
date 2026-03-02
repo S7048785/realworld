@@ -61,7 +61,7 @@ const updateUserInfo = async (
 ): Result<UserDetail> => {
 	return request({
 		method: 'PUT',
-		url: '/users',
+		url: '/users/',
 		data: {
 				username,
 				email,

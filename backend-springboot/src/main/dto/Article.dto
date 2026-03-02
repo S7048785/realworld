@@ -1,0 +1,25 @@
+export com.yyjy.models.entity.Article
+ -> package com.yyjy.models.entity.dto
+
+ArticleSimple {
+    id
+    title
+    desc
+    author {
+        id
+        username
+        avatar
+    }
+    likes
+    views
+    isLike: Boolean? = false
+    tags
+    createdAt as created_at
+}
+
+ArticleEdit {
+    title
+    body
+    tags
+}
+

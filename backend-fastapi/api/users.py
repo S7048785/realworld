@@ -73,7 +73,7 @@ async def read_current_user(
 
 
 @router.post(
-    "",
+    "/",
     response_model=Result[UserDetail],
     status_code=status.HTTP_201_CREATED,
     summary="创建用户",
@@ -90,7 +90,7 @@ async def create_user(
 
 
 @router.put(
-    "",
+    "/",
     response_model=Result[UserDetail],
     summary="更新用户",
     description="更新当前登录用户的信息，返回更新后的用户信息"
@@ -107,7 +107,7 @@ async def update_user(
 
 
 @router.get(
-    "",
+    "/",
     response_model=Result,
     status_code=status.HTTP_200_OK,
     summary="获取用户列表",
@@ -123,7 +123,7 @@ async def read_users(
 
 
 @router.get(
-    "/{user_id}",
+    "/detail/{user_id}",
     response_model=Result[UserDetail],
     summary="获取用户详情",
     description="返回指定ID的用户详情，仅返回未删除的用户"

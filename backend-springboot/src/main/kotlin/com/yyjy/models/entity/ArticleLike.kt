@@ -16,10 +16,11 @@ interface ArticleLike {
     val id: Int
 
     @Key
-    val userId: Long
+    val userId: Int
 
     @Key
-    val articleId: Long
+    @ManyToOne
+    val article: Article
 
     val createdAt: LocalDateTime
 

@@ -7,12 +7,12 @@ package com.yyjy.common
  */
 class BaseContext {
     companion object {
-        private val threadLocal = ThreadLocal<Long>()
+        private val threadLocal = ThreadLocal<Int>()
 
-        fun setCurrentId(id: Long) {
+        fun setCurrentId(id: Int) {
             threadLocal.set(id)
         }
-        fun getCurrentId(): Long? {
+        fun getCurrentId(): Int {
             return threadLocal.get()
         }
         fun removeCurrentId() {

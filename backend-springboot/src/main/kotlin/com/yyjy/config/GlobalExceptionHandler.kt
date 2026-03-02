@@ -1,0 +1,29 @@
+package com.yyjy.config
+
+import com.yyjy.common.ApiRes
+import com.yyjy.common.BusinessException
+import io.swagger.v3.oas.annotations.Hidden
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.RestControllerAdvice
+
+/**
+ * @author Nyxcirea
+ * @date 2026/3/2
+ * @description: TODO
+ */
+@Hidden
+@RestControllerAdvice
+class GlobalExceptionHandler {
+
+    @ExceptionHandler
+    fun handleBusinessException(ex: BusinessException): ApiRes<String?> {
+        return ApiRes.fail( ex.message ?: "未知错误")
+    }
+
+    @ExceptionHandler
+    fun handleGenericException(ex: Exception): ApiRes<String?> {
+        return ApiRes.fail( HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器内部错误: ${ex.message}")
+    }
+}

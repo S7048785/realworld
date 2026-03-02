@@ -31,9 +31,11 @@ interface Article {
     val body: String
 
     /**
-     * 作者id
+     * 作者
      */
-    val userId: Long
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    val author: User
 
     val likes: Long
 

@@ -19,13 +19,13 @@ interface UserFollow {
      * 关注ID
      */
     @Key
-    val userId: Long
+    val userId: Int
 
     /**
      * 被关注ID
      */
     @Key
-    val followedUserId: Long
+    val followedUserId: Int
 
     /**
      * 关注时间

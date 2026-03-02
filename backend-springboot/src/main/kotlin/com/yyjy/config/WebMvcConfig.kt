@@ -1,5 +1,6 @@
 package com.yyjy.config
 
+import com.yyjy.common.ExcludePathProperties
 import com.yyjy.interceptor.TokenInterceptor
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
@@ -8,13 +9,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import java.io.File
 
 @Configuration
-class WebMvcConfig : WebMvcConfigurer {
+class WebMvcConfig(
+    private val excludePathProperties: ExcludePathProperties
+) : WebMvcConfigurer {
 
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(TokenInterceptor()) // 拦截所有路径
             .addPathPatterns("/**")
             .excludePathPatterns(
-                "/user/login",
+                excludePathProperties.paths
             )
             .excludePathPatterns( // Swagger相关路径
                 "/doc.html",

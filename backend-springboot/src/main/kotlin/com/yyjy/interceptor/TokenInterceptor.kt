@@ -37,7 +37,7 @@ class TokenInterceptor : HandlerInterceptor {
         try {
             val userId = JwtUtil.parseJwt(token)
             // 存入ThreadLocal
-            BaseContext.setCurrentId(userId.toLong())
+            BaseContext.setCurrentId(userId.toInt())
         } catch (e: Exception) {
             // 校验失败
             // 返回401状态码

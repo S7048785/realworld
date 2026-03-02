@@ -1,0 +1,21 @@
+export com.yyjy.models.entity.User
+ -> package com.yyjy.models.entity.dto
+
+UserDetail {
+    id
+    username
+    email
+    bio
+    avatar
+    createdAt
+}
+
+
+input UserUpdateInput {
+    username
+    email
+    password
+    bio
+    avatar
+}
+
