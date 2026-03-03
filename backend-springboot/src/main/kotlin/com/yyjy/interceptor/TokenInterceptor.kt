@@ -15,6 +15,15 @@ import org.springframework.web.servlet.HandlerInterceptor
 class TokenInterceptor : HandlerInterceptor {
 
     private val logger = KotlinLogging.logger {}
+    override fun afterCompletion(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        handler: Any,
+        ex: java.lang.Exception?
+    ) {
+        BaseContext.removeCurrentId()
+        super.afterCompletion(request, response, handler, ex)
+    }
 
     override fun preHandle(
         request: HttpServletRequest,
@@ -25,15 +34,15 @@ class TokenInterceptor : HandlerInterceptor {
         logger.info { "请求路径: ${request.requestURI}" }
 
         // 1. 从 Cookie 中读取 AUTH_TOKEN
-        val token = request.cookies?.find { it.name == "AUTH_TOKEN" }?.value?: run {
-            // 校验失败
-            // 返回401状态码
-            response.status = HttpServletResponse.SC_UNAUTHORIZED
-            return false
-        }
+//        val token = request.cookies?.find { it.name == "AUTH_TOKEN" }?.value?: run {
+//            // 校验失败
+//            // 返回401状态码
+//            response.status = HttpServletResponse.SC_UNAUTHORIZED
+//            return false
+//        }
 
         // 获取token
-//        val token = request.getHeader("Authorization")
+        val token = request.getHeader("Authorization")
         try {
             val userId = JwtUtil.parseJwt(token)
             // 存入ThreadLocal

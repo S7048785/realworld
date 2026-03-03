@@ -3,7 +3,9 @@ package com.yyjy.service.impl
 import com.yyjy.common.BaseContext
 import com.yyjy.common.PageRes
 import com.yyjy.models.entity.copy
+import com.yyjy.models.entity.dto.ArticleDetail
 import com.yyjy.models.entity.dto.ArticleEdit
+import com.yyjy.models.entity.dto.ArticleLikeSimple
 import com.yyjy.models.entity.dto.ArticleSimple
 import com.yyjy.repository.ArticleRepository
 import com.yyjy.service.ArticleService
@@ -24,12 +26,24 @@ class ArticleServiceImpl(
         skip: Int,
         limit: Int
     ): PageRes<ArticleLikeSimple> {
-        return articleRepository.listByUserLike(userId, skip, limit)
+        val page = articleRepository.listByUserLike(userId, skip, limit)
+        return PageRes(page.totalRowCount, skip, limit, page.rows)
+    }
+
+    override fun getArticle(articleId: Int): ArticleDetail {
+        return articleRepository.findDetail(articleId)
+    }
+
+    override fun listByUserFollowing(
+        skip: Int,
+        limit: Int
+    ): PageRes<ArticleSimple> {
+        return articleRepository.listByUserFollowing(skip, limit)
     }
 
     override fun likeArticle(articleId: Int) {
         val userId = BaseContext.getCurrentId()
-        articleRepository.like(articleId, userId)
+        articleRepository.like(articleId, userId!!)
     }
 
     override fun listByTag(
@@ -41,7 +55,7 @@ class ArticleServiceImpl(
     override fun addArticle(articleEdit: ArticleEdit) {
         articleRepository.save(articleEdit.toEntity().copy {
             desc = this.body.substring(0, 50)
-            authorId = BaseContext.getCurrentId()
+            authorId = BaseContext.getCurrentId()!!
             likes = 0
             views = 0
             comments = 0

@@ -1,7 +1,7 @@
 package com.yyjy.service
 
 import com.yyjy.common.PageRes
-import com.yyjy.models.entity.Article
+import com.yyjy.models.entity.dto.ArticleDetail
 import com.yyjy.models.entity.dto.ArticleEdit
 import com.yyjy.models.entity.dto.ArticleLikeSimple
 import com.yyjy.models.entity.dto.ArticleSimple
@@ -18,4 +18,6 @@ interface ArticleService {
     fun listByUser(userId: Int, skip: Int, limit: Int): PageRes<ArticleSimple>
     fun likeArticle(articleId: Int)
     fun listByUserLike(userId: Int, skip: Int, limit: Int): PageRes<ArticleLikeSimple>
+    fun listByUserFollowing(skip: Int, limit: Int): PageRes<ArticleSimple>
+    fun getArticle(articleId: Int): ArticleDetail
 }

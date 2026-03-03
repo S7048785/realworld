@@ -1,5 +1,6 @@
 package com.yyjy.models.entity
 
+import com.yyjy.common.ArticleIsLikedResolver
 import org.babyfish.jimmer.sql.*
 import java.time.LocalDateTime
 
@@ -61,5 +62,9 @@ interface Article {
     @Default("0")
     @LogicalDeleted("1")
     val deleted: Int
+
+    // 这是一个虚拟属性，数据库里没有这个字段
+    @Transient(ArticleIsLikedResolver::class)
+    val isLike: Boolean
 }
 

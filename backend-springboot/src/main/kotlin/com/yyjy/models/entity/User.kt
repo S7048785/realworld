@@ -43,6 +43,21 @@ interface User {
 
     val updatedAt: LocalDateTime
 
+    @OneToMany(mappedBy = "author")
+    val articles: List<Article>
+
+    /**
+     * 我关注的人（我作为 follower 的记录）
+     */
+    @OneToMany(mappedBy = "user")
+    val followings: List<UserFollow>
+
+    /**
+     * 我的粉丝（我作为 target 的记录）
+     */
+    @OneToMany(mappedBy = "followedUser")
+    val followers: List<UserFollow>
+
     @Default("0")
     @LogicalDeleted("1")
     val deleted: Int

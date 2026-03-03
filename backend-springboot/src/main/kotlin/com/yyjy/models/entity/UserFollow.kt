@@ -10,33 +10,35 @@ import java.time.LocalDateTime
 interface UserFollow {
 
     @Id
-    @GeneratedValue(
-        strategy = GenerationType.IDENTITY
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int
 
     /**
-     * 关注ID
+     * 发起关注的用户 (Follower)
      */
     @Key
+    @ManyToOne
+    // 如果数据库列名不是 user_id，可以用 @JoinColumn(name = "user_id") 指定
+    val user: User
+
+    /**
+     * 被关注的用户 (Target)
+     */
+    @Key
+    @ManyToOne
+    val followedUser: User
+
+    // --- 辅助属性：IdView ---
+    // 允许你直接通过 follow.userId 获取 ID，而不需要访问整个 user 对象
+    @IdView("user")
     val userId: Int
 
-    /**
-     * 被关注ID
-     */
-    @Key
+    @IdView("followedUser")
     val followedUserId: Int
 
-    /**
-     * 关注时间
-     */
     val createdAt: LocalDateTime
 
-    /**
-     * 标记删除状态
-     */
     @Default("0")
     @LogicalDeleted("1")
     val deleted: Int
 }
-

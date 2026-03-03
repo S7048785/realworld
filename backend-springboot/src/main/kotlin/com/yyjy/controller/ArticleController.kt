@@ -2,6 +2,7 @@ package com.yyjy.controller
 
 import com.yyjy.common.ApiRes
 import com.yyjy.common.PageRes
+import com.yyjy.models.entity.dto.ArticleDetail
 import com.yyjy.models.entity.dto.ArticleEdit
 import com.yyjy.models.entity.dto.ArticleLikeSimple
 import com.yyjy.models.entity.dto.ArticleSimple
@@ -60,7 +61,18 @@ class ArticleController(
         return articleService.listByUserLike(userId, skip, limit)
     }
 
-    companion object {
-
+    @Operation(summary = "获取已关注用户的文章列表", description = "返回已关注用户的所有文章列表")
+    @GetMapping("/following")
+    fun listByFollowing(skip: Int = 1, limit: Int = 5): PageRes<ArticleSimple> {
+        return articleService.listByUserFollowing(skip, limit)
     }
+
+    @Operation(summary = "获取文章详情")
+    @GetMapping("/{id}")
+    fun getArticle(@PathVariable("id") articleId: Int): ApiRes<ArticleDetail> {
+
+        return ApiRes.ok(articleService.getArticle(articleId))
+    }
+
+
 }

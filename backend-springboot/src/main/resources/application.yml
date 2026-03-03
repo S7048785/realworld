@@ -10,7 +10,6 @@ spring:
     url: jdbc:mysql://${demo.datasource.host}:${demo.datasource.port}/${demo.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
     username: ${demo.datasource.username}
     password: ${demo.datasource.password}
-
 jimmer:
   language: kotlin
   dialect: org.babyfish.jimmer.sql.dialect.MySqlDialect
@@ -20,3 +19,5 @@ jimmer:
   client:
     ts:
       path: /ts.zip
+server:
+  port: 8000

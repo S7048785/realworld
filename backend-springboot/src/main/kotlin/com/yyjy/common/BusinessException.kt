@@ -5,5 +5,4 @@ package com.yyjy.common
  * @date 2026/3/2
  * @description: TODO
  */
-class BusinessException(message: String, code: Int = 500) : RuntimeException(message) {
-}
+class BusinessException(message: String, code: Int = 500) : RuntimeException(message)

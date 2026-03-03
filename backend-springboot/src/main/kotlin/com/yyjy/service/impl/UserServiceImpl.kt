@@ -56,7 +56,7 @@ class UserServiceImpl(
     }
 
     override fun getUserDetail(): UserDetail {
-        val userId = BaseContext.getCurrentId()
+        val userId = BaseContext.getCurrentId()!!
         return userRepository.findById(userId).getOrNull()?.let {
             UserDetail(it)
         } ?: throw BusinessException("用户不存在", 404)
@@ -64,7 +64,7 @@ class UserServiceImpl(
 
     override fun updateUser(user: UserUpdateInput): UserDetail {
         val userId = BaseContext.getCurrentId()
-        return userRepository.findById(userId).getOrNull()?.let {
+        return userRepository.findById(userId!!).getOrNull()?.let {
             // 更新用户信息
             val userEntity = userRepository.save(it.copy {
                 username = user.username
@@ -78,7 +78,7 @@ class UserServiceImpl(
     }
 
     override fun toggleFollow(id: Int) {
-        val currentUserId = BaseContext.getCurrentId()
+        val currentUserId = BaseContext.getCurrentId()!!
         userRepository.followUser(currentUserId, UserFollow {
             userId = currentUserId
             followedUserId = id
