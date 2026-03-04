@@ -19,3 +19,10 @@ input UserUpdateInput {
     avatar
 }
 
+
+UserSimple {
+    id
+    username
+    avatar
+}
+

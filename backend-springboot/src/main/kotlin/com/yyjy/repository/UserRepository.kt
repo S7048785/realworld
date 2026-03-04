@@ -2,7 +2,9 @@ package com.yyjy.repository
 
 import com.yyjy.models.entity.User
 import com.yyjy.models.entity.UserFollow
+import com.yyjy.models.entity.dto.UserFollowers
 import com.yyjy.models.entity.email
+import com.yyjy.models.entity.fetchBy
 import com.yyjy.models.entity.followedUserId
 import com.yyjy.models.entity.id
 import com.yyjy.models.entity.userId
@@ -30,5 +32,13 @@ interface UserRepository : KRepository<User, Int> {
         }
         sql.save(userFollow)
     }
+
+    /**
+     * 查询指定用户关注列表
+     */
+    fun findFollowingList(userId: Int) = sql.createQuery(UserFollow::class) {
+        where(table.userId eq userId)
+        select(table.fetch(UserFollowers::class))
+    }.execute()
 
 }

@@ -34,7 +34,6 @@ interface ArticleRepository : KRepository<Article, Int> {
     }
 
     fun listByTag(tagName: String, skip: Int, limit: Int): PageRes<ArticleSimple> {
-
         val page = sql.createQuery(Article::class) {
             where(table.tags eq tagName)
             select(
@@ -89,5 +88,19 @@ interface ArticleRepository : KRepository<Article, Int> {
             where(table.id eq articleId)
             select(table.fetch(ArticleDetail::class))
         }.fetchFirstOrNull() ?: throw BusinessException("文章不存在")
+    }
+
+    fun addLikes(articleId: Int) {
+        sql.createUpdate(Article::class) {
+            set(table.likes, table.likes.plus(1))
+            where(table.id eq articleId)
+        }.execute()
+    }
+
+    fun addViews(articleId: Int) {
+        sql.createUpdate(Article::class) {
+            set(table.views, table.views.plus(1))
+            where(table.id eq articleId)
+        }.execute()
     }
 }

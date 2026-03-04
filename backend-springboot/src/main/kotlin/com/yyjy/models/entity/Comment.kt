@@ -23,12 +23,14 @@ interface Comment {
     /**
      * 评论者id
      */
-    val userId: Long
+    @ManyToOne
+    val user: User
 
     /**
      * 文章id
      */
-    val articleId: Long
+    @ManyToOne
+    val article: Article
 
     /**
      * 评论时间
