@@ -12,7 +12,7 @@ ArticleSimple {
     }
     likes
     views
-    isLiked as isLike
+    isLike
     tags
     createdAt as created_at
 }
@@ -35,7 +35,7 @@ ArticleDetail {
     }
     likes
     tags
-    isLike: Boolean? = false
+    isLike
     createdAt
     updatedAt
 }

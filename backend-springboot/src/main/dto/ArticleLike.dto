@@ -16,6 +16,5 @@ ArticleLikeSimple {
         tags
         createdAt as created_at
     }
-    isLike: Boolean? = true
 }
 
