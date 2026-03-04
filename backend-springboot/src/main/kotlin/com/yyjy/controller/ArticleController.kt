@@ -49,7 +49,7 @@ class ArticleController(
     }
 
     @Operation(summary = "点赞文章", description = "对文章进行点赞")
-    @PostMapping("/list/{article_id}")
+    @PostMapping("/like/{article_id}")
     fun likeArticle(@PathVariable("article_id") articleId: Int): ApiRes<String?> {
         articleService.likeArticle(articleId)
         return ApiRes.ok()
@@ -68,7 +68,7 @@ class ArticleController(
     }
 
     @Operation(summary = "获取文章详情")
-    @GetMapping("/{id}")
+    @GetMapping("/detail/{id}")
     fun getArticle(@PathVariable("id") articleId: Int): ApiRes<ArticleDetail> {
 
         return ApiRes.ok(articleService.getArticle(articleId))

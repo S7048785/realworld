@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @Tag(name = "评论模块")
@@ -20,7 +21,7 @@ class CommentController(
 ) {
 
     @GetMapping
-    fun getComments(articleId: Int, skip: Int = 1, limit: Int = 5): PageRes<CommentSimple> {
+    fun getComments(@RequestParam("article_id") articleId: Int, skip: Int = 1, limit: Int = 5): PageRes<CommentSimple> {
         return commentService.page(articleId, skip, limit)
     }
 

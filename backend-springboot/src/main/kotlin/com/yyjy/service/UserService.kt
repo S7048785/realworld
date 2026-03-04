@@ -17,10 +17,20 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import kotlin.jvm.optionals.getOrNull
 
+/**
+ * 用户服务类
+ * 提供用户相关的业务逻辑处理
+ */
 @Service
 class UserService(
     private val userRepository: UserRepository
 )  {
+    /**
+     * 用户登录
+     * @param user 登录请求对象，包含邮箱和密码
+     * @return 登录响应对象，包含JWT令牌和用户详情
+     * @throws BusinessException 如果用户不存在或密码错误
+     */
      fun login(user: UserLoginReq): UserLoginRes {
         val userEntity = userRepository.findByEmail(user.email)
         return userEntity?.let {
@@ -33,6 +43,12 @@ class UserService(
         } ?: throw BusinessException("用户名或密码错误")
     }
 
+    /**
+     * 用户注册
+     * @param user 注册请求对象，包含邮箱和密码
+     * @return 登录响应对象，包含JWT令牌和用户详情
+     * @throws BusinessException 如果用户已存在
+     */
      fun register(user: UserRegisterReq): UserLoginRes {
         // 检查用户是否已存在
         userRepository.findByEmail(user.email)?.let {
@@ -53,13 +69,24 @@ class UserService(
         return UserLoginRes(token, UserDetail(userEntity))
     }
 
+    /**
+     * 获取当前用户详情
+     * @return 用户详情对象
+     * @throws BusinessException 如果用户未登录或不存在
+     */
      fun getUserDetail(): UserDetail {
-        val userId = BaseContext.getCurrentId()!!
-        return userRepository.findById(userId).getOrNull()?.let {
+         val userId = BaseContext.getCurrentId() ?: throw BusinessException("用户未登录", 401)
+         return userRepository.findById(userId).getOrNull()?.let {
             UserDetail(it)
         } ?: throw BusinessException("用户不存在", 404)
     }
 
+    /**
+     * 更新当前用户信息
+     * @param user 用户更新请求对象，包含要更新的用户信息
+     * @return 更新后的用户详情对象
+     * @throws BusinessException 如果用户不存在
+     */
      fun updateUser(user: UserUpdateInput): UserDetail {
         val userId = BaseContext.getCurrentId()
         return userRepository.findById(userId!!).getOrNull()?.let {
@@ -75,6 +102,10 @@ class UserService(
         } ?: throw BusinessException("用户不存在", 404)
     }
 
+    /**
+     * 切换关注/取消关注用户
+     * @param id 要关注/取消关注的用户ID
+     */
      fun toggleFollow(id: Int) {
         val currentUserId = BaseContext.getCurrentId()!!
         userRepository.followUser(currentUserId, UserFollow {

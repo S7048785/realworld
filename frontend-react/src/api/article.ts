@@ -72,7 +72,7 @@ const getArticleAllList = async ({skip = 1, limit = 5}: { skip?: number, limit?:
  */
 const getArticleDetail = async ({article_id}: { article_id: number }): Result<ArticleDetail> => {
 	return request({
-		url: `/articles/${article_id}`,
+		url: `/articles/detail/${article_id}`,
 		method: "GET",
 	})
 }

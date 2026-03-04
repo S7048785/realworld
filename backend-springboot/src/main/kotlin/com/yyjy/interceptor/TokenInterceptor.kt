@@ -1,6 +1,7 @@
 package com.yyjy.interceptor
 
 import com.yyjy.common.BaseContext
+import com.yyjy.common.BusinessException
 import com.yyjy.utils.JwtUtil
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest
@@ -30,7 +31,9 @@ class TokenInterceptor : HandlerInterceptor {
         response: HttpServletResponse,
         handler: Any
     ): Boolean {
-
+        if (request.method == "OPTIONS") {
+            return true
+        }
         logger.info { "请求路径: ${request.requestURI}" }
 
         // 1. 从 Cookie 中读取 AUTH_TOKEN
@@ -42,7 +45,13 @@ class TokenInterceptor : HandlerInterceptor {
 //        }
 
         // 获取token
+        logger.info { "请求头: ${request.headerNames.toList()}" }
         val token = request.getHeader("Authorization")
+        // 如果 Token 为空，直接返回 401 (可选，视业务需求而定)
+        if (token.isNullOrBlank()) {
+            logger.warn { "缺少 Authorization 头" }
+            throw BusinessException("用户未登录")
+        }
         try {
             val userId = JwtUtil.parseJwt(token)
             // 存入ThreadLocal

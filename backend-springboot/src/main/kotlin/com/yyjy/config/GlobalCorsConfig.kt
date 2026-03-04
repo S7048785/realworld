@@ -1,6 +1,5 @@
 package com.yyjy.config
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.CorsRegistry
@@ -19,10 +18,10 @@ class GlobalCorsConfig {
         return object: WebMvcConfigurer {
             override fun addCorsMappings(regisitry: CorsRegistry) {
                 regisitry.addMapping("/**")
-                    .allowedOrigins("*")
+                    .allowedOrigins("http://localhost:5173")
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
-                    .allowCredentials(false)
+                    .allowCredentials(true)
             }
         }
     }

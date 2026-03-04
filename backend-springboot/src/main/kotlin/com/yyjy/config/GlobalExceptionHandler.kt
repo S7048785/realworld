@@ -22,8 +22,8 @@ class GlobalExceptionHandler {
         return ApiRes.fail( ex.message ?: "未知错误")
     }
 
-    @ExceptionHandler
-    fun handleGenericException(ex: Exception): ApiRes<String?> {
-        return ApiRes.fail( HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器内部错误: ${ex.message}")
-    }
+//    @ExceptionHandler
+//    fun handleException(ex: Exception): ApiRes<String?> {
+//        return ApiRes.fail( HttpStatus.INTERNAL_SERVER_ERROR.value(), "服务器内部错误: ${ex.message}")
+//    }
 }
