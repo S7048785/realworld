@@ -1,0 +1,18 @@
+export com.yyjy.models.entity.Comment
+ -> package com.yyjy.models.entity.dto
+
+CommentSimple {
+    id
+    body
+    user {
+        id
+        username
+        avatar
+    }
+    createdAt as created_at
+}
+
+input CommentCreateInput {
+    article_id: Int
+    body
+}

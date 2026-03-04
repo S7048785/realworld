@@ -1,0 +1,12 @@
+export com.yyjy.models.entity.UserFollow
+ -> package com.yyjy.models.entity.dto
+
+UserFollowers {
+    flat(followedUser) {
+        id
+        username
+        bio
+        avatar
+    }
+}
+
