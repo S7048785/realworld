@@ -7,19 +7,9 @@ import com.yyjy.models.entity.*
 import com.yyjy.models.entity.dto.ArticleDetail
 import com.yyjy.models.entity.dto.ArticleLikeSimple
 import com.yyjy.models.entity.dto.ArticleSimple
-import jdk.javadoc.internal.doclets.formats.html.markup.HtmlStyle
 import org.babyfish.jimmer.spring.repository.KRepository
-import org.babyfish.jimmer.spring.transaction.JimmerTransactionManager.sqlClient
-import org.babyfish.jimmer.sql.ast.impl.query.Queries.createQuery
-import org.babyfish.jimmer.sql.ast.impl.table.AssociationTableProxyImpl.table
-import org.babyfish.jimmer.sql.kt.ast.expression.constant
-import org.babyfish.jimmer.sql.kt.ast.expression.desc
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
-import org.babyfish.jimmer.sql.kt.ast.expression.`eq?`
-import org.babyfish.jimmer.sql.kt.ast.expression.exists
 import org.babyfish.jimmer.sql.kt.ast.expression.plus
-import org.babyfish.jimmer.sql.kt.ast.expression.value
-import org.babyfish.jimmer.sql.runtime.Selectors.select
 
 interface ArticleRepository : KRepository<Article, Int> {
     fun list(skip: Int, limit: Int): PageRes<ArticleSimple> {

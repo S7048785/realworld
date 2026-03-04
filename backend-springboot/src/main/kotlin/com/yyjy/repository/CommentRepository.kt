@@ -1,10 +1,7 @@
 package com.yyjy.repository
 
-import com.yyjy.common.BaseContext
-import com.yyjy.common.PageRes
 import com.yyjy.models.entity.Comment
 import com.yyjy.models.entity.articleId
-import com.yyjy.models.entity.dto.CommentCreateInput
 import com.yyjy.models.entity.dto.CommentSimple
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
