@@ -32,7 +32,7 @@ class JwtUtil {
                     .build()
                     .verify(token)
                     .subject
-            } catch (e: com.auth0.jwt.exceptions.TokenExpiredException) {
+            } catch (_: com.auth0.jwt.exceptions.TokenExpiredException) {
                 // 专门处理过期：可以打印日志或返回 null
                 throw BusinessException("Token 已过期")
             } catch (e: Exception) {

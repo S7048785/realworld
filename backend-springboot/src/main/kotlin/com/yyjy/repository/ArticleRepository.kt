@@ -13,8 +13,6 @@ import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.like
 import org.babyfish.jimmer.sql.kt.ast.expression.minus
 import org.babyfish.jimmer.sql.kt.ast.expression.plus
-import org.babyfish.jimmer.sql.kt.ast.expression.valueIn
-import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 /**

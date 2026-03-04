@@ -17,7 +17,6 @@ data class ApiRes<T>(
 
         fun <T> fail(msg: String): ApiRes<T> = ApiRes(code = 500, msg = msg, data = null)
 
-        fun <T> fail(code: Int, msg: String): ApiRes<T> = ApiRes(code = code, msg = msg, data = null)
     }
 }
 
