@@ -1,7 +1,6 @@
 package com.yyjy.service
 
 import cn.dev33.satoken.stp.StpUtil
-import com.yyjy.common.BaseContext
 import com.yyjy.common.BusinessException
 import com.yyjy.models.entity.User
 import com.yyjy.models.entity.UserFollow

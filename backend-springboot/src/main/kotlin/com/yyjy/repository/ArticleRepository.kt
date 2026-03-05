@@ -1,7 +1,6 @@
 package com.yyjy.repository
 
 import cn.dev33.satoken.stp.StpUtil
-import com.yyjy.common.BaseContext
 import com.yyjy.common.BusinessException
 import com.yyjy.common.PageRes
 import com.yyjy.models.entity.*
