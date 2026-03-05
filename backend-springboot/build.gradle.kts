@@ -28,6 +28,10 @@ repositories {
 }
 
 dependencies {
+	// Sa-Token 整合 jwt
+	implementation("cn.dev33:sa-token-jwt:1.44.0")
+	// sa-token
+	implementation("cn.dev33:sa-token-spring-boot3-starter:1.44.0")
 	// kotlin-logging日志打印
 	implementation("io.github.oshai:kotlin-logging-jvm:6.0.3")
 	// jimmer

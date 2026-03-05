@@ -1,5 +1,6 @@
 package com.yyjy.config
 
+import cn.dev33.satoken.interceptor.SaInterceptor
 import com.yyjy.common.ExcludePathProperties
 import com.yyjy.interceptor.TokenInterceptor
 import org.springframework.context.annotation.Configuration
@@ -14,7 +15,7 @@ class WebMvcConfig(
 ) : WebMvcConfigurer {
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(TokenInterceptor()) // 拦截所有路径
+        registry.addInterceptor(SaInterceptor()) // 拦截所有路径
             .addPathPatterns("/**")
             .excludePathPatterns(
                 excludePathProperties.paths

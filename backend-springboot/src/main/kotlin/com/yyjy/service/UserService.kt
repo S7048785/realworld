@@ -1,5 +1,6 @@
 package com.yyjy.service
 
+import cn.dev33.satoken.stp.StpUtil
 import com.yyjy.common.BaseContext
 import com.yyjy.common.BusinessException
 import com.yyjy.models.entity.User
@@ -75,7 +76,8 @@ class UserService(
      * @throws BusinessException 如果用户未登录或不存在
      */
      fun getUserDetail(): UserDetail {
-         val userId = BaseContext.getCurrentId() ?: throw BusinessException("用户未登录", 401)
+
+         val userId = StpUtil.getLoginIdAsInt()
          return userRepository.findById(userId).getOrNull()?.let {
             UserDetail(it)
         } ?: throw BusinessException("用户不存在", 404)
@@ -88,8 +90,8 @@ class UserService(
      * @throws BusinessException 如果用户不存在
      */
      fun updateUser(user: UserUpdateInput): UserDetail {
-        val userId = BaseContext.getCurrentId()
-        return userRepository.findById(userId!!).getOrNull()?.let {
+        val userId = StpUtil.getLoginIdAsInt()
+        return userRepository.findById(userId).getOrNull()?.let {
             // 更新用户信息
             val userEntity = userRepository.save(it.copy {
                 username = user.username
@@ -107,7 +109,7 @@ class UserService(
      * @param id 要关注/取消关注的用户ID
      */
      fun toggleFollow(id: Int) {
-        val currentUserId = BaseContext.getCurrentId()!!
+        val currentUserId = StpUtil.getLoginIdAsInt()
         userRepository.followUser(currentUserId, UserFollow {
             userId = currentUserId
             followedUserId = id

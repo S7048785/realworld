@@ -1,5 +1,6 @@
 package com.yyjy.common
 
+import cn.dev33.satoken.stp.StpUtil
 import com.yyjy.models.entity.ArticleLike
 import com.yyjy.models.entity.article
 import com.yyjy.models.entity.id
@@ -11,7 +12,7 @@ import org.babyfish.jimmer.sql.kt.ast.expression.valueIn
 import org.springframework.stereotype.Component
 
 /**
- * 文章是否点赞
+ * 该文章是否点赞
  */
 @Component
 class ArticleIsLikedResolver(
@@ -23,7 +24,12 @@ class ArticleIsLikedResolver(
         
         // 1. 获取当前登录用户的 ID 
         // (通常从 Spring SecurityContext、ThreadLocal 或 Token 解析器中获取)
-        val currentUserId = BaseContext.getCurrentId() ?: return ids.associateWith { false }
+        var currentUserId: Int
+        try {
+            currentUserId = StpUtil.getLoginIdAsInt()
+        } catch(e: Exception) {
+            return ids.associateWith { false }
+        }
         // 💡 核心优化：如果用户未登录，直接返回全部为 false 的 Map，完全跳过数据库查询
         // 2. 批量查询：在点赞表中，找出现前用户点赞过的这些文章的 ID
         val likedArticleIds = sqlClient.createQuery(ArticleLike::class) {

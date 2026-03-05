@@ -7,7 +7,8 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle, DialogTrigger,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { LoginForm } from "./LoginForm.tsx";
@@ -16,9 +17,8 @@ import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import api from "@/api/user.ts";
 import { z, ZodError } from "zod";
-import { setToken } from "@/utils/token.ts";
 import { useUserStore } from "@/store/userStore.ts";
-import {User} from "lucide-react";
+import { User } from "lucide-react";
 
 // 登录表单 Schema
 const loginSchema = z.object({
@@ -141,7 +141,6 @@ export default function LoginDialog({
     try {
       const res = await api.login(loginData);
       if (res.code === 200) {
-        setToken(res.data.access_token);
         setUser(res.data.user);
         toast.success("登录成功！");
         onClose();
@@ -153,7 +152,6 @@ export default function LoginDialog({
     } catch (error) {
       toast.error("登录失败，请稍后重试");
       setIsLoading(false);
-
     }
   };
 
@@ -182,10 +180,10 @@ export default function LoginDialog({
     }
   };
   return (
-    <Dialog >
+    <Dialog>
       <DialogTrigger asChild>
         <Button variant={"outline"}>
-          <User className="" size={16}/>
+          <User className="" size={16} />
           Login
         </Button>
       </DialogTrigger>
@@ -226,7 +224,11 @@ export default function LoginDialog({
                 className="w-full"
                 disabled={isLoading}
               >
-                {isLoading ? "加载中..." : formStatus === "login" ? "登录" : "注册"}
+                {isLoading
+                  ? "加载中..."
+                  : formStatus === "login"
+                    ? "登录"
+                    : "注册"}
               </Button>
               <Button
                 onClick={toggleFormStatus}
@@ -242,8 +244,7 @@ export default function LoginDialog({
             </div>
           </div>
         </form>
-        <DialogFooter>
-        </DialogFooter>
+        <DialogFooter></DialogFooter>
       </DialogContent>
     </Dialog>
   );

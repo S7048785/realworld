@@ -36,21 +36,12 @@ class TokenInterceptor : HandlerInterceptor {
         }
         logger.info { "请求路径: ${request.requestURI}" }
 
-        // 1. 从 Cookie 中读取 AUTH_TOKEN
-//        val token = request.cookies?.find { it.name == "AUTH_TOKEN" }?.value?: run {
-//            // 校验失败
-//            // 返回401状态码
-//            response.status = HttpServletResponse.SC_UNAUTHORIZED
-//            return false
-//        }
-
-        // 获取token
-        logger.info { "请求头: ${request.headerNames.toList()}" }
         val token = request.getHeader("Authorization")
         // 如果 Token 为空，直接返回 401 (可选，视业务需求而定)
         if (token.isNullOrBlank()) {
-            logger.warn { "缺少 Authorization 头" }
-            throw BusinessException("用户未登录")
+            return super.preHandle(request, response, handler)
+//            logger.warn { "缺少 Authorization 头" }
+//            throw BusinessException("用户未登录")
         }
         try {
             val userId = JwtUtil.parseJwt(token)
@@ -60,7 +51,6 @@ class TokenInterceptor : HandlerInterceptor {
             // 校验失败
             // 返回401状态码
             logger.error { "Token校验失败: ${e.message}" }
-//            log.error("Token校验失败: ${e.message}", e)
         }
         return super.preHandle(request, response, handler)
     }

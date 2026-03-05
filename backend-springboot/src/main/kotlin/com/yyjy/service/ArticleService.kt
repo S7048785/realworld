@@ -1,5 +1,6 @@
 package com.yyjy.service
 
+import cn.dev33.satoken.stp.StpUtil
 import com.yyjy.common.BaseContext
 import com.yyjy.common.PageRes
 import com.yyjy.models.entity.copy
@@ -78,7 +79,7 @@ class ArticleService(
      */
     @Transactional
     fun likeArticle(articleId: Int) {
-        val userId = BaseContext.getCurrentId()!!
+        val userId = StpUtil.getLoginIdAsInt()
         articleRepository.isLike(articleId, userId)?.let {
             // 取消点赞
             articleRepository.cancelLike(it.id)
@@ -111,7 +112,7 @@ class ArticleService(
     fun addArticle(articleEdit: ArticleEdit) {
         articleRepository.save(articleEdit.toEntity().copy {
             desc = this.body.substring(0, 50)
-            authorId = BaseContext.getCurrentId()!!
+            authorId = StpUtil.getLoginIdAsInt()
             likes = 0
             views = 0
             comments = 0

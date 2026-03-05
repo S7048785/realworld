@@ -1,6 +1,10 @@
 package com.yyjy.controller
 
+import cn.dev33.satoken.annotation.SaCheckLogin
+import cn.dev33.satoken.stp.StpUtil
 import com.yyjy.common.ApiRes
+import com.yyjy.common.BaseContext
+import com.yyjy.common.BusinessException
 import com.yyjy.models.entity.User
 import com.yyjy.models.entity.by
 import com.yyjy.models.entity.dto.UserDetail
@@ -31,26 +35,37 @@ class UserController(
     @PostMapping("/login")
     fun login(@RequestBody user: UserLoginReq): ApiRes<UserLoginRes> {
         val userRes = userService.login(user)
+        StpUtil.login(userRes.user.id)
         return ApiRes.ok(userRes)
     }
 
     @Operation(summary = "用户注册", description = "通过用户名、邮箱和密码注册一个新用户")
     @PostMapping("/register")
     fun register(@RequestBody user: UserRegisterReq): ApiRes<UserLoginRes> {
-        return ApiRes.ok(userService.register(user))
+        val userRes = userService.register(user)
+        StpUtil.login(userRes.user.id)
+        return ApiRes.ok()
     }
+
+
     @Operation(summary = "获取当前用户信息", description = "返回当前登录用户的详细信息")
     @GetMapping("/me")
     fun readCurrentUser(): ApiRes<UserDetail> {
+
+        if (!StpUtil.isLogin()) {
+            throw BusinessException("用户未登录")
+        }
         return ApiRes.ok(userService.getUserDetail())
     }
 
-    @Operation(summary = "更新用户", description = "更新当前登录用户的信息，返回更新后的用户信息")
+    @SaCheckLogin
+    @Operation(summary = "更新个人信息", description = "更新当前登录用户的信息，返回更新后的用户信息")
     @PutMapping("/")
     fun updateUser(@RequestBody user: UserUpdateInput): ApiRes<UserDetail> {
         return ApiRes.ok(userService.updateUser(user))
     }
 
+    @SaCheckLogin
     @Operation(summary = "关注/取消关注用户", description = "关注或取消关注指定用户")
     @PutMapping("/follow/{id}")
     fun toggleFollow(@PathVariable id: Int): ApiRes<String?> {

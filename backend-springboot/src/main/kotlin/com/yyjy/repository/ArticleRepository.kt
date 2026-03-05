@@ -1,5 +1,6 @@
 package com.yyjy.repository
 
+import cn.dev33.satoken.stp.StpUtil
 import com.yyjy.common.BaseContext
 import com.yyjy.common.BusinessException
 import com.yyjy.common.PageRes
@@ -98,7 +99,7 @@ interface ArticleRepository : KRepository<Article, Int> {
      * @return 关注作者的文章列表分页结果
      */
     fun listByUserFollowing(skip: Int, limit: Int): PageRes<ArticleSimple> {
-        val userId = BaseContext.getCurrentId()!!
+        val userId = StpUtil.getLoginIdAsInt()
         val fetchPage = sql.createQuery(Article::class) {
             where(table.asTableEx().author.followings.userId eq userId)
             select(

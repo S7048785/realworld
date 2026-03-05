@@ -1,5 +1,4 @@
 import axios from "axios";
-import {clearToken, getToken} from "@/utils/token.ts";
 import toast from "react-hot-toast";
 
 // 读取 BACKEND_API_URL 环境变量
@@ -16,10 +15,10 @@ const request = axios.create({
 
 request.interceptors.request.use(
   (config) => {
-    const token = getToken();
-    if (token) {
-      config.headers["Authorization"] = token;
-    }
+    // const token = getToken();
+    // if (token) {
+    //   config.headers["Authorization"] = token;
+    // }
     return config;
   },
   (error) => {
@@ -46,7 +45,6 @@ request.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // 清除登录状态
-      clearToken();
       toast.error(error.response.message || "用户未登录");
     }
     console.log(error);

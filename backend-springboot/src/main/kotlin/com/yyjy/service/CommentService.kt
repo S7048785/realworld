@@ -1,5 +1,6 @@
 package com.yyjy.service
 
+import cn.dev33.satoken.stp.StpUtil
 import com.yyjy.common.BaseContext
 import com.yyjy.common.PageRes
 import com.yyjy.models.entity.Comment
@@ -26,7 +27,7 @@ class CommentService(
     }
 
     fun create(commentInput: CommentCreateInput) {
-        val currentUserId = BaseContext.getCurrentId()!!
+        val currentUserId = StpUtil.getLoginIdAsInt()
 
         commentRepository.save(
             Comment {

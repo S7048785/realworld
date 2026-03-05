@@ -3,6 +3,7 @@ package com.yyjy.utils
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.yyjy.common.BusinessException
+import io.github.oshai.kotlinlogging.KotlinLogging.logger
 import java.util.*
 
 /**
@@ -11,6 +12,7 @@ import java.util.*
  * @description: JWT工具类
  */
 class JwtUtil {
+
 
     companion object {
         private const val SECRET_KEY = "123456"
@@ -34,10 +36,10 @@ class JwtUtil {
                     .subject
             } catch (_: com.auth0.jwt.exceptions.TokenExpiredException) {
                 // 专门处理过期：可以打印日志或返回 null
-                throw BusinessException("Token 已过期")
+                throw Exception("Token 已过期")
             } catch (e: Exception) {
                 // 处理其他校验失败（签名错误等）
-                throw BusinessException("Token 无效：${e.message}")
+                throw Exception("Token 无效：${e.message}")
             }
         }
 
