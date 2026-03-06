@@ -5,14 +5,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useUserStore } from "@/store/userStore.ts";
 import "./ArticleItem.css";
+import emitter from "@/lib/emitter";
+
 export default function ArticleItem({
   article,
   onLike,
-  onMouseEnter,
 }: {
   article: ArticleSimple;
   onLike: (id: number) => Promise<void>;
-  onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => void;
 }) {
   const tags: string[] = JSON.parse(article.tags) || [];
 
@@ -40,7 +40,9 @@ export default function ArticleItem({
   return (
     <div
       className="flex flex-col gap-3 px-4 border-b border-gray-300 dark:border-gray-700 py-4 relative rounded after:content-[''] after:absolute after:inset-0 after:top-0 after:bottom-0 after:m-auto after:scale-90 after:z-[-1] after:opacity-0 after:rounded after:bg-sidebar-ring/50 after:transition-all after:duration-300 after:will-change-transform group"
-      onMouseEnter={(event) => onMouseEnter(event)}
+      onMouseEnter={(event) => {
+        emitter.emit("card-hover", event);
+      }}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
