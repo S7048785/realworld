@@ -7,6 +7,8 @@ import type { PageData } from "@/types/result.ts";
 import { useRequest } from "ahooks";
 import api from "@/api/article";
 import toast from "react-hot-toast";
+import { cubicBezier, motion } from "motion/react";
+import { cn } from "@/lib/utils";
 
 /**
  * 文章列表标签页内容组件
@@ -30,6 +32,11 @@ export default function ArticleListTabsContent({
     // 加载状态
     const [loading, setLoading] = useState(false);
     const [isEmpty, setIsEmpty] = useState(false);
+    const [hoverCard, setHoverCard] = useState({
+      top: 0,
+      height: 0,
+      opacity: 0,
+    });
 
     // 加载更多文章的异步函数
     const loadMore = async () => {
@@ -69,6 +76,21 @@ export default function ArticleListTabsContent({
         });
       }
     };
+    const handleCardMouseEnter = (
+      index: number,
+      event: React.MouseEvent<HTMLDivElement>,
+    ) => {
+      setHoverCard({
+        height: event.currentTarget.offsetHeight,
+        top: event.currentTarget.offsetTop,
+        opacity: 0.5,
+      });
+    };
+
+    const handleCardMouseLeave = () => {
+      setHoverCard((prev) => ({ ...prev, opacity: 0 }));
+    };
+
     // 使用 useRequest 钩子，对 loadMore 函数进行防抖处理
     const { run } = useRequest(loadMore, {
       debounceWait: 300,
@@ -82,10 +104,29 @@ export default function ArticleListTabsContent({
       loading,
     });
     return (
-      <div>
+      <div onMouseLeave={handleCardMouseLeave}>
+        <motion.div
+          transition={{
+            stiffness: 0.15,
+            damping: 0.7,
+            ease: cubicBezier(0.4, 0, 0.2, 1),
+            duration: 0.3,
+          }}
+          animate={{
+            top: hoverCard.top,
+            height: `${hoverCard.height}px`,
+            opacity: hoverCard.opacity,
+          }}
+          className="absolute left-0 w-full bg-sidebar-ring/50 dark:bg-jade-800/20 rounded-default pointer-events-none -z-10"
+        ></motion.div>
         {/*渲染文章列表*/}
-        {articleList.map((article) => (
-          <ArticleItem key={article.id} article={article} onLike={handleLike} />
+        {articleList.map((article, index) => (
+          <ArticleItem
+            key={article.id}
+            article={article}
+            onLike={handleLike}
+            onMouseEnter={(event) => handleCardMouseEnter(index, event)}
+          />
         ))}
         {/*当还有更多数据时，显示加载骨架屏*/}
         {hasMore && (
