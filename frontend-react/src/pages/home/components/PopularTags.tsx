@@ -12,7 +12,6 @@ export default function PopularTags({
   useEffect(() => {
     (async () => {
       const res = await apiTags.getTagsAll();
-      console.log("tags", res.data);
       setTags(res.data);
     })();
   }, []);
